@@ -64,7 +64,8 @@
 
     <!-- Chat window -->
     <div id="chat"></div>
-    <input id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"> <!--input box-->
+    <textarea id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"></textarea>
+<!--    <input id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"> &lt;!&ndash;input box&ndash;&gt;-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
     <button onclick="clearChat()">Clear Chat</button> <!--clickable button, calls clearChat() function-->
 
@@ -121,7 +122,7 @@
 
         // 'enter' key now triggers askAI() function
         function handleKey(event) {
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && !event.shiftKey) { //if enter is pressed and not shift
                 event.preventDefault(); // stop default behavior when Enter is clicked
                 askAI(); // sends the message
             }
