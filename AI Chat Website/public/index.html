@@ -64,8 +64,8 @@
 
     <!-- Chat window -->
     <div id="chat"></div>
+    <p id="typing" style="font-style: italic; color: #555;"></p>
     <textarea id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"></textarea>
-<!--    <input id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"> &lt;!&ndash;input box&ndash;&gt;-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
     <button onclick="clearChat()">Clear Chat</button> <!--clickable button, calls clearChat() function-->
 
@@ -86,6 +86,7 @@
             messages.push({ role: "user", content: prompt }) // add new prompt to messages
             updateChat();
             document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
+            document.getElementById("typing").innerText = "AI is typing..."; // add loading message
 
             // process request via backend
             const res = await fetch("/api/ask", {
@@ -95,8 +96,9 @@
             });
 
             const data = await res.json(); //extract data from json response
-            messages.push({ role: "ai_assistant", content: data.output });
+            messages.push({ role: "ai_assistant", content: data.output }); // push response to the end of messages
             updateChat()
+            document.getElementById("typing").innerText = ""; // remove loading message
         }
 
         // update the chat (self-explanatory)
