@@ -34,11 +34,16 @@
             flex-direction: column;
             border: 1px solid #ccc;
             padding: 10px;
-            width: 400px;
-            height: 300px;
+            width: 1200px;
+            height: 400px;
             overflow-y: auto;
             margin-bottom: 10px;
             background-color: white;
+        }
+
+        #userInput {
+            width: 1200px;
+            margin-bottom: 10px;
         }
 
         body {
@@ -59,7 +64,7 @@
 
     <!-- Chat window -->
     <div id="chat"></div>
-    <input id="userInput" placeholder="Type a question..." style="width: 300px;" onkeydown="handleKey(event)"> <!--input box-->
+    <input id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"> <!--input box-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
 
     <script>
