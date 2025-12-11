@@ -64,6 +64,12 @@
 
     <script>
         let messages = []; // stores chat history
+        // Load saved messages if they exist
+        const saved = localStorage.getItem("chatHistory");
+        if (saved) {
+            messages = JSON.parse(saved);
+            updateChat();
+        }
 
         // call API via backend
         async function askAI() {
@@ -72,6 +78,7 @@
 
             messages.push({ role: "user", content: prompt }) // add new prompt to messages
             updateChat();
+            document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
 
             // process request via backend
             const res = await fetch("/api/ask", {
@@ -95,7 +102,8 @@
                 const who = msg.role;
                 chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
             });
-        chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
+            chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
+            localStorage.setItem("chatHistory", JSON.stringify(messages)); // save messages in local storage
         }
 
         // 'enter' key now triggers askAI() function
