@@ -88,6 +88,11 @@
             document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
             document.getElementById("typing").innerText = "AI is typing..."; // add loading message
 
+            // disable user input while response is being fetched by API
+            document.getElementById("userInput").disabled = true;
+            document.querySelector("button[onclick='askAI()']").disabled = true;
+
+
             // process request via backend
             const res = await fetch("/api/ask", {
                 method: "POST",
@@ -99,6 +104,12 @@
             messages.push({ role: "ai_assistant", content: data.output }); // push response to the end of messages
             updateChat()
             document.getElementById("typing").innerText = ""; // remove loading message
+
+            // enable user input once response has been fetched
+            document.getElementById("userInput").disabled = false;
+            document.querySelector("button[onclick='askAI()']").disabled = false;
+            document.getElementById("userInput").focus();  // optional: returns cursor to the box
+
         }
 
         // update the chat (self-explanatory)
