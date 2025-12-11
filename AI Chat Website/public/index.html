@@ -12,7 +12,7 @@
 
     <!-- Chat window -->
     <div id="chat" style="border:1px solid #ccc; padding:10px; width:400px; height:300px; overflow-y:auto; margin-bottom:10px;"></div>
-    <input id="userInput" placeholder="Type a question..." style="width: 300px;"> <!--input box-->
+    <input id="userInput" placeholder="Type a question..." style="width: 300px;" onkeydown="handleKey(event)"> <!--input box-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
 
     <script>
@@ -46,6 +46,12 @@
                 chat.innerHTML += `<p><strong>${who}:</strong> ${msg.content}</p>`;
             });
         chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
+        }
+        function handleKey(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // stop default behavior when Enter is clicked
+                askAI(); // sends the message
+            }
         }
     </script>
 </body>
