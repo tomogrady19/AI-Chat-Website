@@ -10,25 +10,43 @@
 <body>
     <h1>Ask My AI Anything</h1> <!--title-->
 
+    <!-- Chat window -->
+    <div id="chat" style="border:1px solid #ccc; padding:10px; width:400px; height:300px; overflow-y:auto; margin-bottom:10px;"></div>
     <input id="userInput" placeholder="Type a question..." style="width: 300px;"> <!--input box-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
-    <h2>Response:</h2> <!--sub heading-->
-    <p id="response"></p> <!--display response as paragraph (populated by askAI() function)-->
 
     <script>
-    async function askAI() {
-        const prompt = document.getElementById("userInput").value; // set prompt to the user input
+        let messages = []; // stores chat history
 
-        // process request via backend
-        const res = await fetch("/api/ask", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt })
-        });
+        async function askAI() {
+            const prompt = document.getElementById("userInput").value.trim(); // set prompt to the user input
+            if (!prompt) return;
 
-        const data = await res.json(); //extract data from json response
-        document.getElementById("response").innerText = data.output; // populate the response paragraph with this data
-    }
+            messages.push({ role: "user", content: prompt }) // add new prompt to messages
+            updateChat();
+
+            // process request via backend
+            const res = await fetch("/api/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages })
+            });
+
+            const data = await res.json(); //extract data from json response
+            messages.push({ role: "assistant", content: data.output });
+            updateChat()
+        }
+        function updateChat() {
+            const chat = document.getElementById("chat"); //get chat from webpage
+            chat.innerHTML = ""; //clear chat content
+
+            // repopulate entire chat from scratch
+            messages.forEach(msg => {
+                const who = msg.role === "user" ? "You" : "AI"; // if msg.role == "user", who == "You" else "AI"
+                chat.innerHTML += `<p><strong>${who}:</strong> ${msg.content}</p>`;
+            });
+        chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
+        }
     </script>
 </body>
 </html>
