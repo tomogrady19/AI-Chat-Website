@@ -66,6 +66,7 @@
     <div id="chat"></div>
     <input id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)"> <!--input box-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
+    <button onclick="clearChat()">Clear Chat</button> <!--clickable button, calls clearChat() function-->
 
     <script>
         let messages = []; // stores chat history
@@ -109,6 +110,13 @@
             });
             chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
             localStorage.setItem("chatHistory", JSON.stringify(messages)); // save messages in local storage
+        }
+
+        // clear the chat (also self-explanatory)
+        function clearChat() {
+            messages = [];  // clear messages
+            localStorage.removeItem("chatHistory"); // clear local memory
+            updateChat()
         }
 
         // 'enter' key now triggers askAI() function
