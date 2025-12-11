@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
+
+<!--browser tab title-->
 <head>
-  <title>Ask My AI</title>
+    <title>Ask My AI</title>
 </head>
+
+<!--page content-->
 <body>
+    <h1>Ask My AI Anything</h1> <!--title-->
 
-<h1>Ask My AI Anything</h1>
+    <input id="userInput" placeholder="Type a question..." style="width: 300px;"> <!--input box-->
+    <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
+    <h2>Response:</h2> <!--sub heading-->
+    <p id="response"></p> <!--display response as paragraph (populated by askAI() function)-->
 
-<input id="userInput" placeholder="Type a question..." style="width: 300px;">
-<button onclick="askAI()">Ask</button>
+    <script>
+    async function askAI() {
+        const prompt = document.getElementById("userInput").value; // set prompt to the user input
 
-<h2>Response:</h2>
-<p id="response"></p>
+        // process request via backend
+        const res = await fetch("/api/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt })
+        });
 
-<script>
-async function askAI() {
-  const prompt = document.getElementById("userInput").value;
-
-  const res = await fetch("/api/ask", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt })
-  });
-
-  const data = await res.json();
-  document.getElementById("response").innerText = data.output;
-}
-</script>
-
+        const data = await res.json(); //extract data from json response
+        document.getElementById("response").innerText = data.output; // populate the response paragraph with this data
+    }
+    </script>
 </body>
 </html>
