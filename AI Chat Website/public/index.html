@@ -4,6 +4,43 @@
 <!--browser tab title-->
 <head>
     <title>Ask My AI</title>
+
+    <style>
+        .message {
+          padding: 8px 12px;
+          margin: 8px 0;
+          max-width: 70%;
+          border-radius: 12px;
+          display: inline-block;
+          font-family: Arial, sans-serif;
+        }
+
+        .user {
+          background-color: #d1e7ff;
+          align-self: flex-end;
+          margin-left: auto;
+          text-align: right;
+        }
+
+        .ai_assistant {
+          background-color: #eee;
+          align-self: flex-start;
+          margin-right: auto;
+          text-align: left;
+        }
+
+        #chat {
+          display: flex;
+          flex-direction: column;
+          border: 1px solid #ccc;
+          padding: 10px;
+          width: 400px;
+          height: 300px;
+          overflow-y: auto;
+          margin-bottom: 10px;
+        }
+    </style>
+
 </head>
 
 <!--page content-->
@@ -11,13 +48,14 @@
     <h1>Ask My AI Anything</h1> <!--title-->
 
     <!-- Chat window -->
-    <div id="chat" style="border:1px solid #ccc; padding:10px; width:400px; height:300px; overflow-y:auto; margin-bottom:10px;"></div>
+    <div id="chat"></div>
     <input id="userInput" placeholder="Type a question..." style="width: 300px;" onkeydown="handleKey(event)"> <!--input box-->
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
 
     <script>
         let messages = []; // stores chat history
 
+        // call API via backend
         async function askAI() {
             const prompt = document.getElementById("userInput").value.trim(); // set prompt to the user input
             if (!prompt) return;
@@ -33,20 +71,24 @@
             });
 
             const data = await res.json(); //extract data from json response
-            messages.push({ role: "assistant", content: data.output });
+            messages.push({ role: "ai_assistant", content: data.output });
             updateChat()
         }
+
+        // update the chat (self-explanatory)
         function updateChat() {
             const chat = document.getElementById("chat"); //get chat from webpage
             chat.innerHTML = ""; //clear chat content
 
             // repopulate entire chat from scratch
             messages.forEach(msg => {
-                const who = msg.role === "user" ? "You" : "AI"; // if msg.role == "user", who == "You" else "AI"
-                chat.innerHTML += `<p><strong>${who}:</strong> ${msg.content}</p>`;
+                const who = msg.role;
+                chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
             });
         chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
         }
+
+        // 'enter' key now triggers askAI() function
         function handleKey(event) {
             if (event.key === "Enter") {
                 event.preventDefault(); // stop default behavior when Enter is clicked
