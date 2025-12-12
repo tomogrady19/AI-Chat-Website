@@ -1,10 +1,20 @@
+/*element selectors*/
+body {
+    display: flex;
+    flex-direction: column; /*stacks items in a column*/
+    align-items: center; /* centers everything horizontally */
+    margin-top: 30px; /* adds spacing at the top */
+    font-family: Arial, sans-serif;
+    background-color: #b3d9ff; /* light cool blue */
+    border-radius: 12px;
+}
+
+/*class selectors*/
 .message {
     padding: 8px 12px;
     margin: 8px 0;
     max-width: 70%;
     border-radius: 12px;
-    display: inline-block;
-    font-family: Arial, sans-serif;
 }
 
 .user {
@@ -21,6 +31,7 @@
     text-align: left;
 }
 
+/*ID selectors*/
 #chat {
     display: flex;
     flex-direction: column;
@@ -31,6 +42,7 @@
     overflow-y: auto;
     margin-bottom: 10px;
     background-color: white;
+    border-radius: 12px;
 }
 
 #typing {
@@ -43,13 +55,5 @@
     margin-bottom: 10px;
     resize: none;
     overflow: hidden;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   /* centers everything horizontally */
-    margin-top: 30px;      /* adds spacing at the top */
-    font-family: Arial, sans-serif;
-    background-color: #b3d9ff; /* light cool blue */
+    border-radius: 8px;
 }

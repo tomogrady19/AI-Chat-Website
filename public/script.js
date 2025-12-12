@@ -75,7 +75,7 @@ function autoGrow(element) {
     element.style.height = element.scrollHeight + "px"; // grow to fit content
 }
 
-// take user input and apply relevant response
+// take input from "userInput" and apply relevant response
 const input = document.getElementById("userInput");
 input.addEventListener("keydown", handleKey);
 input.addEventListener("input", () => autoGrow(input));
