@@ -4,60 +4,7 @@
 <!--browser tab title-->
 <head>
     <title>Ask My AI</title>
-
-    <style>
-        .message {
-            padding: 8px 12px;
-            margin: 8px 0;
-            max-width: 70%;
-            border-radius: 12px;
-            display: inline-block;
-            font-family: Arial, sans-serif;
-        }
-
-        .user {
-            background-color: #d1e7ff;
-            align-self: flex-end;
-            margin-left: auto;
-            text-align: right;
-        }
-
-        .ai_assistant {
-            background-color: #eee;
-            align-self: flex-start;
-            margin-right: auto;
-            text-align: left;
-        }
-
-        #chat {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #ccc;
-            padding: 10px;
-            width: 1200px;
-            height: 400px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            background-color: white;
-        }
-
-        #userInput {
-            width: 1200px;
-            margin-bottom: 10px;
-            resize: none;
-            overflow: hidden;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;   /* centers everything horizontally */
-            margin-top: 30px;      /* adds spacing at the top */
-            font-family: Arial, sans-serif;
-            background-color: #b3d9ff; /* light cool blue */
-        }
-    </style>
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <!--page content-->
@@ -71,85 +18,7 @@
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
     <button onclick="clearChat()">Clear Chat</button> <!--clickable button, calls clearChat() function-->
 
-    <script>
-        let messages = []; // stores chat history
-        // Load saved messages if they exist
-        const saved = localStorage.getItem("chatHistory");
-        if (saved) {
-            messages = JSON.parse(saved);
-            updateChat();
-        }
-
-        // call API via backend
-        async function askAI() {
-            const prompt = document.getElementById("userInput").value.trim(); // set prompt to the user input
-            if (!prompt) return;
-
-            messages.push({ role: "user", content: prompt }) // add new prompt to messages
-            updateChat();
-            document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
-            document.getElementById("typing").innerText = "AI is typing..."; // add loading message
-
-            // disable user input while response is being fetched by API
-            document.getElementById("userInput").disabled = true;
-            document.querySelector("button[onclick='askAI()']").disabled = true;
-
-
-            // process request via backend
-            const res = await fetch("/api/ask", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ messages })
-            });
-
-            const data = await res.json(); //extract data from json response
-            messages.push({ role: "ai_assistant", content: data.output }); // push response to the end of messages
-            updateChat()
-            document.getElementById("typing").innerText = ""; // remove loading message
-
-            // enable user input once response has been fetched
-            document.getElementById("userInput").disabled = false;
-            document.querySelector("button[onclick='askAI()']").disabled = false;
-            document.getElementById("userInput").focus();  // optional: returns cursor to the box
-
-        }
-
-        // update the chat (self-explanatory)
-        function updateChat() {
-            const chat = document.getElementById("chat"); //get chat from webpage
-            chat.innerHTML = ""; //clear chat content
-
-            // repopulate entire chat from scratch
-            messages.forEach(msg => {
-                const who = msg.role;
-                chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
-            });
-            chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
-            localStorage.setItem("chatHistory", JSON.stringify(messages)); // save messages in local storage
-        }
-
-        // clear the chat (also self-explanatory)
-        function clearChat() {
-            messages = [];  // clear messages
-            localStorage.removeItem("chatHistory"); // clear local memory
-            updateChat()
-        }
-
-        // 'enter' key now triggers askAI() function
-        function handleKey(event) {
-            if (event.key === "Enter" && !event.shiftKey) { //if enter is pressed and not shift
-                event.preventDefault(); // stop default behavior when Enter is clicked
-                askAI(); // sends the message
-            }
-        }
-
-        // grow input text box to fit the content
-        function autoGrow(element) {
-            element.style.height = "auto"; // reset height
-            element.style.height = element.scrollHeight + "px"; // grow to fit content
-        }
-
-    </script>
+    <script src="script.js"></script>
 </body>
 
 <footer style="margin-top: 40px; font-size: 14px; color: #333;">
