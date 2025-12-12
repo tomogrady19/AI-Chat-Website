@@ -21,11 +21,10 @@ async function askAI() {
 
     try {
         const aiReply = await sendMessageToAI();
-        addMessage("ai_assistant", aiReply);
+        addMessage("assistant", aiReply);
     } catch {
-        addMessage("ai_assistant", "Something went wrong. Please try again.");
+        addMessage("assistant", "Something went wrong. Please try again.");
     }
-
 
     updateChat();
     hideLoadMessage();
@@ -34,6 +33,7 @@ async function askAI() {
 
 // clear the chat
 function clearChat() {
+    console.log("testing clear chat button");
     clearMessages();
     updateChat();
 }
