@@ -33,6 +33,11 @@
     background-color: white;
 }
 
+#typing {
+  font-style: italic;
+  color: #555;
+}
+
 #userInput {
     width: 1200px;
     margin-bottom: 10px;
