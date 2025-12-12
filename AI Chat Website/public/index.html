@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<!--browser tab title-->
+<!--browser tab details-->
 <head>
     <title>Ask My AI</title>
     <link rel="stylesheet" href="styles.css">
@@ -13,8 +13,11 @@
 
     <!-- Chat window -->
     <div id="chat"></div>
-    <p id="typing" style="font-style: italic; color: #555;"></p>
-    <textarea id="userInput" placeholder="Type a question..." onkeydown="handleKey(event)" oninput="autoGrow(this)"></textarea>
+    <!--loading message-->
+    <p id="typing"></p>
+    <!--input window-->
+    <textarea id="userInput" placeholder="Type a question..."></textarea>
+
     <button onclick="askAI()">Ask</button> <!--clickable button, calls askAI() function-->
     <button onclick="clearChat()">Clear Chat</button> <!--clickable button, calls clearChat() function-->
 
