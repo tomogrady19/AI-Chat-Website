@@ -1,6 +1,7 @@
 import { loadMessages, getMessages, addMessage, clearMessages } from "./state.js";
 import { updateChat, enableInput, disableInput, showLoadMessage, hideLoadMessage } from "./ui.js";
 import { setupEventListeners } from "./events.js"
+import { sendMessageToAI } from "./api.js"
 
 loadMessages()
 updateChat()
@@ -18,18 +19,16 @@ async function askAI() {
     // disable user input while response is being fetched by API
     disableInput()
 
-    // process request via backend
-    const res = await fetch("/api/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: getMessages() })
-    });
+    try {
+        const aiReply = await sendMessageToAI();
+        addMessage("ai_assistant", aiReply);
+    } catch (err) {
+        console.error(err);
+        addMessage("ai_assistant", "Something went wrong. Please try again.");
+    }
 
-    const data = await res.json(); //extract data from json response
-    addMessage("ai_assistant", data.output) // push response to the end of messages
     updateChat()
     hideLoadMessage()
-
     enableInput()
 
 }
