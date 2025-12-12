@@ -1,5 +1,6 @@
 import { loadMessages, getMessages, addMessage, clearMessages } from "./state.js";
 import { updateChat, enableInput, disableInput, showLoadMessage, hideLoadMessage } from "./ui.js";
+import { setupEventListeners } from "./events.js"
 
 loadMessages()
 updateChat()
@@ -39,24 +40,4 @@ function clearChat() {
     updateChat()
 }
 
-// 'enter' key now triggers askAI() function
-function handleKey(event) {
-    if (event.key === "Enter" && !event.shiftKey) { //if enter is pressed and not shift
-        event.preventDefault(); // stop default behavior when Enter is clicked
-        askAI(); // sends the message
-    }
-}
-
-// grow input text box to fit the content
-function autoGrow(element) {
-    element.style.height = "auto"; // reset height
-    element.style.height = element.scrollHeight + "px"; // grow to fit content
-}
-
-// take input from "userInput" and apply relevant response
-const input = document.getElementById("userInput");
-input.addEventListener("keydown", handleKey);
-input.addEventListener("input", () => autoGrow(input));
-
-const askButton = document.getElementById("askButton");
-askButton.addEventListener("click", askAI);
+setupEventListeners({onAsk: askAI} );
