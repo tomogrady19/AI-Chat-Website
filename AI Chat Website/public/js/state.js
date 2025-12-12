@@ -25,3 +25,4 @@ export function clearMessages() {
     messages = [];
     localStorage.removeItem("chatHistory"); // clear local memory
 }
+

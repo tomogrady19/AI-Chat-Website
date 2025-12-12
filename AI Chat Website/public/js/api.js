@@ -1,4 +1,4 @@
-import { getMessages } from "./state.js";
+import {getMessages} from "./state.js";
 
 export async function sendMessageToAI() {
     const res = await fetch("/api/ask", {
