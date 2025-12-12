@@ -1,17 +1,14 @@
-let messages = []; // stores chat history
-// Load saved messages if they exist
-const saved = localStorage.getItem("chatHistory");
-if (saved) {
-    messages = JSON.parse(saved);
-    updateChat();
-}
+import { loadMessages, getMessages, addMessage, clearMessages } from "./state.js";
+
+loadMessages()
+updateChat()
 
 // call API via backend
 async function askAI() {
     const prompt = document.getElementById("userInput").value.trim(); // set prompt to the user input
     if (!prompt) return;
 
-    messages.push({ role: "user", content: prompt }) // add new prompt to messages
+    addMessage("user", prompt) //add message to messages
     updateChat();
     document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
     document.getElementById("typing").innerText = "AI is typing..."; // add loading message
@@ -25,11 +22,11 @@ async function askAI() {
     const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages })
+        body: JSON.stringify({ messages: getMessages() })
     });
 
     const data = await res.json(); //extract data from json response
-    messages.push({ role: "ai_assistant", content: data.output }); // push response to the end of messages
+    addMessage("ai_assistant", data.output) // push response to the end of messages
     updateChat()
     document.getElementById("typing").innerText = ""; // remove loading message
 
@@ -46,18 +43,16 @@ function updateChat() {
     chat.innerHTML = ""; //clear chat content
 
     // repopulate entire chat from scratch
-    messages.forEach(msg => {
+    getMessages().forEach(msg => {
         const who = msg.role;
         chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
     });
     chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
-    localStorage.setItem("chatHistory", JSON.stringify(messages)); // save messages in local storage
 }
 
 // clear the chat (also self-explanatory)
 function clearChat() {
-    messages = [];  // clear messages
-    localStorage.removeItem("chatHistory"); // clear local memory
+    clearMessages()
     updateChat()
 }
 
