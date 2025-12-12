@@ -22,11 +22,15 @@ export function hideLoadMessage() {
 
 export function disableInput() {
     document.getElementById("userInput").disabled = true;
-    document.querySelector("button[onclick='askAI()']").disabled = true;
+    document.getElementById("askButton").disabled = true;
 }
 
 export function enableInput() {
     document.getElementById("userInput").disabled = false;
-    document.querySelector("button[onclick='askAI()']").disabled = false;
+    document.getElementById("askButton").disabled = false;
     document.getElementById("userInput").focus(); // returns cursor to the box
+}
+
+export function clearInput(){
+    document.getElementById("userInput").value = "";
 }
