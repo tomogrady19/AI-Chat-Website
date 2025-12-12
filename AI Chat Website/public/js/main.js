@@ -1,4 +1,5 @@
 import { loadMessages, getMessages, addMessage, clearMessages } from "./state.js";
+import { updateChat, enableInput, disableInput, showLoadMessage, hideLoadMessage } from "./ui.js";
 
 loadMessages()
 updateChat()
@@ -11,12 +12,10 @@ async function askAI() {
     addMessage("user", prompt) //add message to messages
     updateChat();
     document.getElementById("userInput").value = ""; // clear input box once the message is added to chat
-    document.getElementById("typing").innerText = "AI is typing..."; // add loading message
+    showLoadMessage()
 
     // disable user input while response is being fetched by API
-    document.getElementById("userInput").disabled = true;
-    document.querySelector("button[onclick='askAI()']").disabled = true;
-
+    disableInput()
 
     // process request via backend
     const res = await fetch("/api/ask", {
@@ -28,26 +27,10 @@ async function askAI() {
     const data = await res.json(); //extract data from json response
     addMessage("ai_assistant", data.output) // push response to the end of messages
     updateChat()
-    document.getElementById("typing").innerText = ""; // remove loading message
+    hideLoadMessage()
 
-    // enable user input once response has been fetched
-    document.getElementById("userInput").disabled = false;
-    document.querySelector("button[onclick='askAI()']").disabled = false;
-    document.getElementById("userInput").focus();  // optional: returns cursor to the box
+    enableInput()
 
-}
-
-// update the chat (self-explanatory)
-function updateChat() {
-    const chat = document.getElementById("chat"); //get chat from webpage
-    chat.innerHTML = ""; //clear chat content
-
-    // repopulate entire chat from scratch
-    getMessages().forEach(msg => {
-        const who = msg.role;
-        chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
-    });
-    chat.scrollTop = chat.scrollHeight; // scroll to bottom of chat
 }
 
 // clear the chat (also self-explanatory)
@@ -74,3 +57,6 @@ function autoGrow(element) {
 const input = document.getElementById("userInput");
 input.addEventListener("keydown", handleKey);
 input.addEventListener("input", () => autoGrow(input));
+
+const askButton = document.getElementById("askButton");
+askButton.addEventListener("click", askAI);
