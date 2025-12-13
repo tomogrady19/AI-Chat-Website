@@ -1,10 +1,15 @@
 import {getMessages} from "./state.js";
 
+const SYSTEM_PROMPT = {
+    role: "system",
+    content: "Respond like a human, not like an AI. Answer clearly, concisely and avoid unnecessary verbosity.",
+}
+
 export async function sendMessageToAI() {
     const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: getMessages() })
+        body: JSON.stringify({ messages: [SYSTEM_PROMPT, getMessages()] })
     });
 
     if (!res.ok) {
