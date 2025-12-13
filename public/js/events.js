@@ -11,13 +11,13 @@ export function setupEventListeners({ onAsk, onClear }) {
         }
     });
 
-    // Auto-grow textarea
+    // Auto-grow textarea as input grows
     input.addEventListener("input", () => {
         input.style.height = "auto";
         input.style.height = input.scrollHeight + "px";
     });
 
     // Ask button click
-    askButton.addEventListener("click", onAsk);
-    clearButton.addEventListener("click", onClear) //onClear: clearChat
+    askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
+    clearButton.addEventListener("click", onClear) // when clearButton is clicked, call relevant function
 }
