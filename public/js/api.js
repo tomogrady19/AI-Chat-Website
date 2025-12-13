@@ -9,7 +9,7 @@ export async function sendMessageToAI() {
     const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [SYSTEM_PROMPT, getMessages()] })
+        body: JSON.stringify({ conversation: [SYSTEM_PROMPT, getMessages()] })
     });
 
     if (!res.ok) {

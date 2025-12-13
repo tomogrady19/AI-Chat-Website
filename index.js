@@ -21,13 +21,13 @@ app.use(express.static("public")); // serves your frontend files
 app.post("/api/ask", rateLimiter, async (req, res) => {
     try {
         // extract prompt from json file
-        const messages = req.body.messages;
+        const conversation = req.body.conversation;
 
 
         // get response from openai api
         const response = await client.responses.create({
           model: "gpt-4o-mini",
-          input: messages
+          input: conversation
         });
 
         // Most accurate & universal extraction for Responses API
