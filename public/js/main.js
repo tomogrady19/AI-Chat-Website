@@ -37,7 +37,6 @@ async function askAI() {
     updateChat();
     hideLoadMessage();
     enableInput();
-    showErrorMessage()
 }
 
 // clear the chat
