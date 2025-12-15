@@ -20,16 +20,17 @@ async function askAI() {
     const prompt = document.getElementById("userInput").value.trim();
     if (!prompt) return;
 
+    addMessage("user", prompt); //add message to messages
+    clearInput(); // clear input box once the message is added to chat
+
+    updateChat();
+    showLoadMessage();
+    disableInput(); // disable user input while response is being fetched by API
+
+    addMessage("assistant", ""); // start with empty message to stream response to
+
     try {
-        addMessage("user", prompt); //add message to messages
-        clearInput(); // clear input box once the message is added to chat
-
-        updateChat();
-        showLoadMessage();
-        disableInput(); // disable user input while response is being fetched by API
-
-        addMessage("assistant", ""); // start with empty message to stream response to
-        await sendMessageToAI(appendChunk);
+        await streamFromAI(appendChunk);
     } catch {
         showErrorMessage()
     }

@@ -5,7 +5,7 @@ const SYSTEM_PROMPT = {
     content: "Respond like a human, not like an AI. Answer clearly, concisely and avoid unnecessary verbosity.",
 }
 
-export async function sendMessageToAI(onChunk) {
+export async function streamFromAI(onChunk) {
     const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
