@@ -9,7 +9,7 @@ import {
     showErrorMessage
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
-import { sendMessageToAI } from "./api.js"
+import { streamFromAI } from "./api.js"
 
 loadMessages();
 updateChat();
