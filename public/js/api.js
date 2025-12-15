@@ -26,8 +26,5 @@ export async function sendMessageToAI(onChunk) {
 
         const chunk = decoder.decode(value, {stream: true});
         onChunk(chunk);
-
-        // const data = await res.json(); //extract data from json response
-        // return data.output;
     }
 }

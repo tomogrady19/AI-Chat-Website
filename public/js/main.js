@@ -1,5 +1,13 @@
-import { loadMessages, addMessage, clearMessages, updateLastMessage } from "./state.js";
-import { updateChat, enableInput, disableInput, showLoadMessage, hideLoadMessage, clearInput } from "./ui.js";
+import { loadMessages, addMessage, clearMessages, appendChunk } from "./state.js";
+import {
+    updateChat,
+    enableInput,
+    disableInput,
+    showLoadMessage,
+    hideLoadMessage,
+    clearInput,
+    showErrorMessage
+} from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import { sendMessageToAI } from "./api.js"
 
@@ -12,34 +20,28 @@ async function askAI() {
     const prompt = document.getElementById("userInput").value.trim();
     if (!prompt) return;
 
-    addMessage("user", prompt); //add message to messages
-    addMessage("assistant", "");
-    clearInput(); // clear input box once the message is added to chat
-
-    updateChat();
-    showLoadMessage();
-    disableInput(); // disable user input while response is being fetched by API
-
-    let aiReply = "";
-
     try {
-        await sendMessageToAI((chunk) => {
-            aiReply += chunk;
-            updateLastMessage(aiReply);
-            updateChat();
-        });
+        addMessage("user", prompt); //add message to messages
+        clearInput(); // clear input box once the message is added to chat
+
+        updateChat();
+        showLoadMessage();
+        disableInput(); // disable user input while response is being fetched by API
+
+        addMessage("assistant", ""); // start with empty message to stream response to
+        await sendMessageToAI(appendChunk);
     } catch {
-        updateLastMessage("Something went wrong. Please try again.");
+        showErrorMessage()
     }
 
     updateChat();
     hideLoadMessage();
     enableInput();
+    showErrorMessage()
 }
 
 // clear the chat
 function clearChat() {
-    console.log("testing clear chat button");
     clearMessages();
     updateChat();
 }

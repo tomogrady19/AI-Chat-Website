@@ -13,11 +13,11 @@ export function updateChat() {
 }
 
 export function showLoadMessage() {
-    document.getElementById("typing").innerText = "AI is typing...";
+    document.getElementById("status").innerText = "AI is typing...";
 }
 
 export function hideLoadMessage() {
-    document.getElementById("typing").innerText = "";
+    document.getElementById("status").innerText = "";
 }
 
 export function disableInput() {
@@ -33,4 +33,8 @@ export function enableInput() {
 
 export function clearInput(){
     document.getElementById("userInput").value = "";
+}
+
+export function showErrorMessage() {
+    document.getElementById("status").innerText = "Something went wrong. Please try again.";
 }

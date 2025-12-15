@@ -1,3 +1,5 @@
+import {updateChat} from "./ui.js";
+
 let messages = [];
 
 export function loadMessages() {
@@ -26,9 +28,10 @@ export function clearMessages() {
     localStorage.removeItem("chatHistory"); // clear local memory
 }
 
-export function updateLastMessage(content) {
+export function appendChunk(chunk){
     if (messages.length === 0) return;
 
-    messages[messages.length - 1].content = content;
+    messages[messages.length - 1].content += chunk;
     saveMessages();
+    updateChat();
 }

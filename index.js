@@ -38,18 +38,9 @@ app.post("/api/ask", rateLimiter, async (req, res) => {
                 res.end();
             }
         }
-
-        // // Most accurate & universal extraction for Responses API
-        // const output =
-        //   response.output_text ??
-        //   response.output?.[0]?.content?.[0]?.text ?? // if nothing in .output_text
-        //   "No text found in OpenAI response"; // if nothing found at all
-        //
-        // res.json({output: output}); // send the response back to the browser
     } catch (err) {
         console.error("OpenAI ERROR:", err); // terminal error for me
         res.status(500).end("OpenAI request failed"); // browser error for user
-        // res.status(500).json({ error: "OpenAI request failed" }); // browser error for user
     }
 });
 
