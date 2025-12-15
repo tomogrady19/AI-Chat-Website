@@ -1,4 +1,4 @@
-import { loadMessages, addMessage, clearMessages } from "./state.js";
+import { loadMessages, addMessage, clearMessages, updateLastMessage } from "./state.js";
 import { updateChat, enableInput, disableInput, showLoadMessage, hideLoadMessage, clearInput } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import { sendMessageToAI } from "./api.js"
@@ -13,17 +13,23 @@ async function askAI() {
     if (!prompt) return;
 
     addMessage("user", prompt); //add message to messages
+    addMessage("assistant", "");
     clearInput(); // clear input box once the message is added to chat
 
     updateChat();
     showLoadMessage();
     disableInput(); // disable user input while response is being fetched by API
 
+    let aiReply = "";
+
     try {
-        const aiReply = await sendMessageToAI();
-        addMessage("assistant", aiReply);
+        await sendMessageToAI((chunk) => {
+            aiReply += chunk;
+            updateLastMessage(aiReply);
+            updateChat();
+        });
     } catch {
-        addMessage("assistant", "Something went wrong. Please try again.");
+        updateLastMessage("Something went wrong. Please try again.");
     }
 
     updateChat();

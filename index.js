@@ -22,22 +22,34 @@ app.post("/api/ask", rateLimiter, async (req, res) => {
     try {
         // extract conversation from json file
         const conversation = req.body.conversation;
-        // construct input
+
+        res.setHeader("Content-Type", "text/plain; charset=utf-8"); // since response isn't json
+        res.setHeader("Transfer-Encoding", "chunked"); // response will come in chunks
+
+        // construct input, then send openai api and stream response
         const input = {model: "gpt-4o-mini", input: conversation}
+        const stream = await client.responses.stream(input); // stream response
 
-        // send input and get response from openai api
-        const response = await client.responses.create(input);
+        for await (const event of stream){
+            if (event.type === "response.output_text.delta") {
+                res.write(event.delta);
+            }
+            if (event.type === "response.completed") {
+                res.end();
+            }
+        }
 
-        // Most accurate & universal extraction for Responses API
-        const output =
-          response.output_text ??
-          response.output?.[0]?.content?.[0]?.text ?? // if nothing in .output_text
-          "No text found in OpenAI response"; // if nothing found at all
-
-        res.json({output: output}); // send the response back to the browser
+        // // Most accurate & universal extraction for Responses API
+        // const output =
+        //   response.output_text ??
+        //   response.output?.[0]?.content?.[0]?.text ?? // if nothing in .output_text
+        //   "No text found in OpenAI response"; // if nothing found at all
+        //
+        // res.json({output: output}); // send the response back to the browser
     } catch (err) {
         console.error("OpenAI ERROR:", err); // terminal error for me
-        res.status(500).json({ error: "OpenAI request failed" }); // browser error for user
+        res.status(500).end("OpenAI request failed"); // browser error for user
+        // res.status(500).json({ error: "OpenAI request failed" }); // browser error for user
     }
 });
 

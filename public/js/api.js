@@ -5,7 +5,7 @@ const SYSTEM_PROMPT = {
     content: "Respond like a human, not like an AI. Answer clearly, concisely and avoid unnecessary verbosity.",
 }
 
-export async function sendMessageToAI() {
+export async function sendMessageToAI(onChunk) {
     const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -16,6 +16,18 @@ export async function sendMessageToAI() {
         throw new Error("API request failed");
     }
 
-    const data = await res.json(); //extract data from json response
-    return data.output;
+    // allow chunks to be pulled and decoded
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    while (true) {
+        const {value, done} = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, {stream: true});
+        onChunk(chunk);
+
+        // const data = await res.json(); //extract data from json response
+        // return data.output;
+    }
 }
