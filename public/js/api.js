@@ -2,7 +2,7 @@ import {getMessages} from "./state.js";
 
 const SYSTEM_PROMPT = {
     role: "system",
-    content: "Respond like a human, not like an AI. Answer clearly, concisely and avoid unnecessary verbosity.",
+    content: "Respond like a human, not like an AI. Answer clearly, concisely and avoid unnecessary verbosity. Speak like a pirate.",
 }
 
 export async function streamFromAI(onChunk) {
