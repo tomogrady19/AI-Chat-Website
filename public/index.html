@@ -8,25 +8,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<!--page content-->
 <body>
-    <h1>Ask My AI Anything</h1> <!--title-->
+    <!-- Main page content -->
+    <main id="app">
+    <!-- new content (tbd) -->
+    </main>
 
-    <!-- Chat window -->
-    <div id="chat"></div>
-    <!--loading message-->
-    <p id="status"></p>
-    <!--input window-->
-    <textarea id="userInput" placeholder="Type a question..."></textarea>
+    <!-- Drawer toggle button -->
+    <button id="assistant-toggle" aria-label="Open AI assistant">AI Assistant</button>
 
-    <button id="askButton">Ask</button> <!--clickable button, calls askAI() function in main.js-->
-    <button id="clearButton">Clear Chat</button> <!--clickable button, calls clearChat() function-->
+    <!-- Drawer -->
+    <aside id="assistant-drawer" aria-hidden="true">
+        <div class="assistant-container">
+
+            <!-- Drawer header -->
+            <h2>Ask My AI</h2>
+
+            <!-- Chat window -->
+            <div id="chat" class="assistant-chat"></div>
+            <!-- loading message -->
+            <p id="status" class="assistant-status"></p>
+
+            <!-- Input area -->
+            <div class="assistant-input">
+                <textarea id="userInput" placeholder="Type a question..." rows="3"></textarea>
+
+                <div class="assistant-actions">
+                    <button id="askButton">Ask</button>
+                    <button id="clearButton">Clear</button>
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+    <footer style="margin-top: 40px; font-size: 14px; color: #333;">
+        Built by <a href="https://github.com/tomogrady19" target="_blank">Tom O'Grady</a>
+    </footer>
 
     <script type="module" src="js/main.js"></script>
 </body>
-
-<footer style="margin-top: 40px; font-size: 14px; color: #333;">
-    Built by <a href="https://github.com/tomogrady19" target="_blank">Tom O'Grady</a>
-</footer>
 
 </html>

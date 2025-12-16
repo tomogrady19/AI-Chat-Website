@@ -1,7 +1,8 @@
-export function setupEventListeners({ onAsk, onClear }) {
+export function setupEventListeners({ onAsk, onClear, onToggle }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
+    const toggleButton = document.getElementById("assistant-toggle");
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
@@ -19,5 +20,6 @@ export function setupEventListeners({ onAsk, onClear }) {
 
     // Ask button click
     askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
-    clearButton.addEventListener("click", onClear) // when clearButton is clicked, call relevant function
+    clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
+    toggleButton.addEventListener("click", onToggle);
 }

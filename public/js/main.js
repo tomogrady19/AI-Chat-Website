@@ -13,7 +13,7 @@ import { streamFromAI } from "./api.js"
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer});
 
 // call API via backend
 async function askAI() {
@@ -45,3 +45,11 @@ function clearChat() {
     clearMessages();
     updateChat();
 }
+
+function toggleDrawer() {
+        const drawer = document.getElementById("assistant-drawer");
+        const shouldOpen = !drawer.classList.contains("open");
+
+        drawer.classList.toggle("open", shouldOpen);
+        drawer.setAttribute("aria-hidden", String(!shouldOpen));
+    }
