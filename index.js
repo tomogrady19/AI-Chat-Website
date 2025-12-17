@@ -26,22 +26,7 @@ app.post("/api/ask", rateLimiter, async (req, res) => {
     try {
         // extract conversation from json file
         const conversation = req.body.conversation;
-
-        res.setHeader("Content-Type", "text/plain; charset=utf-8"); // since response isn't json
-        res.setHeader("Transfer-Encoding", "chunked"); // response will come in chunks
-
-        // construct input, then send openai api and stream response
-        const input = {model: "gpt-4o-mini", input: conversation}
-        const stream = await client.responses.stream(input); // stream response
-
-        for await (const event of stream){
-            if (event.type === "response.output_text.delta") {
-                res.write(event.delta);
-            }
-            if (event.type === "response.completed") {
-                res.end();
-            }
-        }
+        await streamAIResponse({client, input: conversation, res})
     } catch (err) {
         console.error("OpenAI ERROR:", err); // terminal error for me
         res.status(500).end("OpenAI request failed"); // browser error for user
@@ -146,29 +131,46 @@ app.post("/api/ai/music-recommendations", async (req, res) => {
             return res.status(401).end("Spotify not connected");
         }
 
-        const profileRes = await fetch("http://127.0.0.1:3000/api/spotify/profile", {headers: {cookie: req.headers.cookie}});
-
-        const profile = await profileRes.json();
+        const profile = await getSpotifyProfile(spotifySession.accessToken);
         const prompt = buildMusicProfilePrompt(profile);
+        await streamAIResponse({client, input: prompt, res})
 
-        res.setHeader("Content-Type", "text/plain; charset=utf-8");
-        res.setHeader("Transfer-Encoding", "chunked");
-
-        const stream = await client.responses.stream({model: "gpt-4o-mini", input: prompt});
-
-        for await (const event of stream) {
-            if (event.type === "response.output_text.delta") {
-                res.write(event.delta);
-            }
-            if (event.type === "response.completed") {
-                res.end();
-            }
-        }
     } catch (err) {
         console.error("AI music error:", err);
         res.status(500).end("AI recommendation failed");
     }
 });
+
+export async function streamAIResponse({ client, input, res }) {
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Transfer-Encoding", "chunked");
+
+    const stream = await client.responses.stream({model: "gpt-4o-mini", input});
+
+    for await (const event of stream) {
+        if (event.type === "response.output_text.delta") {
+          res.write(event.delta);
+        }
+        if (event.type === "response.completed") {
+          res.end();
+        }
+    }
+}
+
+export async function getSpotifyProfile(accessToken) {
+    const headers = { Authorization: `Bearer ${accessToken}` };
+
+    const [artistsRes, tracksRes] = await Promise.all([
+        fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
+        fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
+    ]);
+
+    return {
+        artists: (await artistsRes.json()).items,
+        tracks: (await tracksRes.json()).items,
+    };
+}
+
 
 function buildMusicProfilePrompt({ artists, tracks }) {
     const artistNames = artists.map(a => a.name).join(", ");

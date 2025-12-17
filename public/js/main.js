@@ -16,7 +16,7 @@ import {
     streamMusicRecommendations,
     fetchProfile
 } from "./api.js"
-//TODO import all from UI instead of naming every one
+//TODO (import * as UI from "./ui.js) UI.updateChat())
 
 loadMessages();
 updateChat();
