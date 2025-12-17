@@ -1,10 +1,10 @@
-export function setupEventListeners({ onAsk, onClear, onToggle, onArtists, onTracks, onRecommend }) {
+export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRecommend }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
     const toggleButton = document.getElementById("assistant-toggle");
-    const artistButton = document.getElementById("spotify-artists");
-    const tracksButton = document.getElementById("spotify-tracks")
+    const profileButton = document.getElementById("spotify-profile");
+    // const tracksButton = document.getElementById("spotify-tracks")
     const recommendButton = document.getElementById("RecommendButton")
     // TODO make naming convention consistent
 
@@ -26,7 +26,7 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onArtists, onTra
     askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
     clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
     toggleButton.addEventListener("click", onToggle);
-    artistButton.addEventListener("click", onArtists);
-    tracksButton.addEventListener("click", onTracks);
+    profileButton.addEventListener("click", onProfile);
+    // tracksButton.addEventListener("click", onTracks);
     recommendButton.addEventListener("click", onRecommend);
 }

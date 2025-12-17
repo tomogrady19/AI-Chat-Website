@@ -11,12 +11,16 @@ import {
     renderTopTracks,
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
-import { streamFromAI, fetchTopArtists, fetchTopTracks, streamMusicRecommendations } from "./api.js"
+import {
+    streamFromAI,
+    streamMusicRecommendations,
+    fetchProfile
+} from "./api.js"
 //TODO import all from UI instead of naming every one
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onArtists: showTopArtists, onTracks: showTopTracks, onRecommend: recommendMusic});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onProfile: showProfile, onRecommend: recommendMusic});
 
 // call API via backend
 async function askAI() {
@@ -57,25 +61,36 @@ function toggleDrawer() {
     drawer.setAttribute("aria-hidden", String(!shouldOpen));
 }
 
-async function showTopArtists() {
+async function showProfile() {
     try {
-        const data = await fetchTopArtists();
-        renderTopArtists(data.items);
+        const data = await fetchProfile();
+        renderTopArtists(data.artists);
+        renderTopTracks(data.tracks);
     } catch (err) {
-        console.error(err);
-        alert("Please connect Spotify first");
+        console.error(err)
+        alert("Spotify not connected")
     }
 }
 
-async function showTopTracks() {
-    try {
-        const data = await fetchTopTracks();
-        renderTopTracks(data.items);
-    } catch (err) {
-        console.error(err);
-        alert("Please connect Spotify first");
-    }
-}
+// async function showTopArtists() {
+//     try {
+//         const data = await fetchTopArtists();
+//         renderTopArtists(data.items);
+//     } catch (err) {
+//         console.error(err);
+//         alert("Please connect Spotify first");
+//     }
+// }
+//
+// async function showTopTracks() {
+//     try {
+//         const data = await fetchTopTracks();
+//         renderTopTracks(data.items);
+//     } catch (err) {
+//         console.error(err);
+//         alert("Please connect Spotify first");
+//     }
+// }
 
 async function recommendMusic() {
     addMessage("assistant", "");
