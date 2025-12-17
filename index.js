@@ -1,11 +1,10 @@
-console.log("SERVER STARTED", Date.now());
-
 import OpenAI from "openai";
 import express from "express";
 import "dotenv/config";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import crypto from "crypto";
+import fetch from "node-fetch";
 
 const rateLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
@@ -68,27 +67,51 @@ app.get("/auth/spotify/login", (req, res) => {
     });
 
     res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
-
-    //debugging
-    console.log("state:", state);
-    console.log("ID:", req.sessionID);
-
 });
 
-app.get("/auth/spotify/callback", (req, res) => {
+app.get("/auth/spotify/callback", async (req, res) => {
     const { code, state } = req.query;
-
-    //debugging
-    console.log("state:", state);
-    console.log("ID:", req.sessionID);
-    console.log("spotify state:", req.session.spotifyState);
 
     if (!state || state !== req.session.spotifyState) {
         return res.status(400).send("State mismatch");
     }
 
-    // temporary message
-    res.send("Spotify auth successful");
+    try {
+        const tokenResponse = await fetch(
+            "https://accounts.spotify.com/api/token",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": "Basic " + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET).toString("base64"),},
+                body: new URLSearchParams({grant_type: "authorization_code", code, redirect_uri: process.env.SPOTIFY_REDIRECT_URI,}),
+            }
+        );
+
+        const tokenData = await tokenResponse.json();
+
+        if (!tokenResponse.ok) {
+            console.error("Spotify token error:", tokenData);
+            return res.status(500).send("Token exchange failed");
+        }
+
+        // Store tokens in session (in-memory)
+        req.session.spotify = {
+            accessToken: tokenData.access_token,
+            refreshToken: tokenData.refresh_token,
+            expiresIn: tokenData.expires_in,
+        };
+        console.log("Spotify access token received");
+
+        // Cleanup one-time state
+        delete req.session.spotifyState;
+
+        // For now, redirect home
+        res.redirect("/");
+    } catch (err) {
+        console.error("Token exchange error:", err);
+        res.status(500).send("Spotify authentication failed");
+    }
 });
 
 
