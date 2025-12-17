@@ -53,9 +53,20 @@ export function renderTopArtists(artists) {
 
     artists.forEach(artist => {
         const li = document.createElement("li");
-        li.textContent = artist.name;
+        li.className = "artist-item";
+
+        const img = document.createElement("img");
+        img.src = artist.images?.[0]?.url || "";
+        img.alt = artist.name;
+
+        const name = document.createElement("span");
+        name.textContent = artist.name;
+
+        li.appendChild(img);
+        li.appendChild(name);
         list.appendChild(li);
     });
+
 
     container.appendChild(title);
     container.appendChild(list);
@@ -76,11 +87,20 @@ export function renderTopTracks(tracks) {
 
     tracks.forEach(track => {
         const li = document.createElement("li");
-        li.textContent = `${track.name} - ${track.artists
-            .map(a => a.name)
-            .join(", ")}`;
+        li.className = "track-item";
+
+        const img = document.createElement("img");
+        img.src = track.album.images?.[0]?.url || "";
+        img.alt = track.name;
+
+        const text = document.createElement("span");
+        text.textContent = `${track.name} — ${track.artists.map(a => a.name).join(", ")}`;
+
+        li.appendChild(img);
+        li.appendChild(text);
         list.appendChild(li);
     });
+
 
     container.appendChild(title);
     container.appendChild(list);
