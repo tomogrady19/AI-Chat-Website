@@ -114,10 +114,38 @@ app.get("/auth/spotify/callback", async (req, res) => {
     }
 });
 
+app.get("/api/spotify/top-artists", async (req, res) => {
+    const spotifySession = req.session.spotify;
+
+    if (!spotifySession?.accessToken) {
+        return res.status(401).json({error: "Not authenticated with Spotify"});
+    }
+
+    try {
+        const response = await fetch(
+            "https://api.spotify.com/v1/me/top/artists?limit=10",
+            {headers: {Authorization: `Bearer ${spotifySession.accessToken}`,},}
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Spotify API error:", data);
+            return res.status(500).json({ error: "Spotify API request failed" });
+        }
+
+        res.json(data);
+    } catch (err) {
+        console.error("Spotify request error:", err);
+        res.status(500).json({ error: "Spotify request failed" });
+    }
+});
 
 app.listen(3000, () =>
     console.log("Running at http://127.0.0.1:3000")
 );
 
 console.log("Test Spotify OAuth at http://127.0.0.1:3000/auth/spotify/login");
+console.log("Look at top artists at http://127.0.0.1:3000/api/spotify/top-artists");
+
 // node index.js
