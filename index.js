@@ -260,10 +260,10 @@ function buildMusicProfilePrompt({ artists, tracks }) {
         
         Based on this, respond with the following format:
         "Based on your music taste, here are some recommendations!"/n
-        Artists you might like:/n
-        {list 5 artists here (new line for each artist)}/n
-        Tracks you might like:/n
-        {list 5 tracks here (new line for each track)}/n
+        **Artists you might like**:/n
+        {list 5 artists here (zero line breaks)}/n
+        **Tracks you might like**:/n
+        {list 5 tracks here (zero line breaks)}/n
         
         {Give a brief one sentence explanation of what these recommendations have in common with their taste}/n
         {Offer to answer any follow up questions they have}/n
