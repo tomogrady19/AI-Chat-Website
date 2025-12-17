@@ -141,6 +141,35 @@ app.get("/api/spotify/top-artists", async (req, res) => {
     }
 });
 
+app.get("/api/spotify/top-tracks", async (req, res) => {
+    const spotifySession = req.session.spotify;
+
+    if (!spotifySession?.accessToken) {
+        return res.status(401).json({error: "Not authenticated with Spotify"});
+    }
+
+    try {
+        const response = await fetch(
+            "https://api.spotify.com/v1/me/top/tracks?limit=10",
+            {headers: {Authorization: `Bearer ${spotifySession.accessToken}`,},}
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Spotify API error:", data);
+            return res.status(500).json({ error: "Spotify API request failed" });
+        }
+
+        res.json(data);
+    } catch (err) {
+        console.error("Spotify request error:", err);
+        res.status(500).json({ error: "Spotify request failed" });
+    }
+});
+
+//TODO can I avoid repeating some of the code twice?
+
 app.listen(3000, () =>
     console.log("Running at http://127.0.0.1:3000")
 );

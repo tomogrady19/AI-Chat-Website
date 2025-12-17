@@ -38,3 +38,15 @@ export async function fetchTopArtists() {
 
     return res.json();
 }
+
+export async function fetchTopTracks() {
+    const res = await fetch("/api/spotify/top-tracks");
+
+    if (!res.ok) {
+        throw new Error("Spotify not connected");
+    }
+
+    return res.json();
+}
+
+//TODO combine artists and tracks into one function?
