@@ -37,32 +37,8 @@ export async function fetchProfile() {
     return res.json();
 }
 
-// export async function fetchTopArtists() {
-//     const res = await fetch("/api/spotify/top-artists");
-//
-//     if (!res.ok) {
-//         throw new Error("Spotify not connected");
-//     }
-//
-//     return res.json();
-// }
-//
-// export async function fetchTopTracks() {
-//     const res = await fetch("/api/spotify/top-tracks");
-//
-//     if (!res.ok) {
-//         throw new Error("Spotify not connected");
-//     }
-//
-//     return res.json();
-// }
-
-//TODO combine artists and tracks into one function?
-
 export async function streamMusicRecommendations(onChunk) {
-    const res = await fetch("/api/ai/music-recommendations", {
-        method: "POST",
-    });
+    const res = await fetch("/api/ai/music-recommendations", {method: "POST"});
 
     if (!res.ok) throw new Error("AI request failed");
 

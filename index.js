@@ -101,98 +101,13 @@ app.get("/auth/spotify/callback", async (req, res) => {
         };
         console.log("Spotify access token received");
 
-        // For now, redirect home
+        // Redirect home
         res.redirect("/");
     } catch (err) {
         console.error("Token exchange error:", err);
         res.status(500).send("Spotify authentication failed");
     }
 });
-
-// app.get("/api/spotify/top-artists-and-tracks", async (req, res) => {
-//     const spotifySession = req.session.spotify;
-//
-//     if (!spotifySession?.accessToken) {
-//         return res.status(401).json({error: "Not authenticated with Spotify"});
-//     }
-//
-//     try {
-//         const artistsResponse = await fetch("https://api.spotify.com/v1/me/top/artists?limit=10",
-//             {headers: {Authorization: `Bearer ${spotifySession.accessToken}`},}
-//         );
-//         const tracksResponse = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=10",
-//             {headers: {Authorization: `Bearer ${spotifySession.accessToken}`},}
-//         );
-//
-//         if (!artistsResponse.ok || !tracksResponse.ok) {
-//             console.error("Spotify API error");
-//             return res.status(500).json({ error: "Spotify API request failed" });
-//         }
-//
-//         const artistsData = await artistsResponse.json();
-//         const tracksData = await tracksResponse.json();
-//
-//         res.json({artists: artistsData, tracks: tracksData});
-//     } catch (err) {
-//         console.error("Spotify request error:", err);
-//         res.status(500).json({ error: "Spotify request failed" });
-//     }
-// });
-
-// app.get("/api/spotify/top-artists", async (req, res) => {
-//     const spotifySession = req.session.spotify;
-//
-//     if (!spotifySession?.accessToken) {
-//         return res.status(401).json({error: "Not authenticated with Spotify"});
-//     }
-//
-//     try {
-//         const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=10",
-//             {headers: {Authorization: `Bearer ${spotifySession.accessToken}`},}
-//         );
-//
-//         const data = await response.json();
-//
-//         if (!response.ok) {
-//             console.error("Spotify API error:", data);
-//             return res.status(500).json({ error: "Spotify API request failed" });
-//         }
-//
-//         res.json(data);
-//     } catch (err) {
-//         console.error("Spotify request error:", err);
-//         res.status(500).json({ error: "Spotify request failed" });
-//     }
-// });
-//
-// app.get("/api/spotify/top-tracks", async (req, res) => {
-//     const spotifySession = req.session.spotify;
-//
-//     if (!spotifySession?.accessToken) {
-//         return res.status(401).json({error: "Not authenticated with Spotify"});
-//     }
-//
-//     try {
-//         const response = await fetch(
-//             "https://api.spotify.com/v1/me/top/tracks?limit=10",
-//             {headers: {Authorization: `Bearer ${spotifySession.accessToken}`,},}
-//         );
-//
-//         const data = await response.json();
-//
-//         if (!response.ok) {
-//             console.error("Spotify API error:", data);
-//             return res.status(500).json({ error: "Spotify API request failed" });
-//         }
-//
-//         res.json(data);
-//     } catch (err) {
-//         console.error("Spotify request error:", err);
-//         res.status(500).json({ error: "Spotify request failed" });
-//     }
-// });
-
-//TODO can I avoid repeating some of the code twice?
 
 app.get("/api/spotify/profile", async (req, res) => {
     const spotifySession = req.session.spotify;
@@ -222,6 +137,7 @@ app.get("/api/spotify/profile", async (req, res) => {
     }
 });
 
+//TODO could i reuse api/ai/ask instead of repeating some code?
 app.post("/api/ai/music-recommendations", async (req, res) => {
     try {
         const spotifySession = req.session.spotify;
@@ -230,13 +146,9 @@ app.post("/api/ai/music-recommendations", async (req, res) => {
             return res.status(401).end("Spotify not connected");
         }
 
-        const profileRes = await fetch(
-            "http://127.0.0.1:3000/api/spotify/profile",
-            { headers: { cookie: req.headers.cookie } }
-        );
+        const profileRes = await fetch("http://127.0.0.1:3000/api/spotify/profile", {headers: {cookie: req.headers.cookie}});
 
         const profile = await profileRes.json();
-
         const prompt = buildMusicProfilePrompt(profile);
 
         res.setHeader("Content-Type", "text/plain; charset=utf-8");

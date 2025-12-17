@@ -4,9 +4,7 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRec
     const clearButton = document.getElementById("clearButton");
     const toggleButton = document.getElementById("assistant-toggle");
     const profileButton = document.getElementById("spotify-profile");
-    // const tracksButton = document.getElementById("spotify-tracks")
-    const recommendButton = document.getElementById("RecommendButton")
-    // TODO make naming convention consistent
+    const recommendButton = document.getElementById("RecommendButton");
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
@@ -27,6 +25,5 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRec
     clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
     toggleButton.addEventListener("click", onToggle);
     profileButton.addEventListener("click", onProfile);
-    // tracksButton.addEventListener("click", onTracks);
     recommendButton.addEventListener("click", onRecommend);
 }

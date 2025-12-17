@@ -72,32 +72,12 @@ async function showProfile() {
     }
 }
 
-// async function showTopArtists() {
-//     try {
-//         const data = await fetchTopArtists();
-//         renderTopArtists(data.items);
-//     } catch (err) {
-//         console.error(err);
-//         alert("Please connect Spotify first");
-//     }
-// }
-//
-// async function showTopTracks() {
-//     try {
-//         const data = await fetchTopTracks();
-//         renderTopTracks(data.items);
-//     } catch (err) {
-//         console.error(err);
-//         alert("Please connect Spotify first");
-//     }
-// }
-
 async function recommendMusic() {
     addMessage("assistant", "");
     updateChat();
 
     try {
-        await streamMusicRecommendations(appendChunk);
+        await streamMusicRecommendations(appendChunk); //TODO put the try await clause inside the function?
     } catch {
         showErrorMessage();
     }

@@ -43,9 +43,6 @@ export function showErrorMessage() {
 
 export function renderTopArtists(artists) {
     const container = document.getElementById("artists-section");
-
-    // const existing = document.getElementById("spotify-results");
-    // if (existing) existing.remove();
     container.innerHTML = "";
 
     const title = document.createElement("h2");
@@ -76,10 +73,6 @@ export function renderTopArtists(artists) {
 
 export function renderTopTracks(tracks) {
     const container = document.getElementById("tracks-section");
-
-    // Remove previous track results if they exist
-    // const existing = document.getElementById("spotify-tracks");
-    // if (existing) existing.remove();
     container.innerHTML = "";
 
     const title = document.createElement("h2");
