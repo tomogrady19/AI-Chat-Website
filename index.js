@@ -22,14 +22,13 @@ app.use(session({secret: "dev-secret-change-later", resave: false, saveUninitial
 app.use(express.json()); // allows server to understand json files
 app.use(express.static("public")); // serves frontend files in the "public" folder
 
-app.post("/api/ask", rateLimiter, async (req, res) => {
+app.post("/api/ai/ask", rateLimiter, async (req, res) => {
     try {
-        // extract conversation from json file
-        const conversation = req.body.conversation;
+        const conversation = req.body.conversation; //extract conversation from json
         await streamAIResponse({client, input: conversation, res})
     } catch (err) {
-        console.error("OpenAI ERROR:", err); // terminal error for me
-        res.status(500).end("OpenAI request failed"); // browser error for user
+        console.error("AI ask error:", err); // terminal error for me
+        res.status(500).end("AI ask failed"); // browser error for user
     }
 });
 
@@ -86,11 +85,10 @@ app.get("/auth/spotify/callback", async (req, res) => {
         };
         console.log("Spotify access token received");
 
-        // Redirect home
-        res.redirect("/");
+        res.redirect("/"); // Redirect home
     } catch (err) {
-        console.error("Token exchange error:", err);
-        res.status(500).send("Spotify authentication failed");
+        console.error("Spotify callback error:", err);
+        res.status(500).send("Spotify callback failed");
     }
 });
 
@@ -111,18 +109,13 @@ app.get("/api/spotify/profile", async (req, res) => {
 
         const artistsData = await artistsRes.json();
         const tracksData = await tracksRes.json();
-
-        res.json({
-            artists: artistsData.items,
-            tracks: tracksData.items,
-        });
+        res.json({artists: artistsData.items, tracks: tracksData.items});
     } catch (err) {
         console.error("Spotify profile error:", err);
-        res.status(500).json({ error: "Failed to load Spotify profile" });
+        res.status(500).json({ error: "Spotify profile failed to load" });
     }
 });
 
-//TODO could i reuse api/ai/ask instead of repeating some code?
 app.post("/api/ai/music-recommendations", async (req, res) => {
     try {
         const spotifySession = req.session.spotify;
@@ -136,12 +129,12 @@ app.post("/api/ai/music-recommendations", async (req, res) => {
         await streamAIResponse({client, input: prompt, res})
 
     } catch (err) {
-        console.error("AI music error:", err);
+        console.error("AI recommendation error:", err);
         res.status(500).end("AI recommendation failed");
     }
 });
 
-export async function streamAIResponse({ client, input, res }) {
+async function streamAIResponse({ client, input, res }) {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Transfer-Encoding", "chunked");
 
@@ -157,7 +150,7 @@ export async function streamAIResponse({ client, input, res }) {
     }
 }
 
-export async function getSpotifyProfile(accessToken) {
+async function getSpotifyProfile(accessToken) {
     const headers = { Authorization: `Bearer ${accessToken}` };
 
     const [artistsRes, tracksRes] = await Promise.all([

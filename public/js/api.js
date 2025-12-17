@@ -6,7 +6,7 @@ const SYSTEM_PROMPT = {
 }
 
 export async function streamFromAI(onChunk) {
-    const res = await fetch("/api/ask", {
+    const res = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ conversation: [SYSTEM_PROMPT, ...getMessages()] }) // conversation array is flattened
