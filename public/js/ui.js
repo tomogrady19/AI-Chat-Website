@@ -40,15 +40,11 @@ export function showErrorMessage() {
 }
 
 export function renderTopArtists(artists) {
-    const content = document.getElementById("spotify-content");
+    const container = document.getElementById("artists-section");
 
     // const existing = document.getElementById("spotify-results");
     // if (existing) existing.remove();
-    content.innerHTML = "";
-
-    const container = document.createElement("section");
-    // container.id = "spotify-results";
-    container.className = "spotify-block";
+    container.innerHTML = "";
 
     const title = document.createElement("h2");
     title.textContent = "Your Top Artists";
@@ -63,20 +59,15 @@ export function renderTopArtists(artists) {
 
     container.appendChild(title);
     container.appendChild(list);
-    content.appendChild(container);
 }
 
 export function renderTopTracks(tracks) {
-    const content = document.getElementById("spotify-content");
+    const container = document.getElementById("tracks-section");
 
     // Remove previous track results if they exist
     // const existing = document.getElementById("spotify-tracks");
     // if (existing) existing.remove();
-    content.innerHTML = "";
-
-    const container = document.createElement("section");
-    // container.id = "spotify-tracks";
-    container.className = "spotify-block";
+    container.innerHTML = "";
 
     const title = document.createElement("h2");
     title.textContent = "Your Top Tracks";
@@ -85,7 +76,7 @@ export function renderTopTracks(tracks) {
 
     tracks.forEach(track => {
         const li = document.createElement("li");
-        li.textContent = `${track.name} — ${track.artists
+        li.textContent = `${track.name} - ${track.artists
             .map(a => a.name)
             .join(", ")}`;
         list.appendChild(li);
@@ -93,5 +84,4 @@ export function renderTopTracks(tracks) {
 
     container.appendChild(title);
     container.appendChild(list);
-    content.appendChild(container);
 }

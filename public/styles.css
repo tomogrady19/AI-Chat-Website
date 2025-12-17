@@ -36,6 +36,13 @@ body {
 }
 
 /*ID selectors*/
+#app {
+  max-width: 1100px;
+  margin: 0 auto; /* centers horizontally */
+  padding: 0 16px; /* prevents edge touching on small screens */
+  text-align: center; /* keeps heading & buttons centered */
+}
+
 #chat {
     display: flex;
     flex-direction: column;
@@ -85,4 +92,38 @@ body {
   right: 16px;
   bottom: 16px;
   z-index: 1100;
+}
+
+#spotify-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    text-align: left;
+}
+
+#spotify-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+#spotify-content section {
+    background: #f7f7f7;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    #spotify-content {
+        grid-template-columns: 1fr;
+    }
 }
