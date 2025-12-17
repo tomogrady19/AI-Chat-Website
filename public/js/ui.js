@@ -6,7 +6,9 @@ export function updateChat() {
 
     getMessages().forEach(msg => {
         const who = msg.role;
-        chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
+        const message = who === "assistant" ? window.marked.parse(msg.content) : msg.content;
+        chat.innerHTML += `<div class="message ${who}">${message}</div>`;
+        // chat.innerHTML += `<div class="message ${who}">${msg.content}</div>`;
     });
 
     chat.scrollTop = chat.scrollHeight;
