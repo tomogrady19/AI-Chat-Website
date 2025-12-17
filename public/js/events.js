@@ -1,8 +1,9 @@
-export function setupEventListeners({ onAsk, onClear, onToggle }) {
+export function setupEventListeners({ onAsk, onClear, onToggle, onArtists }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
     const toggleButton = document.getElementById("assistant-toggle");
+    const artistButton = document.getElementById("spotify-test");
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
@@ -22,4 +23,5 @@ export function setupEventListeners({ onAsk, onClear, onToggle }) {
     askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
     clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
     toggleButton.addEventListener("click", onToggle);
+    artistButton.addEventListener("click", onArtists);
 }

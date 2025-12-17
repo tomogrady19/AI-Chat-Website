@@ -28,3 +28,13 @@ export async function streamFromAI(onChunk) {
         onChunk(chunk);
     }
 }
+
+export async function fetchTopArtists() {
+    const res = await fetch("/api/spotify/top-artists");
+
+    if (!res.ok) {
+        throw new Error("Spotify not connected");
+    }
+
+    return res.json();
+}

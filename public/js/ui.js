@@ -38,3 +38,29 @@ export function clearInput(){
 export function showErrorMessage() {
     document.getElementById("status").innerText = "Something went wrong. Please try again.";
 }
+
+export function renderTopArtists(artists) {
+    const app = document.getElementById("app");
+
+    const existing = document.getElementById("spotify-results");
+    if (existing) existing.remove();
+
+    const container = document.createElement("section");
+    container.id = "spotify-results";
+    container.className = "spotify-block";
+
+    const title = document.createElement("h2");
+    title.textContent = "Your Top Artists";
+
+    const list = document.createElement("ul");
+
+    artists.forEach(artist => {
+        const li = document.createElement("li");
+        li.textContent = artist.name;
+        list.appendChild(li);
+    });
+
+    container.appendChild(title);
+    container.appendChild(list);
+    app.appendChild(container);
+}

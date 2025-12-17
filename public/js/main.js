@@ -6,14 +6,15 @@ import {
     showLoadMessage,
     hideLoadMessage,
     clearInput,
-    showErrorMessage
+    showErrorMessage,
+    renderTopArtists
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
-import { streamFromAI } from "./api.js"
+import { streamFromAI, fetchTopArtists } from "./api.js"
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onArtists: showTopArtists});
 
 // call API via backend
 async function askAI() {
@@ -47,9 +48,19 @@ function clearChat() {
 }
 
 function toggleDrawer() {
-        const drawer = document.getElementById("assistant-drawer");
-        const shouldOpen = !drawer.classList.contains("open");
+    const drawer = document.getElementById("assistant-drawer");
+    const shouldOpen = !drawer.classList.contains("open");
 
-        drawer.classList.toggle("open", shouldOpen);
-        drawer.setAttribute("aria-hidden", String(!shouldOpen));
+    drawer.classList.toggle("open", shouldOpen);
+    drawer.setAttribute("aria-hidden", String(!shouldOpen));
+}
+
+async function showTopArtists() {
+    try {
+        const data = await fetchTopArtists();
+        renderTopArtists(data.items);
+    } catch (err) {
+        console.error(err);
+        alert("Please connect Spotify first");
     }
+}
