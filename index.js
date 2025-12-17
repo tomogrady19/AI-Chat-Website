@@ -6,6 +6,8 @@ import session from "express-session";
 import crypto from "crypto";
 import fetch from "node-fetch";
 
+// TODO modularise backend like I've done with frontend
+
 const rateLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
     max: 5, // limit each IP to 5 requests per window
