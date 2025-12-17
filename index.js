@@ -170,6 +170,107 @@ app.get("/api/spotify/top-tracks", async (req, res) => {
 
 //TODO can I avoid repeating some of the code twice?
 
+app.get("/api/spotify/profile", async (req, res) => {
+    const spotifySession = req.session.spotify;
+
+    if (!spotifySession?.accessToken) {
+        return res.status(401).json({ error: "Not authenticated with Spotify" });
+    }
+
+    try {
+        const headers = {Authorization: `Bearer ${spotifySession.accessToken}`,};
+
+        const [artistsRes, tracksRes] = await Promise.all([
+            fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
+            fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
+        ]);
+
+        const artistsData = await artistsRes.json();
+        const tracksData = await tracksRes.json();
+
+        res.json({
+            artists: artistsData.items,
+            tracks: tracksData.items,
+        });
+    } catch (err) {
+        console.error("Spotify profile error:", err);
+        res.status(500).json({ error: "Failed to load Spotify profile" });
+    }
+});
+
+app.post("/api/ai/music-recommendations", async (req, res) => {
+    try {
+        const spotifySession = req.session.spotify;
+
+        if (!spotifySession?.accessToken) {
+            return res.status(401).end("Spotify not connected");
+        }
+
+        const profileRes = await fetch(
+            "http://127.0.0.1:3000/api/spotify/profile",
+            { headers: { cookie: req.headers.cookie } }
+        );
+
+        const profile = await profileRes.json();
+
+        const prompt = buildMusicProfilePrompt(profile); //where to put this function?
+
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        res.setHeader("Transfer-Encoding", "chunked");
+
+        const stream = await client.responses.stream({
+            model: "gpt-4o-mini",
+            input: prompt,
+        });
+
+        for await (const event of stream) {
+            if (event.type === "response.output_text.delta") {
+                res.write(event.delta);
+            }
+            if (event.type === "response.completed") {
+                res.end();
+            }
+        }
+    } catch (err) {
+        console.error("AI music error:", err);
+        res.status(500).end("AI recommendation failed");
+    }
+});
+
+function buildMusicProfilePrompt({ artists, tracks }) {
+    const artistNames = artists.map(a => a.name).join(", ");
+    const genres = [
+        ...new Set(artists.flatMap(a => a.genres))
+    ].slice(0, 10);
+
+    const trackSummaries = tracks.map(
+        t => `${t.name} by ${t.artists.map(a => a.name).join(", ")}`
+    );
+
+    return `
+        Please format your response with:
+        - Clear section headings
+        - One artist or song per line
+        - Blank lines between sections
+        
+        The user’s music taste is based on Spotify listening data.
+        Top artists: ${artistNames}
+        Common genres: ${genres.join(", ")}
+        Top tracks: ${trackSummaries.join("\n")}
+        
+        Based on this, respond with the following format:
+        "Based on your music taste, here are some recommendations!"/n
+        Artists you might like:/n
+        {list 5 artists here (new line for each artist)}/n
+        Tracks you might like:/n
+        {list 5 tracks here (new line for each track)}/n
+        
+        {Give a brief one sentence explanation of what these recommendations have in common with their taste}/n
+        {Offer to answer any follow up questions they have}/n
+        `;
+}
+
+
 app.listen(3000, () =>
     console.log("Running at http://127.0.0.1:3000")
 );

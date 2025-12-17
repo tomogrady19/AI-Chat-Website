@@ -11,12 +11,12 @@ import {
     renderTopTracks,
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
-import { streamFromAI, fetchTopArtists, fetchTopTracks } from "./api.js"
+import { streamFromAI, fetchTopArtists, fetchTopTracks, streamMusicRecommendations } from "./api.js"
 //TODO import all from UI instead of naming every one
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onArtists: showTopArtists, onTracks: showTopTracks});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onArtists: showTopArtists, onTracks: showTopTracks, onRecommend: recommendMusic});
 
 // call API via backend
 async function askAI() {
@@ -75,4 +75,17 @@ async function showTopTracks() {
         console.error(err);
         alert("Please connect Spotify first");
     }
+}
+
+async function recommendMusic() {
+    addMessage("assistant", "");
+    updateChat();
+
+    try {
+        await streamMusicRecommendations(appendChunk);
+    } catch {
+        showErrorMessage();
+    }
+
+    updateChat();
 }

@@ -1,10 +1,12 @@
-export function setupEventListeners({ onAsk, onClear, onToggle, onArtists, onTracks }) {
+export function setupEventListeners({ onAsk, onClear, onToggle, onArtists, onTracks, onRecommend }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
     const toggleButton = document.getElementById("assistant-toggle");
     const artistButton = document.getElementById("spotify-artists");
     const tracksButton = document.getElementById("spotify-tracks")
+    const recommendButton = document.getElementById("RecommendButton")
+    // TODO make naming convention consistent
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
@@ -26,4 +28,5 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onArtists, onTra
     toggleButton.addEventListener("click", onToggle);
     artistButton.addEventListener("click", onArtists);
     tracksButton.addEventListener("click", onTracks);
+    recommendButton.addEventListener("click", onRecommend);
 }

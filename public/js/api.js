@@ -50,3 +50,20 @@ export async function fetchTopTracks() {
 }
 
 //TODO combine artists and tracks into one function?
+
+export async function streamMusicRecommendations(onChunk) {
+    const res = await fetch("/api/ai/music-recommendations", {
+        method: "POST",
+    });
+
+    if (!res.ok) throw new Error("AI request failed");
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        onChunk(decoder.decode(value));
+    }
+}

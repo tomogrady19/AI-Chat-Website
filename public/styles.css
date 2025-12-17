@@ -17,6 +17,11 @@ body {
     border-radius: 12px;
 }
 
+.message.assistant {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
 .user {
     background-color: #d1e7ff;
     align-self: flex-end;
