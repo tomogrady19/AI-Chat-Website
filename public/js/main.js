@@ -9,6 +9,7 @@ import {
     showErrorMessage,
     renderTopArtists,
     renderTopTracks,
+    renderRecent
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import {
@@ -66,6 +67,7 @@ async function showProfile() {
         const data = await fetchProfile();
         renderTopArtists(data.artists);
         renderTopTracks(data.tracks);
+        renderRecent(data.recent);
     } catch (err) {
         console.error(err)
         alert("Spotify not connected")

@@ -38,8 +38,8 @@ app.get("/auth/spotify/login", (req, res) => {
     const state = crypto.randomBytes(16).toString("hex"); //randomise state so callback can be verified
     req.session.spotifyState = state; //store state in server side session
 
-    // request top artists/tracks as well as private and collaborative playlists
-    const scope = ["user-top-read", "playlist-read-private", "playlist-read-collaborative"].join(" ");
+    // request top artists/tracks, private & collaborative playlists and recently played data
+    const scope = ["user-top-read", "playlist-read-private", "playlist-read-collaborative, user-read-recently-played"].join(" ");
 
     const params = new URLSearchParams({
         response_type: "code",
@@ -104,14 +104,16 @@ app.get("/api/spotify/profile", async (req, res) => {
     try {
         const headers = {Authorization: `Bearer ${spotifySession.accessToken}`,};
 
-        const [artistsRes, tracksRes] = await Promise.all([
+        const [artistsRes, tracksRes, recentRes] = await Promise.all([
             fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
             fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
+            fetch("https://api.spotify.com/v1/me/player/recently-played?limit=10", { headers })
         ]);
 
         const artistsData = await artistsRes.json();
         const tracksData = await tracksRes.json();
-        res.json({artists: artistsData.items, tracks: tracksData.items});
+        const recentData = await recentRes.json();
+        res.json({artists: artistsData.items, tracks: tracksData.items, recent: recentData.items});
     } catch (err) {
         console.error("Spotify profile error:", err);
         res.status(500).json({ error: "Spotify profile failed to load" });

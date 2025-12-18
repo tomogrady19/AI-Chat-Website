@@ -100,3 +100,33 @@ export function renderTopTracks(tracks) {
     container.appendChild(title);
     container.appendChild(list);
 }
+
+export function renderRecent(recent) {
+    const container = document.getElementById("recent-section");
+    container.innerHTML = "";
+
+    const title = document.createElement("h2");
+    title.textContent = "Your Recent Tracks";
+
+    const list = document.createElement("ol");
+
+    recent.forEach(recentItem => {
+        const li = document.createElement("li");
+        li.className = "recent-item";
+
+        const img = document.createElement("img");
+        img.src = recentItem.track.album.images?.[0]?.url || "";
+        img.alt = recentItem.track.name;
+
+        const text = document.createElement("span");
+        text.textContent = `${recentItem.track.name} — ${recentItem.track.artists.map(a => a.name).join(", ")}`;
+
+        li.appendChild(img);
+        li.appendChild(text);
+        list.appendChild(li);
+    });
+
+
+    container.appendChild(title);
+    container.appendChild(list);
+}
