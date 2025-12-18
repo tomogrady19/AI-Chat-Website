@@ -1,7 +1,7 @@
 import express from "express";
 import rateLimiter from "../middleware/rateLimiter.js";
 import { streamAIResponse } from "../services/openai.service.js";
-import { getSpotifyProfile } from "../services/spotify.service.js";
+import { getSpotifyAccessToken, getSpotifyProfile } from "../services/spotify.service.js";
 import { buildMusicProfilePrompt } from "../utils/prompts.js";
 
 const router = express.Router();
@@ -17,11 +17,8 @@ router.post("/ask", rateLimiter, async (req, res) => {
 
 router.post("/music-recommendations", async (req, res) => {
     try {
-        const spotifySession = req.session.spotify;
-        if (!spotifySession?.accessToken) {
-            return res.status(401).end("Spotify not connected");
-        }
-        const profile = await getSpotifyProfile(spotifySession.accessToken);
+        const spotifyAccessToken = getSpotifyAccessToken(req);
+        const profile = await getSpotifyProfile(spotifyAccessToken);
         const prompt = buildMusicProfilePrompt(profile);
 
         await streamAIResponse({ input: prompt, res });

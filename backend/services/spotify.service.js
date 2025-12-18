@@ -1,5 +1,13 @@
 import fetch from "node-fetch";
 
+export function getSpotifyAccessToken(req) {
+    const spotifySession = req.session.spotify;
+    if (!spotifySession?.accessToken) {
+        throw new Error("SPOTIFY_NOT_AUTHENTICATED");
+    }
+    return spotifySession.accessToken;
+}
+
 export async function getSpotifyProfile(accessToken) {
   const headers = { Authorization: `Bearer ${accessToken}` };
 

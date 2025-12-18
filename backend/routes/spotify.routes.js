@@ -1,7 +1,7 @@
 import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";
-import {getSpotifyProfile} from "../services/spotify.service.js";
+import {getSpotifyAccessToken, getSpotifyProfile} from "../services/spotify.service.js";
 
 const router = express.Router();
 
@@ -67,25 +67,20 @@ router.get("/auth/spotify/callback", async (req, res) => {
 
 router.get("/auth/spotify/logout", (req, res) => {
     req.session.destroy(err => {
-    if (err) {
-        console.error("Session destroy error:", err);
-        return res.status(500).send("Logout failed");
-    }
+        if (err) {
+            console.error("Session destroy error:", err);
+            return res.status(500).send("Logout failed");
+        }
 
-    res.clearCookie("connect.sid"); // default express-session cookie name
-    res.redirect("/");
+        res.clearCookie("connect.sid"); // default express-session cookie name
+        res.redirect("/");
     });
 });
 
 router.get("/api/spotify/profile", async (req, res) => {
-    const spotifySession = req.session.spotify;
-
-    if (!spotifySession?.accessToken) {
-        return res.status(401).json({ error: "Not authenticated with Spotify" });
-    }
-
+    const spotifyAccessToken = getSpotifyAccessToken(req);
     try {
-        const profile = await getSpotifyProfile(spotifySession.accessToken);
+        const profile = await getSpotifyProfile(spotifyAccessToken);
         res.json(profile);
     } catch (err) {
         console.error("Spotify profile error:", err);
