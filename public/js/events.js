@@ -4,7 +4,7 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRec
     const clearButton = document.getElementById("clearButton");
     const toggleButton = document.getElementById("assistant-toggle");
     const profileButton = document.getElementById("spotify-profile");
-    const recommendButton = document.getElementById("RecommendButton");
+    const recommendButton = document.getElementById("recommendButton");
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
