@@ -9,7 +9,7 @@ router.get("/auth/spotify/login", (req, res) => {
     req.session.spotifyState = state; //store state in server side session
 
     // request top artists/tracks, private & collaborative playlists and recently played data
-    const scope = ["user-top-read", "playlist-read-private", "playlist-read-collaborative, user-read-recently-played"].join(" ");
+    const scope = ["user-top-read", "playlist-read-private", "playlist-read-collaborative", "user-read-recently-played"].join(" ");
 
     const params = new URLSearchParams({
         response_type: "code",
