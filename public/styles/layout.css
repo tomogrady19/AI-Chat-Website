@@ -1,0 +1,27 @@
+#app {
+  max-width: 1100px;
+  margin: 0 auto; /* centers horizontally */
+  padding: 0 16px; /* prevents edge touching on small screens */
+  text-align: center; /* keeps heading & buttons centered */
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 475px;
+    height: 500px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+/*TODO rename this*/
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}

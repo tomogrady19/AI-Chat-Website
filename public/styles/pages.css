@@ -1,0 +1,62 @@
+#spotify-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+#spotify-content section {
+    background: #f7f7f7;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+/* Shared list reset */
+#spotify-content ul,
+#spotify-content ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Artist & track rows */
+.artist-item,
+.track-item,
+.recent-item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Artist images */
+.artist-item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Album art */
+.track-item img,
+.recent-item img{
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* Text */
+.artist-item span,
+.track-item span,
+.recent-item{
+  font-size: 14px;
+}
+
+
+
+@media (max-width: 768px) {
+    #spotify-content {
+        grid-template-columns: 1fr;
+    }
+}

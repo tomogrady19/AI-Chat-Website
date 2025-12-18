@@ -1,0 +1,71 @@
+/*class selectors*/
+.message {
+    padding: 8px 12px;
+    margin: 8px 0;
+    max-width: 70%;
+    border-radius: 12px;
+}
+
+.message.assistant {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.user {
+    background-color: #d1e7ff;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+}
+
+.assistant {
+    background-color: #eee;
+    align-self: flex-start;
+    margin-right: auto;
+    text-align: left;
+}
+
+.assistant-header {
+  text-align: center;
+}
+
+/*ID selectors*/
+
+
+#typing {
+  font-style: italic;
+  color: #555;
+}
+
+#userInput {
+    width: 475px;
+    margin-bottom: 10px;
+    resize: none;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+#assistant-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+#assistant-drawer.open {
+  transform: translateX(0);
+}
+
+#assistant-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1100;
+}

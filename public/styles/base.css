@@ -1,0 +1,9 @@
+body {
+    display: flex;
+    flex-direction: column; /*stacks items in a column*/
+    align-items: center; /* centers everything horizontally */
+    margin-top: 30px; /* adds spacing at the top */
+    font-family: Arial, sans-serif;
+    background-color: #b3d9ff; /* light cool blue */
+    border-radius: 12px;
+}
