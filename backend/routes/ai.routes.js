@@ -3,10 +3,11 @@ import rateLimiter from "../middleware/rateLimiter.js";
 import { streamAIResponse } from "../services/openai.service.js";
 import { getSpotifyAccessToken, getSpotifyProfile } from "../services/spotify.service.js";
 import { buildMusicProfilePrompt } from "../utils/prompts.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/ask", rateLimiter, async (req, res) => {
+router.post("/ask", requireAuth, rateLimiter, async (req, res) => {
     try {
         await streamAIResponse({input: req.body.conversation, res});
     } catch (err) {
@@ -15,7 +16,7 @@ router.post("/ask", rateLimiter, async (req, res) => {
     }
 });
 
-router.post("/music-recommendations", async (req, res) => {
+router.post("/music-recommendations", requireAuth, rateLimiter, async (req, res) => {
     try {
         const spotifyAccessToken = getSpotifyAccessToken(req);
         const profile = await getSpotifyProfile(spotifyAccessToken);

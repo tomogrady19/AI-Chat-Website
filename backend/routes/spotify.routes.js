@@ -2,10 +2,12 @@ import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";
 import {getSpotifyAccessToken, getSpotifyProfile} from "../services/spotify.service.js";
+import rateLimiter from "../middleware/rateLimiter.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/auth/spotify/login", (req, res) => {
+router.get("/auth/spotify/login", rateLimiter, (req, res) => {
     const state = crypto.randomBytes(16).toString("hex"); //randomise state so callback can be verified
     req.session.spotifyState = state; //store state in server side session
 
@@ -23,7 +25,7 @@ router.get("/auth/spotify/login", (req, res) => {
     res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
 });
 
-router.get("/auth/spotify/callback", async (req, res) => {
+router.get("/auth/spotify/callback", rateLimiter, async (req, res) => {
     const { code, state } = req.query;
 
     if (!state || state !== req.session.spotifyState) {
@@ -77,7 +79,7 @@ router.get("/auth/spotify/logout", (req, res) => {
     });
 });
 
-router.get("/api/spotify/profile", async (req, res) => {
+router.get("/api/spotify/profile", rateLimiter, requireAuth, async (req, res) => {
     const spotifyAccessToken = getSpotifyAccessToken(req);
     try {
         const profile = await getSpotifyProfile(spotifyAccessToken);
