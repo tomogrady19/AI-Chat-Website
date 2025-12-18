@@ -1,6 +1,7 @@
 import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";
+import {getSpotifyProfile} from "../services/spotify.service.js";
 
 const router = express.Router();
 
@@ -64,6 +65,18 @@ router.get("/auth/spotify/callback", async (req, res) => {
     }
 });
 
+router.get("/auth/spotify/logout", (req, res) => {
+    req.session.destroy(err => {
+    if (err) {
+        console.error("Session destroy error:", err);
+        return res.status(500).send("Logout failed");
+    }
+
+    res.clearCookie("connect.sid"); // default express-session cookie name
+    res.redirect("/");
+    });
+});
+
 router.get("/api/spotify/profile", async (req, res) => {
     const spotifySession = req.session.spotify;
 
@@ -72,18 +85,8 @@ router.get("/api/spotify/profile", async (req, res) => {
     }
 
     try {
-        const headers = {Authorization: `Bearer ${spotifySession.accessToken}`,};
-
-        const [artistsRes, tracksRes, recentRes] = await Promise.all([
-            fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
-            fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
-            fetch("https://api.spotify.com/v1/me/player/recently-played?limit=10", { headers })
-        ]);
-
-        const artistsData = await artistsRes.json();
-        const tracksData = await tracksRes.json();
-        const recentData = await recentRes.json();
-        res.json({artists: artistsData.items, tracks: tracksData.items, recent: recentData.items});
+        const profile = await getSpotifyProfile(spotifySession.accessToken);
+        res.json(profile);
     } catch (err) {
         console.error("Spotify profile error:", err);
         res.status(500).json({ error: "Spotify profile failed to load" });

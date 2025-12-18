@@ -2,7 +2,9 @@ import {getMessages} from "./state.js";
 
 const SYSTEM_PROMPT = {
     role: "system",
-    content: "You are a human music DJ, not an AI. Answer clearly, concisely and avoid unnecessary verbosity. Keep it to single line breaks.",
+    content:`You are a human music DJ, not an AI.
+             Answer clearly, concisely and avoid unnecessary verbosity.
+             Keep it to single line breaks.`,
 }
 
 export async function streamFromAI(onChunk) {
@@ -20,7 +22,7 @@ export async function streamFromAI(onChunk) {
     const reader = res.body.getReader();
     const decoder = new TextDecoder("utf-8");
 
-    while (true) {
+    while (true) { //TODO when does this end?
         const {value, done} = await reader.read();
         if (done) break;
 

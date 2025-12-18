@@ -7,32 +7,28 @@ import { buildMusicProfilePrompt } from "../utils/prompts.js";
 const router = express.Router();
 
 router.post("/ask", rateLimiter, async (req, res) => {
-  try {
-    await streamAIResponse({
-      input: req.body.conversation,
-      res
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).end("AI ask failed");
-  }
+    try {
+        await streamAIResponse({input: req.body.conversation, res});
+    } catch (err) {
+        console.error(err);
+        res.status(500).end("AI ask failed");
+    }
 });
 
 router.post("/music-recommendations", async (req, res) => {
-  try {
-    const spotifySession = req.session.spotify;
-    if (!spotifySession?.accessToken) {
-      return res.status(401).end("Spotify not connected");
+    try {
+        const spotifySession = req.session.spotify;
+        if (!spotifySession?.accessToken) {
+            return res.status(401).end("Spotify not connected");
+        }
+        const profile = await getSpotifyProfile(spotifySession.accessToken);
+        const prompt = buildMusicProfilePrompt(profile);
+
+        await streamAIResponse({ input: prompt, res });
+    } catch (err) {
+        console.error(err);
+        res.status(500).end("AI recommendation failed");
     }
-
-    const profile = await getSpotifyProfile(spotifySession.accessToken);
-    const prompt = buildMusicProfilePrompt(profile);
-    await streamAIResponse({ input: prompt, res });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).end("AI recommendation failed");
-  }
 });
 
 export default router;
