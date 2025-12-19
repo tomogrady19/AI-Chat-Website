@@ -8,7 +8,7 @@ import { issueJwt } from "../utils/jwt.js";
 
 const router = express.Router();
 
-router.get("/auth/spotify/login", rateLimiter, (req, res) => {
+router.get("/auth/spotify/login", (req, res) => {
     const state = crypto.randomBytes(16).toString("hex"); //randomise state so callback can be verified
     req.session.spotifyState = state; //store state in server side session
 
@@ -32,7 +32,7 @@ router.get("/auth/spotify/login", rateLimiter, (req, res) => {
     res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
 });
 
-router.get("/auth/spotify/callback", rateLimiter, async (req, res) => {
+router.get("/auth/spotify/callback", async (req, res) => {
     const { code, state } = req.query;
 
     if (!state || state !== req.session.spotifyState) {
@@ -85,7 +85,7 @@ router.get("/auth/spotify/callback", rateLimiter, async (req, res) => {
     }
 });
 
-router.get("/auth/spotify/logout", rateLimiter, (req, res) => {
+router.get("/auth/spotify/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.error("Session destroy error:", err);
@@ -102,7 +102,7 @@ router.get("/auth/spotify/logout", rateLimiter, (req, res) => {
     });
 });
 
-router.get("/api/spotify/profile", rateLimiter, requireAuth, async (req, res) => {
+router.get("/api/spotify/profile", requireAuth, async (req, res) => {
     const spotifyAccessToken = getSpotifyAccessToken(req);
     try {
         const profile = await getSpotifyProfile(spotifyAccessToken);
