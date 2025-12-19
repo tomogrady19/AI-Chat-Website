@@ -11,7 +11,7 @@ const app = express();
 app.use(sessionMiddleware);
 
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: "100kb" })); // enforce json file size limit globally
 app.use(express.static("public"));
 
 app.use("/api/ai", aiRoutes);

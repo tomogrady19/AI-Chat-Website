@@ -5,9 +5,12 @@ import { getSpotifyAccessToken, getSpotifyProfile } from "../services/spotify.se
 import { buildMusicProfilePrompt } from "../utils/prompts.js";
 import { requireAuth } from "../middleware/auth.js";
 
+import { validate } from "../middleware/validate.js";
+import { askSchema } from "../validators/askSchema.js";
+
 const router = express.Router();
 
-router.post("/ask", requireAuth, rateLimiter, async (req, res) => {
+router.post("/ask", validate(askSchema), requireAuth, rateLimiter, async (req, res) => {
     try {
         await streamAIResponse({input: req.body.conversation, res});
     } catch (err) {
