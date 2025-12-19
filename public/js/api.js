@@ -8,7 +8,7 @@ const SYSTEM_PROMPT = {
 }
 
 export async function fetchProfile() {
-    const res = await fetch("api/spotify/profile");
+    const res = await fetch("api/spotify/profile"); //defaults to GET
     if (!res.ok) { throw new Error("Spotify not connected"); }
     return res.json();
 }

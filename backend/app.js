@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cookieParser from "cookie-parser";
 
 import sessionMiddleware from "./config/session.js";
 import aiRoutes from "./routes/ai.routes.js";
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(sessionMiddleware);
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"));
 

@@ -23,3 +23,17 @@ export async function getSpotifyProfile(accessToken) {
         recent: (await recentRes.json()).items
   };
 }
+
+// User call so we can tie each JWT to a Spotify account
+export async function getSpotifyUser(accessToken) {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`spotify ID call failed: ${res.status} ${body}`);
+  }
+
+  return res.json();
+}

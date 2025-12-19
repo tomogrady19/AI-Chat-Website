@@ -1,9 +1,10 @@
 import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";
-import {getSpotifyAccessToken, getSpotifyProfile} from "../services/spotify.service.js";
+import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser} from "../services/spotify.service.js";
 import rateLimiter from "../middleware/rateLimiter.js";
 import { requireAuth } from "../middleware/auth.js";
+import { issueJwt } from "../utils/jwt.js";
 
 const router = express.Router();
 
@@ -11,8 +12,14 @@ router.get("/auth/spotify/login", rateLimiter, (req, res) => {
     const state = crypto.randomBytes(16).toString("hex"); //randomise state so callback can be verified
     req.session.spotifyState = state; //store state in server side session
 
-    // request top artists/tracks, private & collaborative playlists and recently played data
-    const scope = ["user-top-read", "playlist-read-private", "playlist-read-collaborative", "user-read-recently-played"].join(" ");
+    // request info needed from Spotify
+    const scope = [
+        "user-top-read",
+        "user-read-recently-played",
+        "playlist-read-private",
+        "user-read-email",
+        "user-read-private"
+        ].join(" ")
 
     const params = new URLSearchParams({
         response_type: "code",
@@ -60,6 +67,17 @@ router.get("/auth/spotify/callback", rateLimiter, async (req, res) => {
         };
         console.log("Spotify access token received");
 
+        const user = await getSpotifyUser(req.session.spotify.accessToken); //TODO just use tokenData.accessToken?
+        const jwtToken = issueJwt({ spotifyId: user.id });
+
+        // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
+        res.cookie("auth_token", jwtToken, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 1000 // 1 hour
+        });
+
         res.redirect("/"); // Redirect home
     } catch (err) {
         console.error("Spotify callback error:", err);
@@ -67,7 +85,7 @@ router.get("/auth/spotify/callback", rateLimiter, async (req, res) => {
     }
 });
 
-router.get("/auth/spotify/logout", (req, res) => {
+router.get("/auth/spotify/logout", rateLimiter, (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.error("Session destroy error:", err);
@@ -75,6 +93,11 @@ router.get("/auth/spotify/logout", (req, res) => {
         }
 
         res.clearCookie("connect.sid"); // default express-session cookie name
+        res.clearCookie("auth_token", {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production"
+        });
         res.redirect("/");
     });
 });
