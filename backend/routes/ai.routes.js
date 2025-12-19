@@ -18,7 +18,7 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
     }
 });
 
-router.post("/music-recommendations", requireAuth, async (req, res) => {
+router.post("/music-recommendations", validate(askSchema), requireAuth, async (req, res) => {
     try {
         const spotifyAccessToken = getSpotifyAccessToken(req);
         const profile = await getSpotifyProfile(spotifyAccessToken);

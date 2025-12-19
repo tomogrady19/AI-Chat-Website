@@ -2,7 +2,6 @@ import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";
 import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser} from "../services/spotify.service.js";
-import rateLimiter from "../middleware/rateLimiter.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";
 
@@ -64,7 +63,8 @@ router.get("/auth/spotify/callback", async (req, res) => {
                 console.error("Session regeneration failed:", err);
                 return res.status(500).send("Session error");
             }
-        }
+        })
+
         // Store tokens in session (in-memory)
         req.session.spotify = {
             accessToken: tokenData.access_token,
