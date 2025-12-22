@@ -20,11 +20,6 @@ export async function streamFromAI(onChunk) {
         body: JSON.stringify({ conversation: [SYSTEM_PROMPT, ...getMessages()] }) // conversation array is flattened
     });
 
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || `Request failed (${res.status})`);
-    }
-
     await streamRes(res, onChunk);
 }
 
@@ -34,7 +29,10 @@ export async function streamMusicRecommendations(onChunk) {
 }
 
 async function streamRes(res, onChunk) {
-    if (!res.ok) throw new Error("AI request failed");
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Request failed (${res.status})`);
+    }
     if (!res.body) throw new Error("No response body");
 
     const reader = res.body.getReader();

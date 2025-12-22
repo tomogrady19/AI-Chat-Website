@@ -17,11 +17,10 @@ export async function streamAIResponse({ input, req, res }) {
 
     let stream;
     try {
-        stream = await client.responses.stream({
-            model: "gpt-4o-mini",
-            input: input,
-            signal: abortController.signal
-        });
+        stream = await client.responses.stream(
+            {model: "gpt-4o-mini", input: input},
+            {signal: abortController.signal}
+        );
     } catch (err) {
         if (abortController.signal.aborted) {
             console.info(`[${req.id}] OpenAI request aborted`);
