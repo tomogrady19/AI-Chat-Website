@@ -19,7 +19,7 @@ export async function streamAIResponse({ input, req, res }) {
             signal: abortController.signal
         });
     } catch (err) {
-        handleOpenAIError(err, res);
+        handleOpenAIError(err, req, res);
     }
 
     let closed = false;
