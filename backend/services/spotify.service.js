@@ -9,31 +9,31 @@ export function getSpotifyAccessToken(req) {
 }
 
 export async function getSpotifyProfile(accessToken) {
-  const headers = { Authorization: `Bearer ${accessToken}` };
+    const headers = { Authorization: `Bearer ${accessToken}` };
 
-  const [artistsRes, tracksRes, recentRes] = await Promise.all([
+    const [artistsRes, tracksRes, recentRes] = await Promise.all([
         fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
         fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
         fetch("https://api.spotify.com/v1/me/player/recently-played?limit=10", { headers })
-  ]);
+    ]);
 
-  return {
+    return {
         artists: (await artistsRes.json()).items,
         tracks: (await tracksRes.json()).items,
         recent: (await recentRes.json()).items
-  };
+    };
 }
 
 // User call so we can tie each JWT to a Spotify account
 export async function getSpotifyUser(accessToken) {
-  const res = await fetch("https://api.spotify.com/v1/me", {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
+    const spotifyRes = await fetch("https://api.spotify.com/v1/me", {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`spotify ID call failed: ${res.status} ${body}`);
-  }
+    if (!spotifyRes.ok) {
+        const body = await spotifyRes.text();
+        throw new Error(`spotify ID call failed: ${spotifyRes.status} ${body}`);
+    }
 
-  return res.json();
+    return spotifyRes.json();
 }

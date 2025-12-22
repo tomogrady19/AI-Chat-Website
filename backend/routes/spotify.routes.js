@@ -58,12 +58,12 @@ router.get("/auth/spotify/callback", async (req, res) => {
             return res.status(500).send("Token exchange failed");
         }
 
-        req.session.regenerate((err) => {
-            if (err) {
-                console.error("Session regeneration failed:", err);
-                return res.status(500).send("Session error");
-            }
-        })
+        await new Promise((resolve, reject) => {
+            req.session.regenerate(err => {
+              if (err) reject(err);
+              else resolve();
+            });
+          });
 
         // Store tokens in session (in-memory)
         req.session.spotify = {
