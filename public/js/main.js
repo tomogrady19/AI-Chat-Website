@@ -37,11 +37,28 @@ async function askAI() {
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
+    let receivedAnyData = false;
+
+    // TODO move this as a function elsewhere (there may already be an onChunk function). Maybe move inside streamFromAI function
+    const onChunk = (chunk) => {
+        receivedAnyData = true;
+        appendChunk(chunk);
+    };
+
+    // Timeout in case streaming never starts
+    const timeoutId = setTimeout(() => {
+        if (!receivedAnyData) {
+            showError("AI failed to respond");
+        }
+    }, 3000);
+
     try {
-        await streamFromAI(appendChunk);
+        await streamFromAI(onChunk);
     } catch (err) {
-        updateLastMessage(`${err.message}`);
+        updateLastMessage(`${err.message}` || "Unexpected error");
         // showErrorMessage() // TODO consider getting rid of this function if not used
+    } finally {
+        clearTimeout(timeoutId);
     }
 
     updateChat();
