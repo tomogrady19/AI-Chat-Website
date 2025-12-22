@@ -8,7 +8,7 @@ export async function streamAIResponse({ input, res }) {
 
     const stream = await client.responses.stream({
         model: "gpt-4o-mini",
-        input
+        input: input
     });
 
     for await (const event of stream) {
