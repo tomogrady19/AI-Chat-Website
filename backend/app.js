@@ -12,7 +12,7 @@ const app = express();
 app.use(sessionMiddleware);
 
 app.use(cookieParser());
-app.use(express.json({ limit: "100kb" })); // enforce json file size limit globally
+app.use(express.json({ limit: "20kb" })); // enforce json file size limit globally
 app.use(express.static("public"));
 
 // give all requests an ID

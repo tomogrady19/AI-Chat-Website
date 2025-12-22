@@ -3,6 +3,7 @@ import { handleOpenAIError } from "../utils/openaiError.js";
 
 const client = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
+// Streaming response to avoid long waits and allow early disconnects (also looks cooler)
 export async function streamAIResponse({ input, req, res }) {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Transfer-Encoding", "chunked");
