@@ -12,16 +12,16 @@ export async function streamAIResponse({ input, res }) {
         model: "gpt-4o-mini",
         input: input
         });
+
+        for await (const event of stream) {
+            if (event.type === "response.output_text.delta") {
+                res.write(event.delta);
+            }
+            if (event.type === "response.completed") {
+                res.end();
+            }
+        }
     } catch (err) {
         handleOpenAIError(err, res);
-    }
-
-    for await (const event of stream) {
-        if (event.type === "response.output_text.delta") {
-            res.write(event.delta);
-        }
-        if (event.type === "response.completed") {
-            res.end();
-        }
     }
 }
