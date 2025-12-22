@@ -19,6 +19,7 @@ app.use(express.static("public"));
 app.use((req, res, next) => {
     req.id = crypto.randomUUID();
     res.setHeader("X-Request-ID", req.id);
+    console.info(`[${req.id}] ${req.method} ${req.originalUrl}`);
     next();
 });
 
