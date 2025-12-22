@@ -22,17 +22,10 @@ export const validate = (schema) => (req, res, next) => {
 
         return res.status(400).json({
             error: "Invalid request",
-            details: result.error.errors,
-            issues: result.error.format() //TODO Not for deployment?
+            issues: result.error.format()
         });
     }
 
     req.body = result.data; // always trusted from here on
     next();
 };
-
-// result.error.errors.map(e => ({
-//     path: e.path.join("."),
-//     message: e.message
-//   }))
-//TODO consider reformatting error like this?

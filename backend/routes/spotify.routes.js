@@ -73,7 +73,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
         };
         console.log("Spotify access token received");
 
-        const user = await getSpotifyUser(req.session.spotify.accessToken); //TODO just use tokenData.accessToken?
+        const user = await getSpotifyUser(req.session.spotify.accessToken);
         const jwtToken = issueJwt({ spotifyId: user.id });
 
         // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
