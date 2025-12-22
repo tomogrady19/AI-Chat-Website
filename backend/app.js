@@ -15,6 +15,13 @@ app.use(cookieParser());
 app.use(express.json({ limit: "100kb" })); // enforce json file size limit globally
 app.use(express.static("public"));
 
+// give all requests an ID
+app.use((req, res, next) => {
+    req.id = crypto.randomUUID();
+    res.setHeader("X-Request-ID", req.id);
+    next();
+});
+
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/", spotifyRoutes);
