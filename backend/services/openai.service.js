@@ -8,14 +8,14 @@ export async function streamAIResponse({ input, req, res }) {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Transfer-Encoding", "chunked");
 
+    let closed = false;
     const abortController = new AbortController(); // used to make sure streaming stops when user disconnects
-    let stream;
-
     req.on("close", () => {
         console.info(`[${req.id}] Client disconnected`);
         abortController.abort();
     });
 
+    let stream;
     try {
         stream = await client.responses.stream({
             model: "gpt-4o-mini",
@@ -31,7 +31,6 @@ export async function streamAIResponse({ input, req, res }) {
         return;
     }
 
-    let closed = false;
     try {
         for await (const event of stream) {
             if (abortController.signal.aborted) {

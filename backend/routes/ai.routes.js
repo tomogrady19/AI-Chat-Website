@@ -24,7 +24,7 @@ router.post("/music-recommendations", requireAuth, async (req, res) => {
         const profile = await getSpotifyProfile(spotifyAccessToken);
         const prompt = buildMusicProfilePrompt(profile);
 
-        await streamAIResponse({ input: prompt, res });
+        await streamAIResponse({ input: prompt, req, res });
     } catch (err) {
         console.error(err);
         res.status(500).end("AI recommendation failed");

@@ -36,7 +36,7 @@ async function askAI() {
     addMessage("assistant", ""); // start with empty message to stream response to
 
     try {
-        await streamFromAI(onChunk);
+        await streamFromAI(appendChunk);
     } catch (err) {
         updateLastMessage(`${err.message}` || "Unexpected error");
     }
