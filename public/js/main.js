@@ -16,7 +16,6 @@ import {
     streamMusicRecommendations,
     fetchProfile
 } from "./api.js"
-//TODO (import * as UI from "./ui.js) UI.updateChat())
 
 loadMessages();
 updateChat();
@@ -36,27 +35,10 @@ async function askAI() {
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
-    let receivedAnyData = false;
-
-    // TODO move this as a function elsewhere (there may already be an onChunk function). Maybe move inside streamFromAI function
-    const onChunk = (chunk) => {
-        receivedAnyData = true;
-        appendChunk(chunk);
-    };
-
-    // Timeout in case streaming never starts
-    const timeoutId = setTimeout(() => {
-        if (!receivedAnyData) {
-            showError("AI failed to respond");
-        }
-    }, 3000);
-
     try {
         await streamFromAI(onChunk);
     } catch (err) {
         updateLastMessage(`${err.message}` || "Unexpected error");
-    } finally {
-        clearTimeout(timeoutId);
     }
 
     updateChat();
@@ -95,7 +77,7 @@ async function recommendMusic() {
     updateChat();
 
     try {
-        await streamMusicRecommendations(appendChunk); //TODO put the try await clause inside the function?
+        await streamMusicRecommendations(appendChunk);
     } catch (err) {
         updateLastMessage(err.message || "Failed to load music recommendations");
     }
