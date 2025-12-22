@@ -91,6 +91,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
     }
 });
 
+// TODO this destoys the current session but doesn't really log you out of spotify
 router.get("/auth/spotify/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {

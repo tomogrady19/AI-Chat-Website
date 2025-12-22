@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MAX_MESSAGES } from "../config/constants.js";
 
 export const askSchema = z.object({
     conversation: z.array(
@@ -8,5 +9,5 @@ export const askSchema = z.object({
         })
     )
     .min(1)
-    .max(50), // 1 to 50 messages
+    .max(MAX_MESSAGES),
 });
