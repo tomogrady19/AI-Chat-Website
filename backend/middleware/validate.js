@@ -4,11 +4,17 @@ export const validate = (schema) => (req, res, next) => {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
-        const tooLarge = result.error.errors.some(
-            err => err.code === "too_big" && err.path[0] === "conversation"
-        );
+        // check if any of the errors are caused by the conversation being too large
+        let tooLarge = false;
+        for (const err of result.error.errors) {
+            if (err.code === "too_big" && err.path[0] === "conversation") {
+                tooLarge = true;
+                break;
+            }
+        }
+
         if (tooLarge) {
-            return res.status(413).json({
+            return res.status(400).json({
               error: "Conversation too long. Please clear the chat.",
               maxMessages: MAX_MESSAGES
             });
