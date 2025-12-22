@@ -1,4 +1,4 @@
-import { loadMessages, addMessage, clearMessages, appendChunk } from "./state.js";
+import { loadMessages, addMessage, clearMessages, appendChunk, updateLastMessage } from "./state.js";
 import {
     updateChat,
     enableInput,
@@ -39,8 +39,9 @@ async function askAI() {
 
     try {
         await streamFromAI(appendChunk);
-    } catch {
-        showErrorMessage()
+    } catch (err) {
+        updateLastMessage(`${err.message}`);
+        // showErrorMessage() // TODO consider getting rid of this function if not used
     }
 
     updateChat();

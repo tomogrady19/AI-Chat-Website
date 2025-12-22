@@ -20,6 +20,11 @@ export async function streamFromAI(onChunk) {
         body: JSON.stringify({ conversation: [SYSTEM_PROMPT, ...getMessages()] }) // conversation array is flattened
     });
 
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Request failed (${res.status})`);
+    }
+
     await streamRes(res, onChunk);
 }
 

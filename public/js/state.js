@@ -35,3 +35,9 @@ export function appendChunk(chunk){
     saveMessages();
     updateChat();
 }
+
+export function updateLastMessage(content) {
+    messages[messages.length - 1].content = content;
+    saveMessages();
+    updateChat();
+}
