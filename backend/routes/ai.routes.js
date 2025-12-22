@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
     try {
-        await streamAIResponse({input: req.body.conversation, res});
+        await streamAIResponse({input: req.body.conversation, req, res});
     } catch (err) {
         console.error(err);
         res.status(500).end("AI ask failed");
