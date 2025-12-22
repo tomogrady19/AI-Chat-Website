@@ -6,7 +6,6 @@ import {
     showLoadMessage,
     hideLoadMessage,
     clearInput,
-    showErrorMessage,
     renderTopArtists,
     renderTopTracks,
     renderRecent
@@ -56,7 +55,6 @@ async function askAI() {
         await streamFromAI(onChunk);
     } catch (err) {
         updateLastMessage(`${err.message}` || "Unexpected error");
-        // showErrorMessage() // TODO consider getting rid of this function if not used
     } finally {
         clearTimeout(timeoutId);
     }
@@ -98,8 +96,8 @@ async function recommendMusic() {
 
     try {
         await streamMusicRecommendations(appendChunk); //TODO put the try await clause inside the function?
-    } catch {
-        showErrorMessage();
+    } catch (err) {
+        updateLastMessage(err.message || "Failed to load music recommendations");
     }
 
     updateChat();

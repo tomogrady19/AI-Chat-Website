@@ -36,10 +36,6 @@ export function clearInput(){
     document.getElementById("userInput").value = "";
 }
 
-export function showErrorMessage() {
-    document.getElementById("status").innerText = "Something went wrong. Please try again.";
-}
-
 export function renderTopArtists(artists) {
     const container = document.getElementById("artists-section");
     container.innerHTML = "";
