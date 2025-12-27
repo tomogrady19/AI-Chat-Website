@@ -1,21 +1,21 @@
-# AI Chat Website
+# Spotify AI Insights Website
 
-A simple web-based AI chat application built with Node.js and Express,
-using an OpenAI API.
+Personal Spotify listening insights powered by AI.
+Authenticate with Spotify to explore your top artists, 
+tracks, and personalised music recommendations across 
+different time ranges.
 
 ---
 
 ## Features
 
-- Chat with an AI assistant
-- Persistent chat history using localStorage
-- Press Enter to send a message (Shift+Enter to insert new line)
-- Auto-growing input textarea
-- Clear chat functionality
-- Static system prompt to control AI personality
-- Error handling
-- Rate limiting
-- Modular frontend structure
+- Spotify OAuth authentication
+- View top artists and tracks across multiple time ranges
+- Use AI to recommend music based on listening history, or just chat
+- Time-range selection (short, medium, long term)
+- Secure, cookie-based authentication
+- Handling of expired Spotify sessions
+- Modular frontend and backend architecture
 
 ---
 
@@ -29,6 +29,7 @@ using an OpenAI API.
 **Backend**
 - Node.js
 - Express
+- Spotify Web API
 - OpenAI API
 
 ---
