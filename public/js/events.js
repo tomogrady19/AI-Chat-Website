@@ -1,9 +1,11 @@
-export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth }) {
+// TODO rather than loads of function inputs just import them
+export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth, onSpotifySwitch }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
     const toggleAssistantButton = document.getElementById("assistant-toggle");
     const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
+    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     const profileButton = document.getElementById("spotify-profile");
     const recommendButton = document.getElementById("recommendButton");
 
@@ -26,6 +28,7 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
     toggleAssistantButton.addEventListener("click", onToggleAssistant);
     spotifyAuthButton.addEventListener("click", onSpotifyAuth);
+    spotifySwitchBtn.addEventListener("click", onSpotifySwitch);
     profileButton.addEventListener("click", onProfile);
     recommendButton.addEventListener("click", onRecommend);
 }

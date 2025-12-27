@@ -60,3 +60,7 @@ export async function login() {
     window.location.href = "/auth/spotify/login";
 }
 
+export async function switchAccount() {
+    window.location.href = "/auth/spotify/switch";
+}
+

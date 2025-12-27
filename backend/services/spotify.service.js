@@ -37,3 +37,31 @@ export async function getSpotifyUser(accessToken) {
 
     return spotifyRes.json();
 }
+
+export function redirectToSpotifyAuth(req, res, { forceDialog = false } = {}) {
+    const state = crypto.randomBytes(16).toString("hex"); //randomise state so callback can be verified
+    req.session.spotifyState = state; //store state in server side session
+
+    // request info needed from Spotify
+    const scope = [
+        "user-top-read",
+        "user-read-recently-played",
+        "playlist-read-private",
+        "user-read-email",
+        "user-read-private"
+    ].join(" ");
+
+    const params = new URLSearchParams({
+        response_type: "code",
+        client_id: process.env.SPOTIFY_CLIENT_ID,
+        scope,
+        redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+        state
+    });
+
+    if (forceDialog) {
+        params.set("show_dialog", "true");
+    }
+
+    res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
+}

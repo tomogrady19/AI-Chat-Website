@@ -19,12 +19,13 @@ import {
     fetchProfile,
     checkAuthStatus,
     login,
-    logout
+    logout,
+    switchAccount
 } from "./api.js"
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth, onSpotifySwitch: switchAccount});
 
 // call API via backend
 async function askAI() {
