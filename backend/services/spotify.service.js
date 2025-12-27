@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import crypto from "crypto";
 
 export function getSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;

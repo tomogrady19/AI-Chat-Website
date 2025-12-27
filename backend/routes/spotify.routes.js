@@ -1,5 +1,4 @@
 import express from "express";
-import crypto from "crypto";
 import fetch from "node-fetch";
 import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth} from "../services/spotify.service.js";
 import { requireAuth } from "../middleware/auth.js";
