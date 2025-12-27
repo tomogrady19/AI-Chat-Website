@@ -18,9 +18,40 @@
     border-radius: 12px;
 }
 
-#mainButtons {
+#spotify-auth {
+    position: fixed;
+    top: 16px;
+    left: 16px;
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 8px;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+#spotify-auth button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
+
+#mainButtons {
+    margin-top: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+#mainButtons label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    text-align: center;
+}
+
+#timeRange {
+    font-size: 0.85rem;
+    padding: 4px 6px;
+
+    width: auto;
+    max-width: 160px;
 }
