@@ -1,8 +1,9 @@
-export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRecommend }) {
+export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
-    const toggleButton = document.getElementById("assistant-toggle");
+    const toggleAssistantButton = document.getElementById("assistant-toggle");
+    const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
     const profileButton = document.getElementById("spotify-profile");
     const recommendButton = document.getElementById("recommendButton");
 
@@ -23,7 +24,8 @@ export function setupEventListeners({ onAsk, onClear, onToggle, onProfile, onRec
     // Ask button click
     askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
     clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
-    toggleButton.addEventListener("click", onToggle);
+    toggleAssistantButton.addEventListener("click", onToggleAssistant);
+    spotifyAuthButton.addEventListener("click", onSpotifyAuth);
     profileButton.addEventListener("click", onProfile);
     recommendButton.addEventListener("click", onRecommend);
 }

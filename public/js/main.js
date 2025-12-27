@@ -8,18 +8,23 @@ import {
     clearInput,
     renderTopArtists,
     renderTopTracks,
-    renderRecent
+    renderRecent,
+    showLoggedIn,
+    showLoggedOut
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import {
     streamFromAI,
     streamMusicRecommendations,
-    fetchProfile
+    fetchProfile,
+    checkAuthStatus,
+    login,
+    logout
 } from "./api.js"
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggle: toggleDrawer, onProfile: showProfile, onRecommend: recommendMusic});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth});
 
 // call API via backend
 async function askAI() {
@@ -52,7 +57,7 @@ function clearChat() {
     updateChat();
 }
 
-function toggleDrawer() {
+function toggleAssistant() {
     const drawer = document.getElementById("assistant-drawer");
     const shouldOpen = !drawer.classList.contains("open");
 
@@ -84,3 +89,25 @@ async function recommendMusic() {
 
     updateChat();
 }
+
+async function toggleSpotifyAuth() {
+    const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
+    if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
+        await logout();
+        showLoggedOut();
+    } else {
+        await login();
+        showLoggedIn();
+    }
+}
+
+async function initAuth() {
+    try {
+        await checkAuthStatus();
+        showLoggedIn();
+    } catch {
+        showLoggedOut();
+    }
+}
+
+await initAuth();
