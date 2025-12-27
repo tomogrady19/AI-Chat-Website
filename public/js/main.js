@@ -74,7 +74,7 @@ async function showProfile() {
         renderRecent(data.recent);
     } catch (err) {
         console.error(err)
-        alert("Spotify not connected")
+        alert("Spotify not connected. Try logging out and logging back in.")
     }
 }
 
