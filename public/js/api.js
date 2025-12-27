@@ -30,8 +30,8 @@ export async function streamMusicRecommendations(onChunk) {
 
 async function streamRes(res, onChunk) {
     if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `Request failed (${res.status})`);
+        const data = await res.json();
+        throw new Error(data.message || `Request failed (${res.status})`);
     }
     if (!res.body) throw new Error("No response body");
 

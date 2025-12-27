@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 export function getSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;
     if (!spotifySession?.accessToken) {
-        throw new Error("SPOTIFY NOT AUTHENTICATED");
+        throw new Error("Spotify not authenticated");
     }
     return spotifySession.accessToken;
 }
@@ -32,7 +32,7 @@ export async function getSpotifyUser(accessToken) {
 
     if (!spotifyRes.ok) {
         const body = await spotifyRes.text();
-        throw new Error(`spotify ID call failed: ${spotifyRes.status} ${body}`);
+        throw new Error(`Spotify ID call failed: ${spotifyRes.status} ${body}`);
     }
 
     return spotifyRes.json();
