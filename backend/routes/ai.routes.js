@@ -1,6 +1,6 @@
 import express from "express";
 import { streamAIResponse } from "../services/openai.service.js";
-import { getSpotifyAccessToken, getSpotifyProfile } from "../services/spotify.service.js";
+import { getSpotifyAccessToken, getSpotifyProfile, getTimeRange } from "../services/spotify.service.js";
 import { buildMusicProfilePrompt } from "../utils/prompts.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -21,7 +21,8 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
 router.post("/music-recommendations", requireAuth, async (req, res) => {
     try {
         const spotifyAccessToken = getSpotifyAccessToken(req);
-        const profile = await getSpotifyProfile(spotifyAccessToken);
+        const timeRange = getTimeRange(req);
+        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
         const prompt = buildMusicProfilePrompt(profile);
 
         await streamAIResponse({ input: prompt, req, res });

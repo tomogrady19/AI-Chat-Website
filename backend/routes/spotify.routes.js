@@ -1,6 +1,6 @@
 import express from "express";
 import fetch from "node-fetch";
-import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth} from "../services/spotify.service.js";
+import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth, getTimeRange} from "../services/spotify.service.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";
 
@@ -96,9 +96,7 @@ router.get("/auth/spotify/status", requireAuth, (req, res) => {
 });
 
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
-    const allowedRanges = ["short_term", "medium_term", "long_term"];
-    // if req.query.time_range is not in allowedRanges, set timeRange to "medium_term"
-    const timeRange = allowedRanges.includes(req.query.time_range) ? req.query.time_range : "medium_term"; // default
+    const timeRange = getTimeRange(req);
     const spotifyAccessToken = getSpotifyAccessToken(req);
     try {
         const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);

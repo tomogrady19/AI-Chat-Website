@@ -1,4 +1,5 @@
 import {getMessages} from "./state.js";
+// TODO headers and credentials are missing from some endpoint calls, is that okay?
 
 const SYSTEM_PROMPT = {
     role: "system",
@@ -9,7 +10,7 @@ const SYSTEM_PROMPT = {
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
-    const res = await fetch(`api/spotify/profile?time_range=${timeRange}`); //defaults to GET
+    const res = await fetch(`api/spotify/profile?timeRange=${timeRange}`); //defaults to GET
     if (!res.ok) { throw new Error("Spotify not connected"); }
     return res.json();
 }
@@ -25,6 +26,13 @@ export async function streamFromAI(onChunk) {
 }
 
 export async function streamMusicRecommendations(onChunk) {
+    const timeRange = document.getElementById("timeRange").value;
+
+    await fetch("/api/ai/music-recommendations", {
+        method: "POST",
+        body: JSON.stringify({ timeRange })
+    });
+
     const res = await fetch("/api/ai/music-recommendations", {method: "POST"});
     await streamRes(res, onChunk);
 }
