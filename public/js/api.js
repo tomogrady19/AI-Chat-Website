@@ -48,28 +48,15 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
-    const res = await fetch("/api/auth/status", {
-        credentials: "include"
-    });
-
-    if (!res.ok) {
-        throw new Error("Not authenticated"); //TODO this error should be named better (does it even need an error?)
-    }
-    return true;
+    const res = await fetch("/auth/spotify/status", { credentials: "include" });
+    return res.ok;
 }
 
 export async function logout() {
-    await fetch("/auth/spotify/logout", {
-        method: "GET",
-        credentials: "include"
-    });
+    await fetch("/auth/spotify/logout", { method: "GET", credentials: "include" });
 }
 
 export async function login() {
-    // await fetch("/auth/spotify/login", {
-    //     method: "GET",
-    //     credentials: "include"
-    // });
-    window.location.href = "/auth/spotify/login"; //TODO which way is better?
+    window.location.href = "/auth/spotify/login";
 }
 

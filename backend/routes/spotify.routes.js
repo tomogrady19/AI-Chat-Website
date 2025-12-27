@@ -109,6 +109,10 @@ router.get("/auth/spotify/logout", (req, res) => {
     });
 });
 
+router.get("/auth/spotify/status", requireAuth, (req, res) => {
+    res.json({ authenticated: true });
+});
+
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
     const spotifyAccessToken = getSpotifyAccessToken(req);
     try {

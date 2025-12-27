@@ -103,9 +103,14 @@ async function toggleSpotifyAuth() {
 
 async function initAuth() {
     try {
-        await checkAuthStatus();
-        showLoggedIn();
-    } catch {
+        const isLoggedIn = await checkAuthStatus();
+        if (isLoggedIn) {
+          showLoggedIn();
+        } else {
+          showLoggedOut();
+        }
+    } catch (err) {
+        console.error("Auth check failed:", err);
         showLoggedOut();
     }
 }
