@@ -104,7 +104,7 @@ async function toggleSpotifyAuth() {
 
 async function initAuth() {
     try {
-        const isLoggedIn = await checkAuthStatus();
+        const isLoggedIn = await checkAuthStatus(); // TODO not sure if this works (check for cookies instead)
         if (isLoggedIn) {
           showLoggedIn();
         } else {

@@ -8,7 +8,8 @@ const SYSTEM_PROMPT = {
 }
 
 export async function fetchProfile() {
-    const res = await fetch("api/spotify/profile"); //defaults to GET
+    const timeRange = document.getElementById("timeRange").value;
+    const res = await fetch(`api/spotify/profile?time_range=${timeRange}`); //defaults to GET
     if (!res.ok) { throw new Error("Spotify not connected"); }
     return res.json();
 }

@@ -8,6 +8,7 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     const profileButton = document.getElementById("spotify-profile");
     const recommendButton = document.getElementById("recommendButton");
+    const timeRange = document.getElementById("timeRange")
 
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
@@ -31,4 +32,6 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     spotifySwitchBtn.addEventListener("click", onSpotifySwitch);
     profileButton.addEventListener("click", onProfile);
     recommendButton.addEventListener("click", onRecommend);
+
+    timeRange.addEventListener("change", onProfile);
 }

@@ -96,9 +96,12 @@ router.get("/auth/spotify/status", requireAuth, (req, res) => {
 });
 
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
+    const allowedRanges = ["short_term", "medium_term", "long_term"];
+    // if req.query.time_range is not in allowedRanges, set timeRange to "medium_term"
+    const timeRange = allowedRanges.includes(req.query.time_range) ? req.query.time_range : "medium_term"; // default
     const spotifyAccessToken = getSpotifyAccessToken(req);
     try {
-        const profile = await getSpotifyProfile(spotifyAccessToken);
+        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
         res.json(profile);
     } catch (err) {
         console.error("Spotify profile error:", err);

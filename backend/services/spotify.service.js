@@ -9,13 +9,13 @@ export function getSpotifyAccessToken(req) {
     return spotifySession.accessToken;
 }
 
-export async function getSpotifyProfile(accessToken) {
+export async function getSpotifyProfile(accessToken, timeRange) {
     const headers = { Authorization: `Bearer ${accessToken}` };
 
     const [artistsRes, tracksRes, recentRes] = await Promise.all([
-        fetch("https://api.spotify.com/v1/me/top/artists?limit=10", { headers }),
-        fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", { headers }),
-        fetch("https://api.spotify.com/v1/me/player/recently-played?limit=10", { headers })
+        fetch(`https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=10`, { headers }),
+        fetch(`https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=10`, { headers }),
+        fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=10`, { headers })
     ]);
 
     return {
