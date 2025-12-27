@@ -141,6 +141,6 @@ export function showLoggedOut() {
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     authBtn.textContent = "Log in with Spotify";
     profileBtn.style.display = "none"; // hide profile button
-    switchBtn.style.display = "none"; // hide switch button
+    spotifySwitchBtn.style.display = "none"; // hide switch button
 }
 
