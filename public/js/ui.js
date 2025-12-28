@@ -49,17 +49,8 @@ export function renderTopArtists(artists) {
         const li = document.createElement("li");
         li.className = "artist-item";
 
-        const img = document.createElement("img");
-        img.src = artist.images?.[0]?.url || "";
-        img.alt = artist.name;
-        img.loading = "lazy";
-
-        const name = document.createElement("a"); // make text a clickable link
-        name.className = "spotify-link";
-        name.textContent = artist.name;
-        name.href = artist.external_urls.spotify;
-        name.target = "_blank"; // make link open in new tab
-        name.rel = "noopener noreferrer"; // security and privacy
+        const img = createImage(artist.name, artist.images?.[0]?.url)
+        const name = createSpotifyLink(artist.name, artist.external_urls?.spotify)
 
         li.appendChild(img);
         li.appendChild(name);
@@ -84,17 +75,8 @@ export function renderTopTracks(tracks) {
         const li = document.createElement("li");
         li.className = "track-item";
 
-        const img = document.createElement("img");
-        img.src = track.album.images?.[0]?.url || "";
-        img.alt = track.name;
-        img.loading = "lazy";
-
-        const text = document.createElement("a"); // make text a clickable link
-        text.className = "spotify-link";
-        text.textContent = `${track.name} — ${track.artists.map(a => a.name).join(", ")}`;
-        text.href = track.external_urls.spotify;
-        text.target = "_blank"; // make link open in new tab
-        text.rel = "noopener noreferrer"; // security and privacy
+        const img = createImage(track.name, track.album?.images?.[0]?.url)
+        const text = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls?.spotify)
 
         li.appendChild(img);
         li.appendChild(text);
@@ -118,18 +100,9 @@ export function renderRecent(recent) {
     recent.forEach(recentItem => {
         const li = document.createElement("li");
         li.className = "recent-item";
-
-        const img = document.createElement("img");
-        img.src = recentItem.track.album.images?.[0]?.url || "";
-        img.alt = recentItem.track.name;
-        img.loading = "lazy";
-
-        const text = document.createElement("a"); // make text a clickable link
-        text.className = "spotify-link";
-        text.textContent = `${recentItem.track.name} — ${recentItem.track.artists.map(a => a.name).join(", ")}`;
-        text.href = recentItem.track.external_urls.spotify;
-        text.target = "_blank"; // make link open in new tab
-        text.rel = "noopener noreferrer"; // security and privacy
+        const track = recentItem.track;
+        const img = createImage(track.name, track.album.images?.[0]?.url)
+        const text = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls.spotify)
 
         li.appendChild(img);
         li.appendChild(text);
@@ -157,5 +130,30 @@ export function showLoggedOut() {
     authBtn.textContent = "Log in with Spotify";
     profileBtn.style.display = "none"; // hide profile button
     spotifySwitchBtn.style.display = "none"; // hide switch button
+}
+
+function createImage(text, url) {
+    const img = document.createElement("img");
+    img.src = url || "";
+    img.alt = text || "";
+    img.loading = "lazy";
+    return img;
+}
+
+function createSpotifyLink(text, url) {
+    const link = document.createElement("a");
+    link.textContent = text;
+    link.className = "spotify-link";
+
+    if (url) {
+        link.href = url;
+        link.target = "_blank"; // opens a new tab
+        link.rel = "noopener noreferrer"; //privacy and security
+    } else {
+        link.href = "#";
+        link.style.pointerEvents = "none";
+    }
+
+    return link;
 }
 
