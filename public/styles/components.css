@@ -29,6 +29,16 @@
   text-align: center;
 }
 
+.spotify-link {
+    color: black;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.spotify-link:hover {
+    text-decoration: underline;
+}
+
 /*ID selectors*/
 
 

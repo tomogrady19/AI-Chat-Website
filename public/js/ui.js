@@ -53,8 +53,12 @@ export function renderTopArtists(artists) {
         img.src = artist.images?.[0]?.url || "";
         img.alt = artist.name;
 
-        const name = document.createElement("span");
+        const name = document.createElement("a"); // make text a clickable link
+        name.className = "spotify-link";
         name.textContent = artist.name;
+        name.href = artist.external_urls.spotify;
+        name.target = "_blank"; // make link open in new tab
+        name.rel = "noopener noreferrer"; // security and privacy
 
         li.appendChild(img);
         li.appendChild(name);
@@ -83,8 +87,12 @@ export function renderTopTracks(tracks) {
         img.src = track.album.images?.[0]?.url || "";
         img.alt = track.name;
 
-        const text = document.createElement("span");
+        const text = document.createElement("a"); // make text a clickable link
+        text.className = "spotify-link";
         text.textContent = `${track.name} — ${track.artists.map(a => a.name).join(", ")}`;
+        text.href = track.external_urls.spotify;
+        text.target = "_blank"; // make link open in new tab
+        text.rel = "noopener noreferrer"; // security and privacy
 
         li.appendChild(img);
         li.appendChild(text);
@@ -113,8 +121,12 @@ export function renderRecent(recent) {
         img.src = recentItem.track.album.images?.[0]?.url || "";
         img.alt = recentItem.track.name;
 
-        const text = document.createElement("span");
+        const text = document.createElement("a"); // make text a clickable link
+        text.className = "spotify-link";
         text.textContent = `${recentItem.track.name} — ${recentItem.track.artists.map(a => a.name).join(", ")}`;
+        text.href = recentItem.track.external_urls.spotify;
+        text.target = "_blank"; // make link open in new tab
+        text.rel = "noopener noreferrer"; // security and privacy
 
         li.appendChild(img);
         li.appendChild(text);
