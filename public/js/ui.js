@@ -52,6 +52,7 @@ export function renderTopArtists(artists) {
         const img = document.createElement("img");
         img.src = artist.images?.[0]?.url || "";
         img.alt = artist.name;
+        img.loading = "lazy";
 
         const name = document.createElement("a"); // make text a clickable link
         name.className = "spotify-link";
@@ -86,6 +87,7 @@ export function renderTopTracks(tracks) {
         const img = document.createElement("img");
         img.src = track.album.images?.[0]?.url || "";
         img.alt = track.name;
+        img.loading = "lazy";
 
         const text = document.createElement("a"); // make text a clickable link
         text.className = "spotify-link";
@@ -120,6 +122,7 @@ export function renderRecent(recent) {
         const img = document.createElement("img");
         img.src = recentItem.track.album.images?.[0]?.url || "";
         img.alt = recentItem.track.name;
+        img.loading = "lazy";
 
         const text = document.createElement("a"); // make text a clickable link
         text.className = "spotify-link";
