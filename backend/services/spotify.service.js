@@ -28,9 +28,9 @@ export async function getSpotifyProfile(accessToken, timeRange) {
     ]);
 
     return {
-        artists: (await artistsRes.json()).items,
-        tracks: (await tracksRes.json()).items,
-        recent: (await recentRes.json()).items
+        artists: (await artistsRes.json()).items ?? [],
+        tracks: (await tracksRes.json()).items ?? [],
+        recent: (await recentRes.json()).items ?? [],
     };
 }
 
