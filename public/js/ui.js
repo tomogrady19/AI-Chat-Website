@@ -42,23 +42,21 @@ export function renderTopArtists(artists) {
 
     const title = document.createElement("h2");
     title.textContent = "Your Top Artists";
+    container.appendChild(title);
 
-    const list = document.createElement("ul");
-
+    const list = document.createElement("ol"); // ordered list
     artists.forEach(artist => {
         const li = document.createElement("li");
         li.className = "artist-item";
 
         const img = createImage(artist.name, artist.images?.[0]?.url)
-        const name = createSpotifyLink(artist.name, artist.external_urls?.spotify)
+        const link = createSpotifyLink(artist.name, artist.external_urls?.spotify)
 
         li.appendChild(img);
-        li.appendChild(name);
+        li.appendChild(link);
+
         list.appendChild(li);
     });
-
-
-    container.appendChild(title);
     container.appendChild(list);
 }
 
@@ -68,23 +66,21 @@ export function renderTopTracks(tracks) {
 
     const title = document.createElement("h2");
     title.textContent = "Your Top Tracks";
+    container.appendChild(title);
 
     const list = document.createElement("ol");
-
     tracks.forEach(track => {
         const li = document.createElement("li");
         li.className = "track-item";
 
         const img = createImage(track.name, track.album?.images?.[0]?.url)
-        const text = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls?.spotify)
+        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls?.spotify)
 
         li.appendChild(img);
-        li.appendChild(text);
+        li.appendChild(link);
+
         list.appendChild(li);
     });
-
-
-    container.appendChild(title);
     container.appendChild(list);
 }
 
@@ -94,23 +90,21 @@ export function renderRecent(recent) {
 
     const title = document.createElement("h2");
     title.textContent = "Your Recent Tracks";
+    container.appendChild(title);
 
     const list = document.createElement("ol");
-
     recent.forEach(recentItem => {
         const li = document.createElement("li");
         li.className = "recent-item";
         const track = recentItem.track;
         const img = createImage(track.name, track.album.images?.[0]?.url)
-        const text = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls.spotify)
+        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls.spotify)
 
         li.appendChild(img);
-        li.appendChild(text);
+        li.appendChild(link);
+
         list.appendChild(li);
     });
-
-
-    container.appendChild(title);
     container.appendChild(list);
 }
 
