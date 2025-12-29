@@ -5,6 +5,7 @@ let player = null;
 let deviceId = null;
 let accessToken = null;
 let initPromise = null;
+let isPaused = true;
 let spotifySDKReadyResolve;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
@@ -61,6 +62,10 @@ export async function initPlayback() {
         player.addListener("authentication_error", ({ message }) => console.error(message));
         player.addListener("account_error", ({ message }) => console.error(message));
         player.addListener("playback_error", ({ message }) => console.error(message));
+        player.addListener("player_state_changed", (state) => {
+            if (!state) return;
+            isPaused = state.paused;
+        });
 
         const connected = await player.connect();
         if (!connected) throw new Error("Spotify player could not connect");
@@ -96,5 +101,16 @@ export async function playTrackById(trackId) {
         let text = "";
         try { text = await res.text(); } catch {}
         throw new Error(`Play failed: ${res.status} ${text}`);
+    }
+}
+
+export async function togglePlayPause() {
+    await initPlayback();
+    if (!player) throw new Error("Player not ready");
+
+    if (isPaused) {
+        await player.resume();
+    } else {
+        await player.pause();
     }
 }

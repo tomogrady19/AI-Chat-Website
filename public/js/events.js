@@ -1,3 +1,5 @@
+import { togglePlayPause } from "./playback.js"
+
 // TODO rather than loads of function inputs just import them
 export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth, onSpotifySwitch, onPlayTrack }) {
     const input = document.getElementById("userInput");
@@ -42,4 +44,12 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
         const trackId = btn.dataset.trackId;
         if (trackId) onPlayTrack(trackId);
     });
+
+    document.getElementById("toggle-play").addEventListener("click", async () => {
+        try {
+            await togglePlayPause();
+        } catch (e) {
+            alert(e.message || "Playback unavailable (Premium required)");
+        }
+});
 }
