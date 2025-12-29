@@ -8,8 +8,12 @@ export async function showProfile() {
         renderTopTracks(data.tracks);
         renderRecent(data.recent);
     } catch (err) {
+        if (err.code === 401) {
+            console.log("Spotify not authenticated yet");
+            return;
+        }
         console.error(err)
-        alert("Spotify not connected. Try logging out and logging back in.") //TODO this error is coming up too much
+        alert("Something went wrong loading your Spotify data")
     }
 }
 

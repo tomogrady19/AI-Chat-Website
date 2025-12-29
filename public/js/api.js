@@ -11,7 +11,17 @@ const SYSTEM_PROMPT = {
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
     const res = await fetch(`api/spotify/profile?timeRange=${timeRange}`); //defaults to GET
-    if (!res.ok) { throw new Error("Spotify not connected"); }
+
+    if (res.status === 401) {
+        const err = new Error("Spotify not authenticated");
+        err.code = 401;
+        throw err;
+    }
+
+    if (!res.ok) {
+        throw new Error(`Profile fetch failed: ${res.status}`);
+    }
+
     return res.json();
 }
 
