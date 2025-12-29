@@ -1,5 +1,6 @@
-import { getMessages } from "./state.js";
-import {fetchProfile} from "./api.js";
+import { getMessages, clearMessages, addMessage, updateLastMessage, appendChunk } from "./state.js";
+import {fetchProfile, login, logout, streamMusicRecommendations} from "./api.js";
+import {playTrackById} from "./playback.js";
 
 export async function showProfile() {
     try {
@@ -40,11 +41,17 @@ function clearTimeRange() {
     timeRangeSelect.hidden = true;
 }
 
+export function clearChat() {
+    clearMessages();
+    updateChat();
+}
+
 export function clearUI() {
     clearProfile();
     clearNowPlaying();
     clearTimeRange();
     clearTogglePlay();
+    clearChat();
 }
 
 export function updateChat() {
@@ -207,4 +214,47 @@ function creatPlayButton(track) {
     playBtn.setAttribute("aria-label", `Play ${track.name}`);
     playBtn.dataset.trackId = track.id;
     return playBtn
+}
+
+export function toggleAssistant() {
+    const drawer = document.getElementById("assistant-drawer");
+    const shouldOpen = !drawer.classList.contains("open");
+
+    drawer.classList.toggle("open", shouldOpen);
+    drawer.setAttribute("aria-hidden", String(!shouldOpen));
+}
+
+export async function recommendMusic() {
+    addMessage("assistant", "");
+    updateChat();
+
+    try {
+        await streamMusicRecommendations(appendChunk);
+    } catch (err) {
+        updateLastMessage(err.message || "Failed to load music recommendations");
+    }
+
+    updateChat();
+}
+
+export async function toggleSpotifyAuth() {
+    const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
+    if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
+        await logout();
+        clearUI();
+        showLoggedOut();
+    } else {
+        await login();
+        await showProfile()
+        showLoggedIn();
+    }
+}
+
+export async function playTrack(trackId) {
+    try {
+        await playTrackById(trackId);
+    } catch (err) {
+        console.error(err);
+        alert(err.message || "Playback failed (Premium required for in-app playback).");
+    }
 }

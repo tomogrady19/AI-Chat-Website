@@ -1,4 +1,6 @@
 import {getMessages} from "./state.js";
+import {addMessage, appendChunk, updateLastMessage} from "./state.js";
+import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui.js";
 // TODO headers and credentials are missing from some endpoint calls, is that okay?
 
 const SYSTEM_PROMPT = {
@@ -6,6 +8,31 @@ const SYSTEM_PROMPT = {
     content:`You are a human music DJ, not an AI.
              Answer clearly, concisely and avoid unnecessary verbosity.
              Keep it to single line breaks.`,
+}
+
+// call API via backend
+export async function askAI() {
+    const prompt = document.getElementById("userInput").value.trim();
+    if (!prompt) return;
+
+    addMessage("user", prompt); //add message to messages
+    clearInput(); // clear input box once the message is added to chat
+
+    updateChat();
+    showLoadMessage();
+    disableInput(); // disable user input while response is being fetched by API
+
+    addMessage("assistant", ""); // start with empty message to stream response to
+
+    try {
+        await streamFromAI(appendChunk);
+    } catch (err) {
+        updateLastMessage(`${err.message}` || "Unexpected error");
+    }
+
+    updateChat();
+    hideLoadMessage();
+    enableInput();
 }
 
 export async function fetchProfile() {

@@ -1,46 +1,37 @@
 import { togglePlayPause } from "./playback.js"
+import { askAI, switchAccount } from "./api.js";
+import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, playTrack} from "./ui.js";
 
-// TODO rather than loads of function inputs just import them
-export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth, onSpotifySwitch, onPlayTrack }) {
+//TODO finish refactoring this (and ui.js)
+export async function setupEventListeners() {
+    document.getElementById("askButton")?.addEventListener("click", askAI);
+    document.getElementById("clearButton")?.addEventListener("click", clearChat);
+    document.getElementById("assistant-toggle")?.addEventListener("click", toggleAssistant);
+    document.getElementById("spotifyAuthBtn")?.addEventListener("click", toggleSpotifyAuth);
+    document.getElementById("spotifySwitchBtn")?.addEventListener("click", switchAccount);
+    document.getElementById("recommendButton")?.addEventListener("click", recommendMusic);
+    document.getElementById("timeRange")?.addEventListener("change", showProfile);
+
     const input = document.getElementById("userInput");
-    const askButton = document.getElementById("askButton");
-    const clearButton = document.getElementById("clearButton");
-    const toggleAssistantButton = document.getElementById("assistant-toggle");
-    const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
-    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const recommendButton = document.getElementById("recommendButton");
-    const timeRange = document.getElementById("timeRange")
-
     // Enter / Shift+Enter handling
     input.addEventListener("keydown", (event) => {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            onAsk();
+            askAI();
         }
     });
-
     // Auto-grow textarea as input grows
     input.addEventListener("input", () => {
         input.style.height = "auto";
         input.style.height = input.scrollHeight + "px";
     });
 
-    // Ask button click
-    askButton.addEventListener("click", onAsk); // when askButton is clicked, call relevant function
-    clearButton.addEventListener("click", onClear); // when clearButton is clicked, call relevant function
-    toggleAssistantButton.addEventListener("click", onToggleAssistant);
-    spotifyAuthButton.addEventListener("click", onSpotifyAuth);
-    spotifySwitchBtn.addEventListener("click", onSpotifySwitch);
-    recommendButton.addEventListener("click", onRecommend);
-
-    timeRange.addEventListener("change", onProfile);
-
     //TODO comment this more
     document.getElementById("spotify-content").addEventListener("click", (e) => {
         const btn = e.target.closest(".play-btn");
         if (!btn) return;
         const trackId = btn.dataset.trackId;
-        if (trackId) onPlayTrack(trackId);
+        if (trackId) playTrack(trackId);
     });
 
     document.getElementById("toggle-play").addEventListener("click", async () => {
