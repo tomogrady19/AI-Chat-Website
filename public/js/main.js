@@ -84,6 +84,8 @@ async function toggleSpotifyAuth() {
     if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
         await logout();
         clearProfile();
+        const nowPlaying = document.getElementById("now-playing");
+        if (nowPlaying) nowPlaying.textContent = "-";
         showLoggedOut();
     } else {
         await login();
