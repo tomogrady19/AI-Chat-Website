@@ -22,10 +22,12 @@ import {
     logout,
     switchAccount
 } from "./api.js"
+import { initPlayback, playTrackById } from "./playback.js";
 
 loadMessages();
 updateChat();
-setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth, onSpotifySwitch: switchAccount});
+setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth, onSpotifySwitch: switchAccount, onPlayTrack: playTrack});
+await initAuth(); //TODO maybe this should be at the bottom
 
 // call API via backend
 async function askAI() {
@@ -106,9 +108,10 @@ async function initAuth() {
     try {
         const isLoggedIn = await checkAuthStatus(); // TODO not sure if this works (check for cookies instead)
         if (isLoggedIn) {
-          showLoggedIn();
+            showLoggedIn();
+            initPlayback().catch(err => console.warn("Playback init failed:", err));
         } else {
-          showLoggedOut();
+            showLoggedOut();
         }
     } catch (err) {
         console.error("Auth check failed:", err);
@@ -116,4 +119,11 @@ async function initAuth() {
     }
 }
 
-await initAuth();
+async function playTrack(trackId) {
+    try {
+        await playTrackById(trackId);
+    } catch (err) {
+        console.error(err);
+        alert(err.message || "Playback failed (Premium required for in-app playback).");
+    }
+}

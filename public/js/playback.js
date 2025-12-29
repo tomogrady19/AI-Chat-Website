@@ -1,0 +1,100 @@
+import { fetchPlaybackToken, fetchPlayer } from "./api.js";
+
+// define globally here so they can be updated by separate functions without returning them explicitly
+let player = null;
+let deviceId = null;
+let accessToken = null;
+let initPromise = null;
+let spotifySDKReadyResolve;
+
+window.onSpotifyWebPlaybackSDKReady = () => {
+    if (spotifySDKReadyResolve) spotifySDKReadyResolve();
+};
+
+function waitForSpotifySDK() {
+    return new Promise((resolve) => {
+        if (window.Spotify?.Player) return resolve();
+        spotifySDKReadyResolve = resolve;
+    });
+}
+
+async function transferPlaybackHere() {
+    await fetch("https://api.spotify.com/v1/me/player", {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            device_ids: [deviceId],
+            play: false
+        })
+    });
+}
+
+export async function initPlayback() {
+    if (initPromise) return initPromise;
+
+    initPromise = (async () => {
+        const tokenData = await fetchPlaybackToken();
+        accessToken = tokenData.accessToken;
+
+        await waitForSpotifySDK();
+
+        player = new window.Spotify.Player({
+            name: "Spotify AI Insights Player",
+            getOAuthToken: (cb) => cb(accessToken), //TODO why grey?
+            volume: 0.6
+        });
+
+        player.addListener("ready", async ({ device_id }) => {
+            deviceId = device_id;
+            try {
+                await transferPlaybackHere();
+                console.log("Web Playback SDK ready. Device:", deviceId);
+            } catch (e) {
+                console.warn("Could not transfer playback:", e);
+            }
+        });
+
+        player.addListener("initialization_error", ({ message }) => console.error(message));
+        player.addListener("authentication_error", ({ message }) => console.error(message));
+        player.addListener("account_error", ({ message }) => console.error(message));
+        player.addListener("playback_error", ({ message }) => console.error(message));
+
+        const connected = await player.connect();
+        if (!connected) throw new Error("Spotify player could not connect");
+
+        return true;
+    })();
+
+    return initPromise;
+}
+
+export async function playTrackById(trackId) {
+    // Ensure player exists
+    await initPlayback();
+    // If deviceId is still null, wait a bit for it to be set
+    for (let i = 0; i < 5 && !deviceId; i++) {
+        await new Promise((r) => setTimeout(r, 200));
+    }
+    if (!deviceId) throw new Error("Spotify player not ready yet");
+
+    // Try play
+    let res = await fetchPlayer(deviceId, trackId, accessToken)
+
+    // If token expired, refresh once and retry
+    if (res.status === 401) {
+        const tokenData = await fetchPlaybackToken();
+        accessToken = tokenData.accessToken;
+        res = await fetchPlayer(deviceId, trackId, accessToken)
+    }
+
+    if (res.status === 204) return; // success
+
+    if (!res.ok) {
+        let text = "";
+        try { text = await res.text(); } catch {}
+        throw new Error(`Play failed: ${res.status} ${text}`);
+    }
+}

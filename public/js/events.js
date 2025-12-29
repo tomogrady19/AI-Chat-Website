@@ -1,5 +1,5 @@
 // TODO rather than loads of function inputs just import them
-export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth, onSpotifySwitch }) {
+export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfile, onRecommend, onSpotifyAuth, onSpotifySwitch, onPlayTrack }) {
     const input = document.getElementById("userInput");
     const askButton = document.getElementById("askButton");
     const clearButton = document.getElementById("clearButton");
@@ -34,4 +34,12 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     recommendButton.addEventListener("click", onRecommend);
 
     timeRange.addEventListener("change", onProfile);
+
+    //TODO comment this more
+    document.getElementById("spotify-content").addEventListener("click", (e) => {
+        const btn = e.target.closest(".play-btn");
+        if (!btn) return;
+        const trackId = btn.dataset.trackId;
+        if (trackId) onPlayTrack(trackId);
+    });
 }

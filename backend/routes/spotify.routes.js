@@ -49,6 +49,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
             accessToken: tokenData.access_token,
             refreshToken: tokenData.refresh_token,
             expiresIn: tokenData.expires_in,
+            obtainedAt: Date.now()
         };
         console.log("Spotify access token received");
 
@@ -97,7 +98,7 @@ router.get("/auth/spotify/status", requireAuth, (req, res) => {
 
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
     const timeRange = getTimeRange(req);
-    const spotifyAccessToken = getSpotifyAccessToken(req);
+    const spotifyAccessToken = await getSpotifyAccessToken(req);
     try {
         const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
         res.json(profile);
@@ -106,5 +107,16 @@ router.get("/api/spotify/profile", requireAuth, async (req, res) => {
         res.status(500).json({ error: "Spotify profile failed to load" });
     }
 });
+
+router.get("/api/spotify/playback-token", requireAuth, async (req, res) => {
+    try {
+        const accessToken = await getSpotifyAccessToken(req);
+        res.json({ accessToken });
+    } catch (err) {
+        console.error("Playback token error:", err);
+        res.status(401).json({ message: "Spotify token unavailable" });
+    }
+});
+
 
 export default router;

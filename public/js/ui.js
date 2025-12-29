@@ -73,9 +73,11 @@ export function renderTopTracks(tracks) {
         const li = document.createElement("li");
         li.className = "track-item";
 
-        const img = createImage(track.name, track.album?.images?.[0]?.url)
-        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls?.spotify)
+        const playBtn = creatPlayButton(track);
+        const img = createImage(track.name, track.album?.images?.[0]?.url);
+        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls?.spotify);
 
+        li.appendChild(playBtn);
         li.appendChild(img);
         li.appendChild(link);
 
@@ -97,9 +99,12 @@ export function renderRecent(recent) {
         const li = document.createElement("li");
         li.className = "recent-item";
         const track = recentItem.track;
-        const img = createImage(track.name, track.album.images?.[0]?.url)
-        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls.spotify)
 
+        const playBtn = creatPlayButton(track);
+        const img = createImage(track.name, track.album.images?.[0]?.url);
+        const link = createSpotifyLink(`${track.name} — ${track.artists.map(a => a.name).join(", ")}`, track.external_urls.spotify);
+
+        li.appendChild(playBtn);
         li.appendChild(img);
         li.appendChild(link);
 
@@ -151,3 +156,12 @@ function createSpotifyLink(text, url) {
     return link;
 }
 
+function creatPlayButton(track) {
+    const playBtn = document.createElement("button");
+    playBtn.type = "button";
+    playBtn.className = "play-btn";
+    playBtn.textContent = "▶";
+    playBtn.setAttribute("aria-label", `Play ${track.name}`);
+    playBtn.dataset.trackId = track.id;
+    return playBtn
+}

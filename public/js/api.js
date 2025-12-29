@@ -73,3 +73,16 @@ export async function switchAccount() {
     window.location.href = "/auth/spotify/switch";
 }
 
+export async function fetchPlaybackToken() {
+    const res = await fetch("/api/spotify/playback-token", { credentials: "include" });
+    if (!res.ok) throw new Error("Could not fetch playback token");
+    return res.json();
+}
+
+export async function fetchPlayer(deviceId, trackId, accessToken) {
+    return await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(deviceId)}`, {
+        method: "PUT",
+        headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json"},
+        body: JSON.stringify({uris: [`spotify:track:${trackId}`]})
+    });
+}
