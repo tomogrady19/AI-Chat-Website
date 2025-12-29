@@ -24,7 +24,6 @@ import { initPlayback, playTrackById } from "./playback.js";
 
 loadMessages();
 updateChat();
-await showProfile();
 await initAuth();
 setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth, onSpotifySwitch: switchAccount, onPlayTrack: playTrack});
 
@@ -98,6 +97,7 @@ async function initAuth() {
         const isLoggedIn = await checkAuthStatus(); // TODO not sure if this works (check for cookies instead)
         if (isLoggedIn) {
             showLoggedIn();
+            await showProfile();
             initPlayback().catch(err => console.warn("Playback init failed:", err));
         } else {
             showLoggedOut();
