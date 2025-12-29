@@ -6,17 +6,15 @@ import {
     showLoadMessage,
     hideLoadMessage,
     clearInput,
-    renderTopArtists,
-    renderTopTracks,
-    renderRecent,
     showLoggedIn,
-    showLoggedOut
+    showLoggedOut,
+    showProfile,
+    clearProfile
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import {
     streamFromAI,
     streamMusicRecommendations,
-    fetchProfile,
     checkAuthStatus,
     login,
     logout,
@@ -69,18 +67,6 @@ function toggleAssistant() {
     drawer.setAttribute("aria-hidden", String(!shouldOpen));
 }
 
-async function showProfile() {
-    try {
-        const data = await fetchProfile();
-        renderTopArtists(data.artists);
-        renderTopTracks(data.tracks);
-        renderRecent(data.recent);
-    } catch (err) {
-        console.error(err)
-        alert("Spotify not connected. Try logging out and logging back in.")
-    }
-}
-
 async function recommendMusic() {
     addMessage("assistant", "");
     updateChat();
@@ -98,9 +84,11 @@ async function toggleSpotifyAuth() {
     const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
     if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
         await logout();
+        clearProfile();
         showLoggedOut();
     } else {
         await login();
+        await showProfile()
         showLoggedIn();
     }
 }

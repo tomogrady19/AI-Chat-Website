@@ -1,4 +1,22 @@
 import { getMessages } from "./state.js";
+import {fetchProfile} from "./api.js";
+
+export async function showProfile() {
+    try {
+        const data = await fetchProfile();
+        renderTopArtists(data.artists);
+        renderTopTracks(data.tracks);
+        renderRecent(data.recent);
+    } catch (err) {
+        console.error(err)
+        alert("Spotify not connected. Try logging out and logging back in.") //TODO this error is coming up too much
+    }
+}
+
+export function clearProfile() {
+    const profile = document.getElementById("spotify-content");
+    if (profile) profile.innerHTML = "";
+}
 
 export function updateChat() {
     const chat = document.getElementById("chat");
