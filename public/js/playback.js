@@ -5,6 +5,7 @@ let player = null;
 let deviceId = null;
 let accessToken = null;
 let initPromise = null;
+let currentTrack = null;
 let isPaused = true;
 let spotifySDKReadyResolve;
 
@@ -65,6 +66,15 @@ export async function initPlayback() {
         player.addListener("player_state_changed", (state) => {
             if (!state) return;
             isPaused = state.paused;
+
+            const track = state.track_window.current_track;
+            if (track) {
+                currentTrack = {
+                    name: track.name,
+                    artists: track.artists.map(a => a.name).join(", ")
+                };
+                updateNowPlaying();
+            }
         });
 
         const connected = await player.connect();
@@ -113,4 +123,16 @@ export async function togglePlayPause() {
     } else {
         await player.pause();
     }
+}
+
+function updateNowPlaying() {
+    const el = document.getElementById("now-playing");
+    if (!el) return;
+
+    if (!currentTrack) {
+        el.textContent = "Not playing";
+        return;
+    }
+
+    el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
 }
