@@ -14,7 +14,7 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
         await streamAIResponse({input: req.body.conversation, req, res});
     } catch (err) {
         console.error(err);
-        res.status(500).end("AI ask failed");
+        res.status(500).json({ message: "AI ask failed" });
     }
 });
 
@@ -28,7 +28,7 @@ router.post("/music-recommendations", requireAuth, async (req, res) => {
         await streamAIResponse({ input: prompt, req, res });
     } catch (err) {
         console.error(err);
-        res.status(500).end("AI recommendation failed");
+        res.status(500).json({ message: "AI recommendation failed"});
     }
 });
 
