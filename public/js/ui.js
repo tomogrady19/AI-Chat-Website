@@ -115,19 +115,15 @@ export function renderRecent(recent) {
 
 export function showLoggedIn() {
     const authBtn = document.getElementById("spotifyAuthBtn");
-    const profileBtn = document.getElementById("spotify-profile");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     authBtn.textContent = "Log out";
-    profileBtn.style.display = "inline-block"; // display profile button
     spotifySwitchBtn.style.display = "inline-block"; //display switch button
 }
 
 export function showLoggedOut() {
     const authBtn = document.getElementById("spotifyAuthBtn");
-    const profileBtn = document.getElementById("spotify-profile");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     authBtn.textContent = "Log in with Spotify";
-    profileBtn.style.display = "none"; // hide profile button
     spotifySwitchBtn.style.display = "none"; // hide switch button
 }
 

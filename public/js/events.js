@@ -8,7 +8,6 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     const toggleAssistantButton = document.getElementById("assistant-toggle");
     const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const profileButton = document.getElementById("spotify-profile");
     const recommendButton = document.getElementById("recommendButton");
     const timeRange = document.getElementById("timeRange")
 
@@ -32,7 +31,6 @@ export function setupEventListeners({ onAsk, onClear, onToggleAssistant, onProfi
     toggleAssistantButton.addEventListener("click", onToggleAssistant);
     spotifyAuthButton.addEventListener("click", onSpotifyAuth);
     spotifySwitchBtn.addEventListener("click", onSpotifySwitch);
-    profileButton.addEventListener("click", onProfile);
     recommendButton.addEventListener("click", onRecommend);
 
     timeRange.addEventListener("change", onProfile);

@@ -26,8 +26,9 @@ import { initPlayback, playTrackById } from "./playback.js";
 
 loadMessages();
 updateChat();
+await showProfile();
+await initAuth();
 setupEventListeners({ onAsk: askAI, onClear: clearChat, onToggleAssistant: toggleAssistant, onProfile: showProfile, onRecommend: recommendMusic, onSpotifyAuth: toggleSpotifyAuth, onSpotifySwitch: switchAccount, onPlayTrack: playTrack});
-await initAuth(); //TODO maybe this should be at the bottom
 
 // call API via backend
 async function askAI() {
