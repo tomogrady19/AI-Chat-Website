@@ -20,7 +20,7 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
 
 router.post("/music-recommendations", requireAuth, async (req, res) => {
     try {
-        const spotifyAccessToken = getSpotifyAccessToken(req);
+        const spotifyAccessToken = await getSpotifyAccessToken(req);
         const timeRange = getTimeRange(req);
         const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
         const prompt = buildMusicProfilePrompt(profile);
