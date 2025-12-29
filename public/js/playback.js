@@ -130,7 +130,7 @@ function updateNowPlaying() {
     if (!el) return;
 
     if (!currentTrack) {
-        el.textContent = "Not playing";
+        el.textContent = "";
         return;
     }
 

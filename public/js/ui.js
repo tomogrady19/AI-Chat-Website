@@ -27,9 +27,24 @@ function clearNowPlaying() {
     if (nowPlaying) nowPlaying.textContent = "";
 }
 
+function clearTogglePlay() {
+    const togglePlay = document.getElementById("toggle-play");
+    if (togglePlay) togglePlay.hidden = true;
+}
+
+function clearTimeRange() {
+    const timeRangeLabel = document.querySelector('label[for="timeRange"]');
+    const timeRangeSelect = document.getElementById("timeRange");
+
+    timeRangeLabel.hidden = true;
+    timeRangeSelect.hidden = true;
+}
+
 export function clearUI() {
     clearProfile();
     clearNowPlaying();
+    clearTimeRange();
+    clearTogglePlay();
 }
 
 export function updateChat() {
