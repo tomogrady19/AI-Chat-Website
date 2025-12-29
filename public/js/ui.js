@@ -17,9 +17,19 @@ export async function showProfile() {
     }
 }
 
-export function clearProfile() {
+function clearProfile() {
     const profile = document.getElementById("spotify-content");
     if (profile) profile.innerHTML = "";
+}
+
+function clearNowPlaying() {
+    const nowPlaying = document.getElementById("now-playing");
+    if (nowPlaying) nowPlaying.textContent = "";
+}
+
+export function clearUI() {
+    clearProfile();
+    clearNowPlaying();
 }
 
 export function updateChat() {

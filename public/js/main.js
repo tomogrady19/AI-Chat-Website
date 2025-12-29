@@ -9,7 +9,7 @@ import {
     showLoggedIn,
     showLoggedOut,
     showProfile,
-    clearProfile
+    clearUI
 } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import {
@@ -83,9 +83,7 @@ async function toggleSpotifyAuth() {
     const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
     if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
         await logout();
-        clearProfile();
-        const nowPlaying = document.getElementById("now-playing");
-        if (nowPlaying) nowPlaying.textContent = "-";
+        clearUI();
         showLoggedOut();
     } else {
         await login();
