@@ -38,12 +38,11 @@ export async function streamFromAI(onChunk) {
 export async function streamMusicRecommendations(onChunk) {
     const timeRange = document.getElementById("timeRange").value;
 
-    await fetch("/api/ai/music-recommendations", {
+    const res = await fetch("/api/ai/music-recommendations", {
         method: "POST",
         body: JSON.stringify({ timeRange })
     });
 
-    const res = await fetch("/api/ai/music-recommendations", {method: "POST"});
     await streamRes(res, onChunk);
 }
 
