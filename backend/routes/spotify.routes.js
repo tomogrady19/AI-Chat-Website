@@ -92,8 +92,13 @@ router.get("/auth/spotify/switch", (req, res) => {
     redirectToSpotifyAuth(req, res, { forceDialog: true });
 });
 
-router.get("/auth/spotify/status", requireAuth, (req, res) => {
-    res.json({ authenticated: true });
+router.get("/auth/spotify/status", requireAuth, async (req, res) => {
+    try {
+        await getSpotifyAccessToken(req);
+        res.json({ authenticated: true });
+    } catch (err) {
+        res.status(401).json({ authenticated: false });
+    }
 });
 
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
