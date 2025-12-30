@@ -1,4 +1,4 @@
-import {updateChat} from "./ui/index.js";
+import { updateChat } from "./ui/index.js";
 
 let messages = [];
 
@@ -28,6 +28,7 @@ export function clearMessages() {
     localStorage.removeItem("chatHistory"); // clear local memory
 }
 
+//TODO these two functions use updateChat so maybe they should live in the ui folder?
 export function appendChunk(chunk){
     if (messages.length === 0) return;
 
