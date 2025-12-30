@@ -2,7 +2,7 @@ import { loadMessages } from "./state.js";
 import { updateChat, showLoggedIn, showLoggedOut, showProfile } from "./ui.js";
 import { setupEventListeners } from "./events.js"
 import { checkAuthStatus } from "./api.js"
-import { initPlayback, playTrackById } from "./playback.js";
+import { initPlayback } from "./playback.js";
 
 loadMessages();
 updateChat();
@@ -11,7 +11,7 @@ await setupEventListeners()
 
 async function initAuth() {
     try {
-        const isLoggedIn = await checkAuthStatus(); // TODO not sure if this works (check for cookies instead)
+        const isLoggedIn = await checkAuthStatus();
         if (isLoggedIn) {
             showLoggedIn();
             await showProfile();
