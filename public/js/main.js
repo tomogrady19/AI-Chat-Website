@@ -1,6 +1,6 @@
 console.log("Loaded: main.js");
 import { loadMessages } from "./state.js";
-import { updateChat, showProfile, initAuth } from "./ui/ui.js";
+import { updateChat, showProfile, initAuth, showSpotifyNotConnected } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
 
@@ -11,7 +11,10 @@ await setupEventListeners()
 
 async function init() {
     const authState = await initAuth();
-    if (!authState) { return; } // necessary to prevent showProfile from running if user isn't logged in
+    if (!authState) {
+        showSpotifyNotConnected();
+        return; // necessary to prevent showProfile from running if user isn't logged in
+    }
     try { await showProfile(); } catch { return; }
     await initPlayback();
 }

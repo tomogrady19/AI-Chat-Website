@@ -127,3 +127,15 @@ function createPlayButton(track) {
     playBtn.dataset.trackId = track.id;
     return playBtn
 }
+
+export function showSpotifyNotConnected() {
+    const container = document.getElementById("spotify-content");
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="spotify-message">
+        <p><strong>Log in with Spotify to see your insights</strong></p>
+        <p>Your top artists, top tracks and recent tracks will appear here.</p>
+        </div>
+    `;
+}

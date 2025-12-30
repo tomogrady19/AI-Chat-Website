@@ -46,7 +46,7 @@ export async function initPlayback() {
 
         player = new window.Spotify.Player({
             name: "Spotify AI Insights Player",
-            getOAuthToken: (cb) => cb(accessToken), //TODO why grey?
+            getOAuthToken: (cb) => cb(accessToken),
             volume: 0.6
         });
 
@@ -131,7 +131,7 @@ export async function togglePlayPause() {
     const button = document.getElementById("toggle-play")
     if (isPaused) {
         await player.resume();
-        button.textContent = "⏸";
+        button.textContent = "⏸"; //TODO should this be in ui folder?
     } else {
         await player.pause();
         button.textContent = "▶";
