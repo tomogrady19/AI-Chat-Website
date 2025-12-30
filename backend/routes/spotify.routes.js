@@ -121,8 +121,11 @@ router.get("/api/spotify/playback-token", requireAuth, async (req, res) => {
         const accessToken = await getSpotifyAccessToken(req);
         res.json({ accessToken });
     } catch (err) {
+        if (err?.status === 401) {
+            return res.status(401).json({ message: "Spotify token unavailable" });
+        }
         console.error("Playback token error:", err);
-        res.status(401).json({ message: "Spotify token unavailable" });
+        res.status(500).json({ message: "Failed to fetch playback token" });
     }
 });
 
