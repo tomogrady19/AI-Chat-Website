@@ -1,5 +1,5 @@
 import { clearMessages } from "../state.js";
-import { updateChat } from "";
+import { updateChat } from "chat.js";
 
 export function clearChat() {
     clearMessages();
