@@ -52,24 +52,12 @@
 
 .play-btn:hover {
     background: rgba(0,0,0,0.06);
+    color: green;
 }
 
 .play-btn:focus {
     outline: 2px solid #1db954;
     outline-offset: 2px;
-}
-
-.spotify-message {
-    padding: 1rem;
-    margin-top: 1rem;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: #ccc;
-}
-
-.spotify-message strong {
-    color: #fff;
 }
 
 

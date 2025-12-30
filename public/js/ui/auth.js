@@ -34,13 +34,17 @@ export async function toggleSpotifyAuth() {
 export function showLoggedIn() {
     const authBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
+    const subtitleMessage = document.getElementById("subtitle");
     authBtn.textContent = "Log out";
     spotifySwitchBtn.style.display = "inline-block"; //display switch button
+    subtitleMessage.textContent = "You're logged in! Try changing the time range and play some of your songs!";
 }
 
 export function showLoggedOut() {
     const authBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
+    const subtitleMessage = document.getElementById("subtitle");
     authBtn.textContent = "Log in with Spotify";
     spotifySwitchBtn.style.display = "none"; // hide switch button
+    subtitleMessage.textContent = "Log in with Spotify to see your listening data, and use the AI assistant to get recommendations based on your taste.";
 }
