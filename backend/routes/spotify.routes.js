@@ -103,11 +103,14 @@ router.get("/auth/spotify/status", requireAuth, async (req, res) => {
 
 router.get("/api/spotify/profile", requireAuth, async (req, res) => {
     const timeRange = getTimeRange(req);
-    const spotifyAccessToken = await getSpotifyAccessToken(req);
     try {
+        const spotifyAccessToken = await getSpotifyAccessToken(req);
         const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
         res.json(profile);
     } catch (err) {
+        if (err?.status === 401) {
+            return res.status(401).json({ error: err.message });
+        }
         console.error("Spotify profile error:", err);
         res.status(500).json({ error: "Spotify profile failed to load" });
     }

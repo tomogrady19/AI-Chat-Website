@@ -4,7 +4,9 @@ import crypto from "crypto";
 export async function getSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;
     if (!spotifySession?.accessToken) {
-        throw new Error("Spotify not authenticated");
+        const err = new Error("Spotify not authenticated");
+        err.status = 401;
+        throw err;
     }
 
     const obtainedAt = spotifySession.obtainedAt || 0;
@@ -90,7 +92,9 @@ export function getTimeRange(req) {
 async function refreshSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;
     if (!spotifySession?.refreshToken) {
-        throw new Error("Spotify refresh token missing");
+        const err = new Error("Spotify refresh token missing");
+        err.status = 401;
+        throw err;
     }
 
     const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
