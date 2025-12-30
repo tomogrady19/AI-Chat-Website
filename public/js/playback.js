@@ -128,10 +128,13 @@ export async function togglePlayPause() {
     await initPlayback();
     if (!player) throw new Error("Player not ready");
 
+    const button = document.getElementById("toggle-play")
     if (isPaused) {
         await player.resume();
+        button.textContent = "⏸";
     } else {
         await player.pause();
+        button.textContent = "▶";
     }
 }
 
