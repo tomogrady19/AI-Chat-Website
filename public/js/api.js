@@ -1,6 +1,6 @@
 import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
-import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/index.js";
+import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
 // TODO headers and credentials are missing from some endpoint calls, is that okay?
 
 const SYSTEM_PROMPT = {
@@ -93,6 +93,7 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
+    console.log("entered checkAuthStatus");
     const res = await fetch("/auth/spotify/status", { credentials: "include" });
     return res.ok;
 }

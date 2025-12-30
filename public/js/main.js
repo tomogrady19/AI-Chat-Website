@@ -1,5 +1,5 @@
 import { loadMessages } from "./state.js";
-import { updateChat, showLoggedIn, showLoggedOut, showProfile } from "./ui/index.js";
+import { updateChat, showLoggedIn, showLoggedOut, showProfile } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { checkAuthStatus } from "./api.js"
 import { initPlayback } from "./playback.js";
@@ -8,8 +8,9 @@ loadMessages();
 updateChat();
 await initAuth();
 await setupEventListeners()
-
+console.log("test");
 async function initAuth() {
+    console.log("entered toggleSpotifyAuth");
     try {
         const isLoggedIn = await checkAuthStatus();
         if (isLoggedIn) {
