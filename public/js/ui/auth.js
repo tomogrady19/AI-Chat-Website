@@ -7,12 +7,14 @@ export async function initAuth() {
         const isLoggedIn = await checkAuthStatus();
         if (!isLoggedIn) {
             showLoggedOut();
-            return;
+        } else {
+            showLoggedIn();
         }
-        showLoggedIn();
+        return isLoggedIn;
     } catch (err) {
         console.error("Auth check failed:", err);
         showLoggedOut();
+        return false;
     }
 }
 
