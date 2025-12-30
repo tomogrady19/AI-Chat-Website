@@ -1,3 +1,4 @@
+console.log("Loaded: playback.js");
 import { fetchPlaybackToken, fetchPlayer } from "./api.js";
 
 // define globally here so they can be updated by separate functions without returning them explicitly

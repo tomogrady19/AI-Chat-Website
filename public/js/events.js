@@ -1,3 +1,4 @@
+console.log("Loaded: events.js");
 import { togglePlayPause, playTrack } from "./playback.js"
 import { askAI, switchAccount } from "./api.js";
 import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth } from "./ui/ui.js";

@@ -1,6 +1,20 @@
-import { login, logout } from "../api.js"
+import { checkAuthStatus, login, logout } from "../api.js"
 import { clearUI } from "./clear.js"
 import { showProfile } from "./profile.js"
+
+export async function initAuth() {
+    try {
+        const isLoggedIn = await checkAuthStatus();
+        if (!isLoggedIn) {
+            showLoggedOut();
+            return;
+        }
+        showLoggedIn();
+    } catch (err) {
+        console.error("Auth check failed:", err);
+        showLoggedOut();
+    }
+}
 
 export async function toggleSpotifyAuth() {
     const spotifyAuthButton = document.getElementById("spotifyAuthBtn");

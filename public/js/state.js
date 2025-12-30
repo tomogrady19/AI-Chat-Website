@@ -1,3 +1,4 @@
+console.log("Loaded: state.js");
 import { updateChat } from "./ui/ui.js";
 
 let messages = [];
