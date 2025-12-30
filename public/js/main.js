@@ -8,9 +8,8 @@ loadMessages();
 updateChat();
 await initAuth();
 await setupEventListeners()
-console.log("test");
+
 async function initAuth() {
-    console.log("entered toggleSpotifyAuth");
     try {
         const isLoggedIn = await checkAuthStatus();
         if (isLoggedIn) {
