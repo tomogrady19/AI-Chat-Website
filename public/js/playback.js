@@ -86,7 +86,7 @@ export async function initPlayback() {
     return initPromise;
 }
 
-export async function playTrackById(trackId) {
+async function playTrackById(trackId) {
     // Ensure player exists
     await initPlayback();
     // If deviceId is still null, wait a bit for it to be set
@@ -111,6 +111,15 @@ export async function playTrackById(trackId) {
         let text = "";
         try { text = await res.text(); } catch {}
         throw new Error(`Play failed: ${res.status} ${text}`);
+    }
+}
+
+export async function playTrack(trackId) {
+    try {
+        await playTrackById(trackId);
+    } catch (err) {
+        console.error(err);
+        alert(err.message || "Playback failed (Premium required for in-app playback).");
     }
 }
 

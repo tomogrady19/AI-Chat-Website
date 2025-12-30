@@ -1,4 +1,4 @@
-import {updateChat} from "./ui.js";
+import {updateChat} from "./ui/index.js";
 
 let messages = [];
 

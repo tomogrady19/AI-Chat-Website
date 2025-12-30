@@ -1,5 +1,5 @@
 import { loadMessages } from "./state.js";
-import { updateChat, showLoggedIn, showLoggedOut, showProfile } from "./ui.js";
+import { updateChat, showLoggedIn, showLoggedOut, showProfile } from "./ui/index.js";
 import { setupEventListeners } from "./events.js"
 import { checkAuthStatus } from "./api.js"
 import { initPlayback } from "./playback.js";

@@ -1,6 +1,5 @@
-import { getMessages, clearMessages, addMessage, updateLastMessage, appendChunk } from "./state.js";
-import {fetchProfile, login, logout, streamMusicRecommendations} from "./api.js";
-import {playTrackById} from "./playback.js";
+import { getMessages, clearMessages, addMessage, updateLastMessage, appendChunk } from "../state.js";
+import {fetchProfile, login, logout, streamMusicRecommendations} from "../api.js";
 
 export async function showProfile() {
     try {
@@ -90,7 +89,7 @@ export function clearInput(){
     document.getElementById("userInput").value = "";
 }
 
-export function renderTopArtists(artists) {
+function renderTopArtists(artists) {
     const container = document.getElementById("artists-section");
     container.innerHTML = "";
 
@@ -114,7 +113,7 @@ export function renderTopArtists(artists) {
     container.appendChild(list);
 }
 
-export function renderTopTracks(tracks) {
+function renderTopTracks(tracks) {
     const container = document.getElementById("tracks-section");
     container.innerHTML = "";
 
@@ -140,7 +139,7 @@ export function renderTopTracks(tracks) {
     container.appendChild(list);
 }
 
-export function renderRecent(recent) {
+function renderRecent(recent) {
     const container = document.getElementById("recent-section");
     container.innerHTML = "";
 
@@ -247,14 +246,5 @@ export async function toggleSpotifyAuth() {
         await login();
         await showProfile()
         showLoggedIn();
-    }
-}
-
-export async function playTrack(trackId) {
-    try {
-        await playTrackById(trackId);
-    } catch (err) {
-        console.error(err);
-        alert(err.message || "Playback failed (Premium required for in-app playback).");
     }
 }

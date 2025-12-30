@@ -1,6 +1,6 @@
-import { togglePlayPause } from "./playback.js"
+import { togglePlayPause, playTrack } from "./playback.js"
 import { askAI, switchAccount } from "./api.js";
-import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, playTrack} from "./ui.js";
+import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth } from "./ui/index.js";
 
 export async function setupEventListeners() {
     // Spotify auth/login events
