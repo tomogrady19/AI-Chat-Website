@@ -86,6 +86,10 @@
 
 /*ID selectors*/
 
+#now-playing {
+  min-height: 1.2em;
+  text-align: center;
+}
 
 #typing {
   font-style: italic;
