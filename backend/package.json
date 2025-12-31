@@ -1,13 +1,27 @@
 {
   "name": "spotify-insights-backend",
   "version": "1.0.0",
-  "type": "module",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "csurf": "^1.11.0",
     "dotenv": "^17.2.3",
-    "express": "^4.19.2"
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "marked": "^17.0.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.10.0",
+    "zod": "^4.2.1"
   }
 }
+
