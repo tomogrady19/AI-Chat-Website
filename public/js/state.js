@@ -29,7 +29,7 @@ export function clearMessages() {
     localStorage.removeItem("chatHistory"); // clear local memory
 }
 
-//TODO these two functions use updateChat so maybe they should live in the ui folder?
+//TODO these two functions use updateChat, could need refactoring in future
 export function appendChunk(chunk){
     if (messages.length === 0) return;
 

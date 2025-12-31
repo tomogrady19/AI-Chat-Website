@@ -18,8 +18,8 @@ export async function initAuth() {
 }
 
 export async function toggleSpotifyAuth() {
-    const spotifyAuthButton = document.getElementById("spotifyAuthBtn");
-    if (spotifyAuthButton.textContent.includes("Log out")) { //TODO consider if this is best way
+    const isLoggedIn = await checkAuthStatus();
+    if (isLoggedIn) {
         await logout();
         clearUI();
         showLoggedOut();

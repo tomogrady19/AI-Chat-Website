@@ -131,7 +131,7 @@ export async function togglePlayPause() {
     const button = document.getElementById("toggle-play")
     if (isPaused) {
         await player.resume();
-        button.textContent = "⏸"; //TODO should this be in ui folder?
+        button.textContent = "⏸"; //TODO could be moved to ui in future
     } else {
         await player.pause();
         button.textContent = "▶";
