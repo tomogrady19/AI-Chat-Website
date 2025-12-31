@@ -2,7 +2,6 @@ console.log("Loaded: api.js");
 import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
 import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
-// TODO headers and credentials are missing from some endpoint calls, is that okay?
 
 const SYSTEM_PROMPT = {
     role: "system",
@@ -38,7 +37,10 @@ export async function askAI() {
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
-    const res = await fetch(`api/spotify/profile?timeRange=${timeRange}`); //defaults to GET
+    const res = await fetch(`api/spotify/profile?timeRange=${timeRange}`, {
+        method: "GET",
+        credentials: "include"
+    });
 
     if (res.status === 401) {
         const err = new Error("Spotify not authenticated");
@@ -57,6 +59,7 @@ export async function streamFromAI(onChunk) {
     const res = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ conversation: [SYSTEM_PROMPT, ...getMessages()] }) // conversation array is flattened
     });
 
@@ -68,6 +71,8 @@ export async function streamMusicRecommendations(onChunk) {
 
     const res = await fetch("/api/ai/music-recommendations", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ timeRange })
     });
 
@@ -94,12 +99,18 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
-    const res = await fetch("/auth/spotify/status", { credentials: "include" });
+    const res = await fetch("/auth/spotify/status", {
+        method: "GET",
+        credentials: "include"
+    });
     return res.ok;
 }
 
 export async function logout() {
-    await fetch("/auth/spotify/logout", { method: "GET", credentials: "include" });
+    await fetch("/auth/spotify/logout", {
+        method: "GET",
+        credentials: "include"
+    });
 }
 
 export async function login() {
@@ -111,7 +122,10 @@ export async function switchAccount() {
 }
 
 export async function fetchPlaybackToken() {
-    const res = await fetch("/api/spotify/playback-token", { credentials: "include" });
+    const res = await fetch("/api/spotify/playback-token", {
+        method: "GET",
+        credentials: "include"
+    });
     if (!res.ok) throw new Error("Could not fetch playback token");
     return res.json();
 }
