@@ -20,18 +20,14 @@
           <button id="spotifySwitchBtn">Switch account</button>
         </div>
         <div id="mainButtons">
-            <div class="time-range-box">
-                <label for="timeRange">Time range:</label>
-                <select id="timeRange">
-                    <option value="short_term">Last 4 weeks</option>
-                    <option value="medium_term" selected>Last 6 months</option>
-                    <option value="long_term">All time</option>
-                </select>
-            </div>
-            <div class="now-playing-box">
-                <div id="now-playing" aria-live="polite"></div>
-                <button id="toggle-play" aria-label="Play or pause">▶</button>
-            </div>
+            <label for="timeRange">Time range:</label>
+            <select id="timeRange">
+                <option value="short_term">Last 4 weeks</option>
+                <option value="medium_term" selected>Last 6 months</option>
+                <option value="long_term">All time</option>
+            </select>
+            <div id="now-playing" aria-live="polite"></div>
+            <button id="toggle-play" aria-label="Play or pause">▶</button>
         </div>
         <div id="spotify-content">
             <section id="artists-section"></section>
