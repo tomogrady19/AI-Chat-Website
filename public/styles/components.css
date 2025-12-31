@@ -60,6 +60,12 @@
     outline-offset: 2px;
 }
 
+.site-footer {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #333;
+}
+
 
 /*ID selectors*/
 
