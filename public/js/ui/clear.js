@@ -29,10 +29,17 @@ function clearTimeRange() {
     timeRangeSelect.hidden = true;
 }
 
+function clearMainButtons() {
+    const mainButtons = document.getElementById("mainButtons");
+    // mainButtons.hidden = true;
+    mainButtons.style.display = "none"; //this seems to work instead
+}
+
 export function clearUI() {
     clearProfile();
-    clearNowPlaying();
-    clearTimeRange();
-    clearTogglePlay();
+    // clearNowPlaying();
+    // clearTimeRange();
+    clearMainButtons();
+    // clearTogglePlay();
     clearChat();
 }
