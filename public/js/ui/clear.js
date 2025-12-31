@@ -30,16 +30,12 @@ function clearTimeRange() {
 }
 
 function clearMainButtons() {
-    const mainButtons = document.getElementById("mainButtons");
-    // mainButtons.hidden = true;
-    mainButtons.style.display = "none"; //this seems to work instead
+    document.getElementById("now-playing").textContent = ""; //clear current song name
+    document.getElementById("mainButtons").style.display = "none"; //hide everything in mainButtons class
 }
 
 export function clearUI() {
     clearProfile();
-    // clearNowPlaying();
-    // clearTimeRange();
     clearMainButtons();
-    // clearTogglePlay();
     clearChat();
 }
