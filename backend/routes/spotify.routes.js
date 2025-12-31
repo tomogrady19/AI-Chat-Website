@@ -51,7 +51,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
             expiresIn: tokenData.expires_in,
             obtainedAt: Date.now()
         };
-        console.log("Spotify access token received");
+        console.info(`[${req.id}] Spotify access token received`);
 
         const user = await getSpotifyUser(req.session.spotify.accessToken);
         const jwtToken = issueJwt({ spotifyId: user.id });
