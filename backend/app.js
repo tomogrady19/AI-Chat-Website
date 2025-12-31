@@ -23,6 +23,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/", spotifyRoutes);
