@@ -60,6 +60,23 @@
     outline-offset: 2px;
 }
 
+.control-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.now-playing-box {
+    flex-direction: column;
+    justify-content: center;
+}
+
+
 .site-footer {
     margin-top: 40px;
     font-size: 14px;
