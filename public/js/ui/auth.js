@@ -1,14 +1,13 @@
 import { checkAuthStatus, login, logout } from "../api.js"
 import { clearUI } from "./clear.js"
-import { showProfile } from "./profile.js"
 
 export async function initAuth() {
     try {
         const isLoggedIn = await checkAuthStatus();
-        if (!isLoggedIn) {
-            showLoggedOut();
-        } else {
+        if (isLoggedIn) {
             showLoggedIn();
+        } else {
+            showLoggedOut();
         }
         return isLoggedIn;
     } catch (err) {
@@ -25,9 +24,7 @@ export async function toggleSpotifyAuth() {
         clearUI();
         showLoggedOut();
     } else {
-        await login();
-        await showProfile()
-        showLoggedIn();
+        await login(); // login will redirect you to spotify, so showProfile and showLoggedIn are dealt with in init()
     }
 }
 
