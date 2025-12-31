@@ -1,3 +1,8 @@
+:root {
+  --chat-width: 475px;
+}
+
+
 body {
     display: flex;
     flex-direction: column; /*stacks items in a column*/

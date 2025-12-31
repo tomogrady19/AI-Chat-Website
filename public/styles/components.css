@@ -76,7 +76,7 @@
 }
 
 #userInput {
-    width: 475px;
+    width: var(--chat-width);
     margin-bottom: 10px;
     resize: none;
     overflow: hidden;
