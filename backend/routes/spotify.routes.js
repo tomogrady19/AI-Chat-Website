@@ -10,6 +10,8 @@ router.get("/auth/spotify/login", (req, res) => {
     redirectToSpotifyAuth(req, res);
 });
 
+const frontendUrl = process.env.FRONTEND_URL || "/"; //is the second option needed?
+
 router.get("/auth/spotify/callback", async (req, res) => {
     const { code, state } = req.query;
 
@@ -64,7 +66,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
           maxAge: 60 * 60 * 1000 // 1 hour
         });
 
-        res.redirect("/"); // Redirect home
+        res.redirect(frontendUrl);
     } catch (err) {
         console.error("Spotify callback error:", err);
         res.status(500).send("Spotify callback failed");
@@ -84,7 +86,7 @@ router.get("/auth/spotify/logout", (req, res) => {
             sameSite: "lax",
             secure: process.env.NODE_ENV === "production"
         });
-        res.redirect("/");
+        res.redirect(frontendUrl);
     });
 });
 
