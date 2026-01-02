@@ -6,7 +6,7 @@ import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, 
 const API_BASE_URL =
     window.location.hostname === "127.0.0.1"
     ? "" //"http://localhost:3000"
-    : "https://spotify-insights-prod.eba-smzckzpj.eu-west-2.elasticbeanstalk.com";
+    : "https://api.spotify-insights.com";
 
 const SYSTEM_PROMPT = {
     role: "system",
