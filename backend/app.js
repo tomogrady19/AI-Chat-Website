@@ -11,6 +11,8 @@ import { generalLimiter, aiLimiter } from "./middleware/rateLimiters.js";
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(cors({
     origin: ["https://spotify-ai-insights.vercel.app"],
     credentials: true

@@ -8,10 +8,11 @@ export default session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
         httpOnly: true,
         sameSite: "none",
-        secure: isProd,
+        secure: isProd, //TODO maybe hardcode this as true?
         maxAge: 1000 * 60 * 60, // 1 hour
     }
 });
