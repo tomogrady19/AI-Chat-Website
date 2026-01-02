@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import sessionMiddleware from "./config/session.js";
 import aiRoutes from "./routes/ai.routes.js";
@@ -24,8 +25,13 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("OK");
+    res.status(200).send("OK");
 });
+
+app.use(cors({
+    origin: ["https://spotify-insights.vercel.app"],
+    credentials: true
+}));
 
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
