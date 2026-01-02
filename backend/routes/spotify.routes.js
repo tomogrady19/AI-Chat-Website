@@ -10,7 +10,7 @@ router.get("/auth/spotify/login", (req, res) => {
     redirectToSpotifyAuth(req, res);
 });
 
-const frontendUrl = process.env.FRONTEND_URL || "/"; //is the second option needed?
+const frontendUrl = process.env.FRONTEND_URL;
 
 router.get("/auth/spotify/callback", async (req, res) => {
     const { code, state } = req.query;
@@ -61,7 +61,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
         // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
         res.cookie("auth_token", jwtToken, {
           httpOnly: true,
-          sameSite: "lax",
+          sameSite: "none",
           secure: process.env.NODE_ENV === "production",
           maxAge: 60 * 60 * 1000 // 1 hour
         });
@@ -80,7 +80,11 @@ router.get("/auth/spotify/logout", (req, res) => {
             return res.status(500).send("Logout failed");
         }
 
-        res.clearCookie("connect.sid"); // default express-session cookie name
+        res.clearCookie("sid", {
+            sameSite: "none",
+            secure: true
+        });
+
         res.clearCookie("auth_token", {
             httpOnly: true,
             sameSite: "lax",
