@@ -4,10 +4,9 @@ import {addMessage, appendChunk, updateLastMessage} from "./state.js";
 import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
 
 const API_BASE_URL =
-    window.location.hostname === "localhost"
+    window.location.hostname === "127.0.0.1"
     ? "" //"http://localhost:3000"
     : "https://spotify-insights-prod.eba-smzckzpj.eu-west-2.elasticbeanstalk.com";
-
 
 const SYSTEM_PROMPT = {
     role: "system",
