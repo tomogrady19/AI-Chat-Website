@@ -42,7 +42,7 @@ export async function askAI() {
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
-    const res = await fetch(`${API_BASE_URL}api/spotify/profile?timeRange=${timeRange}`, {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/profile?timeRange=${timeRange}`, {
         method: "GET",
         credentials: "include"
     });

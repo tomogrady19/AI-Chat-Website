@@ -10,6 +10,11 @@ import { generalLimiter, aiLimiter } from "./middleware/rateLimiters.js";
 
 const app = express();
 
+app.use(cors({
+    origin: ["https://spotify-insights.vercel.app"],
+    credentials: true
+}));
+
 app.use(sessionMiddleware);
 
 app.use(cookieParser());
@@ -27,11 +32,6 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.status(200).send("OK");
 });
-
-app.use(cors({
-    origin: ["https://spotify-insights.vercel.app"],
-    credentials: true
-}));
 
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);

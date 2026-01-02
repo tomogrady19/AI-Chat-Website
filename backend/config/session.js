@@ -10,7 +10,7 @@ export default session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
         secure: isProd,
         maxAge: 1000 * 60 * 60, // 1 hour
     }
