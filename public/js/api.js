@@ -3,6 +3,12 @@ import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
 import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
 
+const API_BASE_URL =
+    process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://spotify-insights-prod.eba-smzckzpj.eu-west-2.elasticbeanstalk.com";
+
+
 const SYSTEM_PROMPT = {
     role: "system",
     content:`You are a human music DJ, not an AI.
@@ -37,7 +43,7 @@ export async function askAI() {
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
-    const res = await fetch(`api/spotify/profile?timeRange=${timeRange}`, {
+    const res = await fetch(`${API_BASE_URL}api/spotify/profile?timeRange=${timeRange}`, {
         method: "GET",
         credentials: "include"
     });
@@ -56,7 +62,7 @@ export async function fetchProfile() {
 }
 
 export async function streamFromAI(onChunk) {
-    const res = await fetch("/api/ai/ask", {
+    const res = await fetch(`${API_BASE_URL}/api/ai/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -69,7 +75,7 @@ export async function streamFromAI(onChunk) {
 export async function streamMusicRecommendations(onChunk) {
     const timeRange = document.getElementById("timeRange").value;
 
-    const res = await fetch("/api/ai/music-recommendations", {
+    const res = await fetch(`${API_BASE_URL}/api/ai/music-recommendations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -99,7 +105,7 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
-    const res = await fetch("/auth/spotify/status", {
+    const res = await fetch(`${API_BASE_URL}/auth/spotify/status`, {
         method: "GET",
         credentials: "include"
     });
@@ -107,22 +113,22 @@ export async function checkAuthStatus() {
 }
 
 export async function logout() {
-    await fetch("/auth/spotify/logout", {
+    await fetch(`${API_BASE_URL}/auth/spotify/logout`, {
         method: "GET",
         credentials: "include"
     });
 }
 
 export async function login() {
-    window.location.href = "/auth/spotify/login";
+    window.location.href = `${API_BASE_URL}/auth/spotify/login`;
 }
 
 export async function switchAccount() {
-    window.location.href = "/auth/spotify/switch";
+    window.location.href = `${API_BASE_URL}/auth/spotify/switch`;
 }
 
 export async function fetchPlaybackToken() {
-    const res = await fetch("/api/spotify/playback-token", {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/playback-token``, {
         method: "GET",
         credentials: "include"
     });
