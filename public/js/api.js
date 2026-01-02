@@ -4,8 +4,8 @@ import {addMessage, appendChunk, updateLastMessage} from "./state.js";
 import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
 
 const API_BASE_URL =
-    process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
+    window.location.hostname === "localhost"
+    ? "" //"http://localhost:3000"
     : "https://spotify-insights-prod.eba-smzckzpj.eu-west-2.elasticbeanstalk.com";
 
 
@@ -128,7 +128,7 @@ export async function switchAccount() {
 }
 
 export async function fetchPlaybackToken() {
-    const res = await fetch(`${API_BASE_URL}/api/spotify/playback-token``, {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/playback-token`, {
         method: "GET",
         credentials: "include"
     });
