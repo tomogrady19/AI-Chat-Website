@@ -62,10 +62,12 @@ router.get("/auth/spotify/callback", async (req, res) => {
 
         // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
         res.cookie("auth_token", jwtToken, {
-          httpOnly: true,
-          sameSite: isProd ? "none" : "lax",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 1000 // 1 hour
+            httpOnly: true,
+            sameSite: isProd ? "none" : "lax",
+            domain: ".spotify-insights.com", //TODO this might break local hosting (not sure)
+            path: "/",
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 60 * 60 * 1000 // 1 hour
         });
 
         res.redirect(frontendUrl);
