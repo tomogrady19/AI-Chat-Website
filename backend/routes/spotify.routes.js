@@ -6,6 +6,8 @@ import { issueJwt } from "../utils/jwt.js";
 
 const router = express.Router();
 
+const isProd = process.env.NODE_ENV === "production";
+
 router.get("/auth/spotify/login", (req, res) => {
     redirectToSpotifyAuth(req, res);
 });
@@ -61,7 +63,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
         // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
         res.cookie("auth_token", jwtToken, {
           httpOnly: true,
-          sameSite: "none",
+          sameSite: isProd ? "none" : "lax",
           secure: process.env.NODE_ENV === "production",
           maxAge: 60 * 60 * 1000 // 1 hour
         });
@@ -84,6 +86,7 @@ router.get("/auth/spotify/logout", (req, res) => {
             sameSite: "none",
             secure: true
         });
+//        res.clearCookie("connect.sid");
 
         res.clearCookie("auth_token", {
             httpOnly: true,
