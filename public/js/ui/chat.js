@@ -12,6 +12,7 @@ export function toggleAssistant() {
 export async function recommendMusic() {
     addMessage("assistant", "");
     updateChat();
+    showLoadMessage();
 
     try {
         await streamMusicRecommendations(appendChunk);
@@ -20,6 +21,7 @@ export async function recommendMusic() {
     }
 
     updateChat();
+    hideLoadMessage();
 }
 
 export function updateChat() {
