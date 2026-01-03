@@ -21,7 +21,6 @@ export async function toggleSpotifyAuth() {
     const isLoggedIn = await checkAuthStatus();
     if (isLoggedIn) {
         await logout();
-        clearUI();
         showLoggedOut();
     } else {
         await login(); // login will redirect you to spotify, so showProfile and showLoggedIn are dealt with in init()
@@ -44,4 +43,5 @@ export function showLoggedOut() {
     authBtn.textContent = "Log in with Spotify";
     spotifySwitchBtn.style.display = "none"; // hide switch button
     subtitleMessage.textContent = "Log in with Spotify to see your listening data, and use the AI assistant to get recommendations based on your taste.";
+    clearUI();
 }
