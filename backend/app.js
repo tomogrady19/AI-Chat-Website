@@ -14,7 +14,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 app.use(cors({
-    origin: ["https://spotify-ai-insights.vercel.app"],
+    origin: ["https://spotify-insights.com", "https://www.spotify-insights.com"],
     credentials: true
 }));
 
