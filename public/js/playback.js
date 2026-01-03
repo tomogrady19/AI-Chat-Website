@@ -118,6 +118,7 @@ async function playTrackById(trackId) {
 export async function playTrack(trackId) {
     try {
         await playTrackById(trackId);
+        document.getElementById("toggle-play").textContent = "⏸";
     } catch (err) {
         console.error(err);
         alert(err.message || "Playback failed (Premium required for in-app playback).");
