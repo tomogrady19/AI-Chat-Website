@@ -6,7 +6,7 @@ import { issueJwt } from "../utils/jwt.js";
 
 const router = express.Router();
 
-const isProd = true;//process.env.NODE_ENV === "production"; //TODO change back later
+const isProd = process.env.NODE_ENV === "production";
 
 router.get("/auth/spotify/login", (req, res) => {
     redirectToSpotifyAuth(req, res);
@@ -64,7 +64,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
         res.cookie("auth_token", jwtToken, {
             httpOnly: true,
             sameSite: isProd ? "none" : "lax",
-            domain: ".spotify-insights.com", //TODO this might break local hosting (not sure)
+            ...(isProd && { domain: ".spotify-insights.com" }),
             path: "/",
             secure: isProd,
             maxAge: 60 * 60 * 1000 // 1 hour
