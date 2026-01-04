@@ -85,15 +85,18 @@ router.get("/auth/spotify/logout", (req, res) => {
         }
 
         res.clearCookie("sid", {
-            sameSite: "none",
-            secure: true
+            sameSite: isProd ? "none" : "lax",
+            ...(isProd && { domain: ".spotify-insights.com" }),
+            path: "/",
+            secure: isProd
         });
-//        res.clearCookie("connect.sid");
 
         res.clearCookie("auth_token", {
             httpOnly: true,
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production"
+            sameSite: isProd ? "none" : "lax",
+            ...(isProd && { domain: ".spotify-insights.com" }),
+            path: "/",
+            secure: isProd
         });
         res.redirect(frontendUrl);
     });
