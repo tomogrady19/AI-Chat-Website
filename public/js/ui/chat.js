@@ -30,8 +30,14 @@ export function updateChat() {
 
     getMessages().forEach(msg => {
         const who = msg.role;
-        const message = who === "assistant" ? window.marked.parse(msg.content) : msg.content;
-        chat.innerHTML += `<div class="message ${who}">${message}</div>`;
+//        below lines removed for xss (cross site scripting) vulnerability (sacrificing formatting)
+//        const message = who === "assistant" ? window.marked.parse(msg.content) : msg.content;
+//        chat.innerHTML += `<div class="message ${who}">${message}</div>`;
+        const messageEl = document.createElement("div");
+        messageEl.className = `message ${who}`;
+        messageEl.textContent = msg.content;
+        chat.appendChild(messageEl);
+
     });
 
     chat.scrollTop = chat.scrollHeight;
