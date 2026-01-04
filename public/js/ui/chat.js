@@ -30,7 +30,7 @@ export function updateChat() {
 
     getMessages().forEach(msg => {
         const who = msg.role;
-//        below lines removed for xss (cross site scripting) vulnerability (sacrificing formatting)
+//        below lines removed to prevent injection vulnerability (sacrificing formatting for now)
 //        const message = who === "assistant" ? window.marked.parse(msg.content) : msg.content;
 //        chat.innerHTML += `<div class="message ${who}">${message}</div>`;
         const messageEl = document.createElement("div");
