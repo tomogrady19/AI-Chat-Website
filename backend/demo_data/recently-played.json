@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "name": "Blinding Lights",
+      "artists": [{ "name": "The Weeknd" }],
+      "album": {
+        "images": [{ "url": "https://i.scdn.co/image/..." }]
+      },
+      "preview_url": "https://p.scdn.co/mp3-preview/..."
+    }
+  ]
+}
