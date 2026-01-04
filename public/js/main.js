@@ -4,6 +4,8 @@ import { updateChat, showProfile, initAuth } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
 
+const isDemo = window.location.pathname === "/demo";
+
 loadMessages();
 updateChat();
 await init();

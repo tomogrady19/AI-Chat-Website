@@ -3,6 +3,8 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import crypto from "crypto";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import sessionMiddleware from "./config/session.js";
 import aiRoutes from "./routes/ai.routes.js";
@@ -32,8 +34,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/", (req, res) => {
-    res.status(200).send("OK");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.get(["/", "/demo"], (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
 app.use("/api", generalLimiter);
