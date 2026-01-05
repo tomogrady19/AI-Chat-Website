@@ -8,7 +8,11 @@ const isDemo = window.location.pathname === "/demo";
 
 loadMessages();
 updateChat();
-await init();
+if (!isDemo){
+    await init();
+} else {
+    initDemo();
+}
 await setupEventListeners()
 
 async function init() {
@@ -17,8 +21,28 @@ async function init() {
         return; // necessary to prevent showProfile from running if user isn't logged in
     }
     try { await showProfile(); } catch { return; }
-    if (!isDemo) {
-        await initPlayback();
+    await initPlayback();
+}
+
+async function initDemo() {
+    //rewire demo button to home button
+    const demoLink = document.querySelector('#spotify-auth a');
+    const demoButton = demoLink?.querySelector("button");
+    if (demoLink && demoButton) {
+        demoLink.href = "/";
+        demoButton.textContent = "Back to Live";
     }
+
+    //hide spotifyAuthBtn and spotifySwitchBtn
+    const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
+    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
+    if (spotifyAuthBtn) spotifyAuthBtn.style.display = "none";
+    if (spotifySwitchBtn) spotifySwitchBtn.style.display = "none";
+
+    //change subtitle message for demo mode
+    const subtitleMessage = document.getElementById("subtitle");
+    subtitleMessage.textContent = "Welcome to demo mode!";
+
+    try { await showProfile(); } catch { return; }
 }
 
