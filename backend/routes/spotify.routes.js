@@ -115,19 +115,35 @@ router.get("/auth/spotify/status", requireAuth, async (req, res) => {
     }
 });
 
-router.get("/api/spotify/profile", requireAuth, async (req, res) => {
+router.get("/api/spotify/profile", async (req, res) => {
     const timeRange = getTimeRange(req);
-    try {
-        const spotifyAccessToken = await getSpotifyAccessToken(req);
-        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
-        res.json(profile);
-    } catch (err) {
-        if (err?.status === 401) {
-            return res.status(401).json({ error: err.message });
+    const mode = req.query.mode;
+
+    // demo mode: no auth, no token
+    if (mode === "demo") {
+        try {
+            const profile = await getSpotifyProfile(null, timeRange, "demo");
+            return res.json(profile);
+        } catch (err) {
+            console.error("Demo profile error:", err);
+            return res.status(500).json({ error: "Demo profile failed to load" });
         }
-        console.error("Spotify profile error:", err);
-        res.status(500).json({ error: "Spotify profile failed to load" });
     }
+
+    // live mode: auth required
+    return requireAuth(req, res, async () => {
+        try {
+            const spotifyAccessToken = await getSpotifyAccessToken(req);
+            const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, "live");
+            res.json(profile);
+        } catch (err) {
+            if (err?.status === 401) {
+                return res.status(401).json({ error: err.message });
+            }
+            console.error("Spotify profile error:", err);
+            res.status(500).json({ error: "Spotify profile failed to load" });
+        }
+    });
 });
 
 router.get("/api/spotify/playback-token", requireAuth, async (req, res) => {

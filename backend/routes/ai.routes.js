@@ -20,9 +20,9 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
 
 router.post("/music-recommendations", requireAuth, async (req, res) => {
     try {
-        const spotifyAccessToken = await getSpotifyAccessToken(req);
+        const spotifyAccessToken = await getSpotifyAccessToken(req); //TODO may throw error in demo mode
         const timeRange = getTimeRange(req);
-        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange);
+        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, req.query.mode);
         const prompt = buildMusicProfilePrompt(profile);
 
         await streamAIResponse({ input: prompt, req, res });

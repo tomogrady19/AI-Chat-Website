@@ -1,12 +1,25 @@
 {
   "items": [
     {
+      "id": "0VjIjW4GlUZAMYd2vXMi3b",
       "name": "Blinding Lights",
-      "artists": [{ "name": "The Weeknd" }],
+      "artists": [
+        { "name": "The Weeknd" }
+      ],
       "album": {
-        "images": [{ "url": "https://i.scdn.co/image/..." }]
+        "name": "After Hours",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36",
+            "width": 640
+          }
+        ]
       },
-      "preview_url": "https://p.scdn.co/mp3-preview/..."
+      "preview_url": "https://p.scdn.co/mp3-preview/example",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b"
+      }
     }
   ]
 }

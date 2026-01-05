@@ -3,6 +3,8 @@ import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
 import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "./ui/ui.js";
 
+const isDemo = window.location.pathname === "/demo";
+
 const API_BASE_URL =
     window.location.hostname === "127.0.0.1"
     ? "" //"http://localhost:3000"
@@ -42,7 +44,8 @@ export async function askAI() {
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
-    const res = await fetch(`${API_BASE_URL}/api/spotify/profile?timeRange=${timeRange}`, {
+    const demoParam = isDemo ? "&mode=demo" : "";
+    const res = await fetch(`${API_BASE_URL}/api/spotify/profile?timeRange=${timeRange}${demoParam}`, {
         method: "GET",
         credentials: "include"
     });
@@ -104,6 +107,7 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
+    if (isDemo) return true;
     const res = await fetch(`${API_BASE_URL}/auth/spotify/status`, {
         method: "GET",
         credentials: "include"
@@ -112,6 +116,7 @@ export async function checkAuthStatus() {
 }
 
 export async function logout() {
+    if (isDemo) return;
     await fetch(`${API_BASE_URL}/auth/spotify/logout`, {
         method: "GET",
         credentials: "include"
@@ -119,14 +124,19 @@ export async function logout() {
 }
 
 export async function login() {
+    if (isDemo) return;
     window.location.href = `${API_BASE_URL}/auth/spotify/login`;
 }
 
 export async function switchAccount() {
+    if (isDemo) return;
     window.location.href = `${API_BASE_URL}/auth/spotify/switch`;
 }
 
 export async function fetchPlaybackToken() {
+    if (isDemo) {
+        throw new Error("Playback unavailable in demo mode");
+    }
     const res = await fetch(`${API_BASE_URL}/api/spotify/playback-token`, {
         method: "GET",
         credentials: "include"
@@ -136,6 +146,9 @@ export async function fetchPlaybackToken() {
 }
 
 export async function fetchPlayer(deviceId, trackId, accessToken) {
+    if (isDemo) {
+        throw new Error("Playback unavailable in demo mode");
+    }
     return await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(deviceId)}`, {
         method: "PUT",
         headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json"},
