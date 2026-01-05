@@ -32,7 +32,7 @@ async function onPlayButtonClick(e) {
 
     if (isDemo) {
         const previewUrl = btn.dataset.previewUrl;
-        if (previewUrl) playPreview(previewUrl);
+        if (previewUrl) playPreview(previewUrl, btn);
     } else {
         const trackId = btn.dataset.trackId;
         if (trackId) await playTrack(trackId);

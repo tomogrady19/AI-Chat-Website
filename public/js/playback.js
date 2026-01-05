@@ -145,14 +145,15 @@ function playPreviewByUrl(previewUrl) {
     previewAudio.play();
 }
 
-export function playPreview(previewUrl) {
+export function playPreview(previewUrl, btn) {
     playPreviewByUrl(previewUrl);
     document.getElementById("toggle-play").textContent = "⏸";
     isPaused = false;
+    updateNowPlaying(btn);
 }
 
 export async function togglePlayPause() {
-    const button = document.getElementById("toggle-play")
+    const button = document.getElementById("toggle-play");
     if (isDemo) {
         if (isPaused) {
             previewAudio.play();
@@ -177,14 +178,19 @@ export async function togglePlayPause() {
     }
 }
 
-function updateNowPlaying() {
+function updateNowPlaying(btn=null) {
     const el = document.getElementById("now-playing");
     if (!el) return;
 
-    if (!currentTrack) {
-        el.textContent = "";
-        return;
+    if (isDemo) {
+        el.textContent = `${btn.dataset.name} — ${btn.dataset.artists}`;
+    } else {
+        if (!currentTrack) {
+            el.textContent = "";
+            return;
+        }
+
+        el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
     }
 
-    el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
 }

@@ -125,6 +125,8 @@ function createPlayButton(track) {
     playBtn.textContent = "▶";
     playBtn.setAttribute("aria-label", `Play ${track.name}`);
     playBtn.dataset.trackId = track.id;
-    playBtn.dataset.previewUrl = track.preview_url
+    playBtn.dataset.previewUrl = track.preview_url;
+    playBtn.dataset.artists = track.artists.map(a => a.name).join(", ");
+    playBtn.dataset.name = track.name;
     return playBtn
 }
