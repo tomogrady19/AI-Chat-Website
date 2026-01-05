@@ -3,12 +3,142 @@
     {
       "id": "0VjIjW4GlUZAMYd2vXMi3b",
       "name": "Blinding Lights",
-      "artists": [ { "name": "The Weeknd" } ],
+      "artists": [{ "name": "The Weeknd" }],
       "album": {
-        "images": [ { "url": "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36" } ]
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36" }
+        ]
       },
       "preview_url": "https://p.scdn.co/mp3-preview/51c08d92815cce4ac2de94a7335a430b81234624",
-      "external_urls": { "spotify": "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b" }
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b"
+      }
+    },
+    {
+      "id": "5ChkMS8OtdzJeqyybCc9R5",
+      "name": "Billie Jean",
+      "artists": [{ "name": "Michael Jackson" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b27332a7d87248d1b75463483df5" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/5ChkMS8OtdzJeqyybCc9R5"
+      }
+    },
+    {
+      "id": "7hQJA50XrCWABAu5v6QZ4i",
+      "name": "Don't Stop Me Now",
+      "artists": [{ "name": "Queen" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/7hQJA50XrCWABAu5v6QZ4i"
+      }
+    },
+    {
+      "id": "7iN1s7xHE4ifF5povM6A48",
+      "name": "Rolling in the Deep",
+      "artists": [{ "name": "Adele" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273164feb363334f93b6458d2a9" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/7iN1s7xHE4ifF5povM6A48"
+      }
+    },
+    {
+      "id": "5ghIJDpPoe3CfHMGu71E6T",
+      "name": "Smells Like Teen Spirit",
+      "artists": [{ "name": "Nirvana" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273fbc71c99f9c1296c56dd51b6" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/5ghIJDpPoe3CfHMGu71E6T"
+      }
+    },
+    {
+      "id": "2WfaOiMkCvy7F5fcp2zZ8L",
+      "name": "Take On Me",
+      "artists": [{ "name": "a-ha" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273e8dd4db47e7177c63b0b7d53" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/2WfaOiMkCvy7F5fcp2zZ8L"
+      }
+    },
+    {
+      "id": "40riOy7x9W7GXjyGp4pjAv",
+      "name": "Hotel California",
+      "artists": [{ "name": "Eagles" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b2734637341b9f507521afa9a778" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/40riOy7x9W7GXjyGp4pjAv"
+      }
+    },
+    {
+      "id": "2374M0fQpWi3dLnB54qaLX",
+      "name": "Africa",
+      "artists": [{ "name": "TOTO" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273ebd6d20c0082524244ef83df" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/2374M0fQpWi3dLnB54qaLX"
+      }
+    },
+    {
+      "id": "29d0nY7TzCoi22XBqDQkiP",
+      "name": "Running Up That Hill",
+      "artists": [{ "name": "Kate Bush" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b273ad08f4b38efbff0c0da0f252" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/29d0nY7TzCoi22XBqDQkiP"
+      }
+    },
+    {
+      "id": "1jJci4qxiYcOHhQR247rEU",
+      "name": "Kids",
+      "artists": [{ "name": "MGMT" }],
+      "album": {
+        "images": [
+          { "url": "https://i.scdn.co/image/ab67616d0000b2738b32b139981e79f2ebe005eb" }
+        ]
+      },
+      "preview_url": null,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/1jJci4qxiYcOHhQR247rEU"
+      }
     }
   ]
 }
