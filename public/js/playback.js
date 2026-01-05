@@ -1,8 +1,11 @@
 console.log("Loaded: playback.js");
 import { fetchPlaybackToken, fetchPlayer } from "./api.js";
 
+const isDemo = window.location.pathname === "/demo";
+
 // define globally here so they can be updated by separate functions without returning them explicitly
 let player = null;
+let previewAudio = null;
 let deviceId = null;
 let accessToken = null;
 let initPromise = null;
@@ -125,7 +128,6 @@ export async function playTrack(trackId) {
     }
 }
 
-let previewAudio = null;
 function playPreviewByUrl(previewUrl) {
     if (!previewUrl) {
         alert("No preview available for this track");
@@ -146,19 +148,32 @@ function playPreviewByUrl(previewUrl) {
 export function playPreview(previewUrl) {
     playPreviewByUrl(previewUrl);
     document.getElementById("toggle-play").textContent = "⏸";
+    isPaused = false;
 }
 
 export async function togglePlayPause() {
-    await initPlayback();
-    if (!player) throw new Error("Player not ready");
-
     const button = document.getElementById("toggle-play")
-    if (isPaused) {
-        await player.resume();
-        button.textContent = "⏸"; //TODO could be moved to ui in future
+    if (isDemo) {
+        if (isPaused) {
+            previewAudio.play();
+            button.textContent = "⏸";
+            isPaused = false;
+        } else {
+            previewAudio.pause();
+            button.textContent = "▶";
+            isPaused = true;
+        }
     } else {
-        await player.pause();
-        button.textContent = "▶";
+        await initPlayback();
+        if (!player) throw new Error("Player not ready");
+
+        if (isPaused) {
+            await player.resume();
+            button.textContent = "⏸"; //TODO could be moved to ui in future
+        } else {
+            await player.pause();
+            button.textContent = "▶";
+        }
     }
 }
 
