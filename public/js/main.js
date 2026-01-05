@@ -17,6 +17,8 @@ async function init() {
         return; // necessary to prevent showProfile from running if user isn't logged in
     }
     try { await showProfile(); } catch { return; }
-    await initPlayback();
+    if (!isDemo) {
+        await initPlayback();
+    }
 }
 

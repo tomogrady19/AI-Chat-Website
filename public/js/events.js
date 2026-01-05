@@ -1,7 +1,9 @@
 console.log("Loaded: events.js");
-import { togglePlayPause, playTrack } from "./playback.js"
+import { togglePlayPause, playTrack, playPreview } from "./playback.js"
 import { askAI, switchAccount } from "./api.js";
 import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth } from "./ui/ui.js";
+
+const isDemo = window.location.pathname === "/demo";
 
 export async function setupEventListeners() {
     // Spotify auth/login events
@@ -28,8 +30,13 @@ async function onPlayButtonClick(e) {
     const btn = e.target.closest(".play-btn");
     if (!btn) return;
 
-    const trackId = btn.dataset.trackId;
-    if (trackId) await playTrack(trackId);
+    if (isDemo) {
+        const previewUrl = btn.dataset.previewUrl;
+        if (previewUrl) playPreview(previewUrl);
+    } else {
+        const trackId = btn.dataset.trackId;
+        if (trackId) await playTrack(trackId);
+    }
 }
 
 // Enter / Shift+Enter handling

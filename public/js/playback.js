@@ -125,6 +125,29 @@ export async function playTrack(trackId) {
     }
 }
 
+let previewAudio = null;
+function playPreviewByUrl(previewUrl) {
+    if (!previewUrl) {
+        alert("No preview available for this track");
+        return;
+    }
+
+    // stop previous preview so they don't both play
+    if (previewAudio) {
+        previewAudio.pause();
+        previewAudio = null;
+    }
+
+    previewAudio = new Audio(previewUrl);
+    previewAudio.volume = 0.8;
+    previewAudio.play();
+}
+
+export function playPreview(previewUrl) {
+    playPreviewByUrl(previewUrl);
+    document.getElementById("toggle-play").textContent = "⏸";
+}
+
 export async function togglePlayPause() {
     await initPlayback();
     if (!player) throw new Error("Player not ready");
