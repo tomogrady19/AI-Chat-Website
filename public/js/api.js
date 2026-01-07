@@ -76,8 +76,8 @@ export async function streamFromAI(onChunk) {
 
 export async function streamMusicRecommendations(onChunk) {
     const timeRange = document.getElementById("timeRange").value;
-
-    const res = await fetch(`${API_BASE_URL}/api/ai/music-recommendations`, {
+    const demoParam = isDemo ? "?mode=demo" : "";
+    const res = await fetch(`${API_BASE_URL}/api/ai/music-recommendations${demoParam}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

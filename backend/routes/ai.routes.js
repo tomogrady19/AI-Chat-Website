@@ -9,7 +9,7 @@ import { askSchema } from "../validators/askSchema.js";
 
 const router = express.Router();
 
-router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
+router.post("/ask", validate(askSchema), async (req, res) => {
     try {
         await streamAIResponse({input: req.body.conversation, req, res});
     } catch (err) {
@@ -18,10 +18,14 @@ router.post("/ask", validate(askSchema), requireAuth, async (req, res) => {
     }
 });
 
-router.post("/music-recommendations", requireAuth, async (req, res) => {
+router.post("/music-recommendations", async (req, res) => {
+    const timeRange = getTimeRange(req);
+    const mode = req.query.mode === "demo" ? "demo" : "live";
+    let spotifyAccessToken = null;
     try {
-        const spotifyAccessToken = await getSpotifyAccessToken(req); //TODO may throw error in demo mode
-        const timeRange = getTimeRange(req);
+        if (mode !== "demo") {
+            spotifyAccessToken = await getSpotifyAccessToken(req);
+        }
         const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, req.query.mode);
         const prompt = buildMusicProfilePrompt(profile);
 
