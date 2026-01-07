@@ -36,8 +36,10 @@ async function initDemo() {
     //hide spotifyAuthBtn and spotifySwitchBtn
     const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
+    const timeRange = document.getElementById("timeRange");
     if (spotifyAuthBtn) spotifyAuthBtn.style.display = "none";
     if (spotifySwitchBtn) spotifySwitchBtn.style.display = "none";
+    if (timeRange) timeRange.style.display = "none";
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
@@ -45,4 +47,3 @@ async function initDemo() {
 
     try { await showProfile(); } catch { return; }
 }
-
