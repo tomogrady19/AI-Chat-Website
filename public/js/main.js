@@ -36,14 +36,13 @@ async function initDemo() {
     //hide spotifyAuthBtn and spotifySwitchBtn
     const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const timeRange = document.getElementById("timeRange");
+    const timeRange = document.querySelector(".control-box");
     if (spotifyAuthBtn) spotifyAuthBtn.style.display = "none";
     if (spotifySwitchBtn) spotifySwitchBtn.style.display = "none";
     if (timeRange) timeRange.style.display = "none";
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
-    subtitleMessage.textContent = "Welcome to demo mode!";
-
+    subtitleMessage.textContent = "Welcome to demo mode!\nThe listening data shown below is sample data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
     try { await showProfile(); } catch { return; }
 }
