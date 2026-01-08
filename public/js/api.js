@@ -155,3 +155,15 @@ export async function fetchPlayer(deviceId, trackId, accessToken) {
         body: JSON.stringify({uris: [`spotify:track:${trackId}`]})
     });
 }
+
+export async function sendEmail(emailContent) {
+    const res = await fetch("/api/request-access", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailContent })
+        });
+
+    if (!res.ok) {
+        throw new Error("Request failed");
+    }
+}

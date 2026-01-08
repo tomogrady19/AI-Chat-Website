@@ -1,6 +1,6 @@
 console.log("Loaded: events.js");
 import { togglePlayPause, playTrack, playPreview } from "./playback.js"
-import { askAI, switchAccount } from "./api.js";
+import { askAI, switchAccount, sendEmail } from "./api.js";
 import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
@@ -28,6 +28,7 @@ export async function setupEventListeners() {
     document.getElementById("requestAccessBtn").addEventListener("click", openRequestAccessModal);
     document.getElementById("requestAccessBackdrop").addEventListener("click", closeRequestAccessModal);
     document.getElementById("requestAccessCancelBtn").addEventListener("click", closeRequestAccessModal);
+    document.getElementById("accessRequestForm").addEventListener("submit", sendRequestAccessEmail);
 }
 
 // play the track  associated this the clicked play button
@@ -71,4 +72,25 @@ function openRequestAccessModal() {
     const requestAccessModal = document.getElementById("requestAccessModal");
     requestAccessModal.classList.remove("hidden");
     requestAccessModal.setAttribute("aria-hidden", "false");
+}
+
+async function sendRequestAccessEmail(e) {
+    e.preventDefault();
+
+    const accessRequestEmail = document.getElementById("accessRequestEmail");
+    const accessRequestStatus = document.getElementById("accessRequestStatus");
+    const accessRequestSubmitBtn = document.getElementById("requestAccessSubmitBtn");
+
+    accessRequestStatus.textContent = "Sending request…";
+    accessRequestSubmitBtn.disabled = true;
+
+    try {
+        await sendEmail(accessRequestEmail.value);
+        accessRequestStatus.textContent = "Thanks! Your request has been sent. You’ll be added shortly.";
+        accessRequestEmail.value = "";
+    } catch (err) {
+        accessRequestStatus.textContent = "Something went wrong. Please try again later.";
+    } finally {
+        accessRequestSubmitBtn.disabled = false;
+    }
 }
