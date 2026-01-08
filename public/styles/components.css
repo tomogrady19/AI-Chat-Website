@@ -83,6 +83,59 @@
     color: #333;
 }
 
+/* Modal Base */
+
+.modal.hidden {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+/* Backdrop */
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal box */
+.modal-content {
+    position: relative;
+    max-width: 420px;
+    width: calc(100% - 2rem);
+    margin: 10vh auto;
+    background: white;
+    padding: 1.25rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Form elements */
+.modal-content input[type="email"] {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* Actions */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-actions button {
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+}
+
+
 
 /*ID selectors*/
 

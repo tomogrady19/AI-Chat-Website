@@ -21,6 +21,7 @@
             <a href="/demo">
                 <button>Try Demo Mode</button>
             </a>
+            <button id="requestAccessBtn" type="button">Request access</button>
         </div>
         <div id="mainButtons">
             <div class="control-box">
@@ -77,6 +78,35 @@
     <footer class="site-footer">
         Built by <a href="https://github.com/tomogrady19" target="_blank">Tom O'Grady</a>
     </footer>
+
+    <!-- Modal -->
+    <div id="requestAccessModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop" id="requestAccessBackdrop"></div>
+
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="requestAccessTitle">
+            <h2 id="requestAccessTitle">Request Spotify access</h2>
+
+            <p class="subtitle" id="requestAccessHelp">
+                Enter your email and I’ll add you to the Spotify API allowlist.
+            </p>
+
+            <form id="accessRequestForm">
+                <input
+                    type="email"
+                    id="accessRequestEmail"
+                    placeholder="you@example.com"
+                    required
+                    autocomplete="email"
+                />
+                <div class="modal-actions">
+                    <button type="button" id="requestAccessCancelBtn">Cancel</button>
+                    <button type="submit" id="requestAccessSubmitBtn">Send request</button>
+                </div>
+            </form>
+
+            <p class="subtitle" id="accessRequestStatus"></p>
+        </div>
+    </div>
 
     <script type="module">
         import { marked } from "https://cdn.jsdelivr.net/npm/marked@12.0.2/+esm";
