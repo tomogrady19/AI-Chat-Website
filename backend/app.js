@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import sessionMiddleware from "./config/session.js";
 import aiRoutes from "./routes/ai.routes.js";
 import spotifyRoutes from "./routes/spotify.routes.js";
+import resendRoutes from "./routes/resend.routes.js";
 import { generalLimiter, aiLimiter } from "./middleware/rateLimiters.js";
 
 const app = express();
@@ -41,8 +42,10 @@ app.get(["/", "/demo"], (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
+//TODO should I generalise the way I access these routes?
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/", spotifyRoutes);
+app.use("/api", resendRoutes);
 
 export default app;
