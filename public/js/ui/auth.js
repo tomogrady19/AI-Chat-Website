@@ -42,7 +42,6 @@ export function showLoggedOut() {
     const subtitleMessage = document.getElementById("subtitle");
     authBtn.textContent = "Log in with Spotify";
     spotifySwitchBtn.style.display = "none"; // hide switch button
-    subtitleMessage.textContent = "Log in with Spotify to see your listening data and get recommendations from the AI assistant.\nIf you’re unable to log in due to Spotify API limitations, you can explore the app using demo mode.";
-    subtitleMessage.style.fontSize = "1.2rem";
+    subtitleMessage.textContent = "This app uses the Spotify Web API in development mode, so users must be manually approved.\n\nClick 'Request Access' to submit your email. After approval, you’ll be able to log in with Spotify to see your listening data and receive recommendations from the AI assistant.\n\nYou can also try the app right away using demo mode.";
     clearUI();
 }

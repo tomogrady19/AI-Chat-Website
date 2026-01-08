@@ -14,6 +14,7 @@ function clearProfile() {
 function clearMainButtons() {
     document.getElementById("now-playing").textContent = ""; //clear current song name
     document.getElementById("mainButtons").style.display = "none"; //hide everything in mainButtons class
+    document.getElementById("assistant-toggle").style.display = "none" //hide the AI assistant button
 }
 
 export function clearUI() {

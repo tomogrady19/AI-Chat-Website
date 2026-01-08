@@ -26,7 +26,7 @@ async function init() {
 
 async function initDemo() {
     //rewire demo button to home button
-    const demoLink = document.querySelector('#spotify-auth a');
+    const demoLink = document.querySelector('a[href="/demo"]');
     const demoButton = demoLink?.querySelector("button");
     if (demoLink && demoButton) {
         demoLink.href = "/";
@@ -34,9 +34,11 @@ async function initDemo() {
     }
 
     //hide spotifyAuthBtn and spotifySwitchBtn
+    const requestAccessBtn = document.getElementById("requestAccessBtn");
     const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     const timeRange = document.querySelector(".control-box");
+    if (requestAccessBtn) requestAccessBtn.style.display = "none";
     if (spotifyAuthBtn) spotifyAuthBtn.style.display = "none";
     if (spotifySwitchBtn) spotifySwitchBtn.style.display = "none";
     if (timeRange) timeRange.style.display = "none";
