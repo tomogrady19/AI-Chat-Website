@@ -23,6 +23,11 @@ export async function setupEventListeners() {
     const input = document.getElementById("userInput");
     input.addEventListener("keydown", onKeyDown);
     input.addEventListener("input", growTextArea);
+
+    // Request Access modal open/close events
+    document.getElementById("requestAccessBtn").addEventListener("click", openRequestAccessModal);
+    document.getElementById("requestAccessBackdrop").addEventListener("click", closeRequestAccessModal);
+    document.getElementById("requestAccessCancelBtn").addEventListener("click", closeRequestAccessModal);
 }
 
 // play the track  associated this the clicked play button
@@ -52,4 +57,18 @@ function growTextArea(e) {
     const input = e.target;
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
+}
+
+// close modal overlay
+function closeRequestAccessModal() {
+    const requestAccessModal = document.getElementById("requestAccessModal");
+    requestAccessModal.classList.add("hidden");
+    requestAccessModal.setAttribute("aria-hidden", "true");
+}
+
+// open modal overlay
+function openRequestAccessModal() {
+    const requestAccessModal = document.getElementById("requestAccessModal");
+    requestAccessModal.classList.remove("hidden");
+    requestAccessModal.setAttribute("aria-hidden", "false");
 }
