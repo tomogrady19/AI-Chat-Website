@@ -42,7 +42,6 @@ app.get(["/", "/demo"], (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
-//TODO should I generalise the way I access these routes?
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/spotify", spotifyRoutes);
