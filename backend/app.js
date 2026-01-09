@@ -45,7 +45,7 @@ app.get(["/", "/demo"], (req, res) => {
 //TODO should I generalise the way I access these routes?
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
-app.use("/", spotifyRoutes);
-app.use("/api", resendRoutes);
+app.use("/api/spotify", spotifyRoutes);
+app.use("/api/resend", resendRoutes);
 
 export default app;

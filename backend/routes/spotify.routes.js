@@ -8,13 +8,13 @@ const router = express.Router();
 
 const isProd = process.env.NODE_ENV === "production";
 
-router.get("/auth/spotify/login", (req, res) => {
+router.get("/login", (req, res) => {
     redirectToSpotifyAuth(req, res);
 });
 
 const frontendUrl = process.env.FRONTEND_URL;
 
-router.get("/auth/spotify/callback", async (req, res) => {
+router.get("/callback", async (req, res) => {
     const { code, state } = req.query;
 
     if (!state || state !== req.session.spotifyState) {
@@ -77,7 +77,7 @@ router.get("/auth/spotify/callback", async (req, res) => {
     }
 });
 
-router.get("/auth/spotify/logout", (req, res) => {
+router.get("/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.error("Session destroy error:", err);
@@ -102,11 +102,11 @@ router.get("/auth/spotify/logout", (req, res) => {
     });
 });
 
-router.get("/auth/spotify/switch", (req, res) => {
+router.get("/switch", (req, res) => {
     redirectToSpotifyAuth(req, res, { forceDialog: true });
 });
 
-router.get("/auth/spotify/status", requireAuth, async (req, res) => {
+router.get("/status", requireAuth, async (req, res) => {
     try {
         await getSpotifyAccessToken(req);
         res.json({ authenticated: true });
@@ -115,7 +115,7 @@ router.get("/auth/spotify/status", requireAuth, async (req, res) => {
     }
 });
 
-router.get("/api/spotify/profile", async (req, res) => {
+router.get("/profile", async (req, res) => {
     const timeRange = getTimeRange(req);
     const mode = req.query.mode;
 
@@ -146,7 +146,7 @@ router.get("/api/spotify/profile", async (req, res) => {
     });
 });
 
-router.get("/api/spotify/playback-token", requireAuth, async (req, res) => {
+router.get("/playback-token", requireAuth, async (req, res) => {
     try {
         const accessToken = await getSpotifyAccessToken(req);
         res.json({ accessToken });

@@ -108,7 +108,7 @@ async function streamRes(res, onChunk) {
 
 export async function checkAuthStatus() {
     if (isDemo) return true;
-    const res = await fetch(`${API_BASE_URL}/auth/spotify/status`, {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/status`, {
         method: "GET",
         credentials: "include"
     });
@@ -117,7 +117,7 @@ export async function checkAuthStatus() {
 
 export async function logout() {
     if (isDemo) return;
-    await fetch(`${API_BASE_URL}/auth/spotify/logout`, {
+    await fetch(`${API_BASE_URL}/api/spotify/logout`, {
         method: "GET",
         credentials: "include"
     });
@@ -125,12 +125,12 @@ export async function logout() {
 
 export async function login() {
     if (isDemo) return;
-    window.location.href = `${API_BASE_URL}/auth/spotify/login`;
+    window.location.href = `${API_BASE_URL}/api/spotify/login`;
 }
 
 export async function switchAccount() {
     if (isDemo) return;
-    window.location.href = `${API_BASE_URL}/auth/spotify/switch`;
+    window.location.href = `${API_BASE_URL}/api/spotify/switch`;
 }
 
 export async function fetchPlaybackToken() {
@@ -157,7 +157,7 @@ export async function fetchPlayer(deviceId, trackId, accessToken) {
 }
 
 export async function sendEmail(emailContent) {
-    const res = await fetch("/api/request-access", {
+    const res = await fetch(`${API_BASE_URL}/api/resend/request-access`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: emailContent })
