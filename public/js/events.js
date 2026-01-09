@@ -62,8 +62,10 @@ function growTextArea(e) {
 
 // close modal overlay
 function closeRequestAccessModal() {
+    document.getElementById("requestAccessBtn").focus();
     const requestAccessModal = document.getElementById("requestAccessModal");
     requestAccessModal.classList.add("hidden");
+    requestAccessModal.setAttribute("inert", "");
     requestAccessModal.setAttribute("aria-hidden", "true");
 }
 
@@ -71,7 +73,9 @@ function closeRequestAccessModal() {
 function openRequestAccessModal() {
     const requestAccessModal = document.getElementById("requestAccessModal");
     requestAccessModal.classList.remove("hidden");
-    requestAccessModal.setAttribute("aria-hidden", "false");
+    requestAccessModal.removeAttribute("inert");
+    requestAccessModal.removeAttribute("aria-hidden");
+    document.getElementById("requestAccessCancelBtn").focus();
 }
 
 async function sendRequestAccessEmail(e) {
