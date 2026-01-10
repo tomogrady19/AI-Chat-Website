@@ -38,10 +38,10 @@ async function initDemo() {
     const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
     const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
     const timeRange = document.querySelector(".control-box");
-    if (requestAccessBtn) requestAccessBtn.style.display = "none";
-    if (spotifyAuthBtn) spotifyAuthBtn.style.display = "none";
-    if (spotifySwitchBtn) spotifySwitchBtn.style.display = "none";
-    if (timeRange) timeRange.style.display = "none";
+    if (requestAccessBtn) requestAccessBtn.classList.add("is-hidden");
+    if (spotifyAuthBtn) spotifyAuthBtn.classList.add("is-hidden");
+    if (spotifySwitchBtn) spotifySwitchBtn.classList.add("is-hidden");
+    if (timeRange) timeRange.style.classList.add("is-hidden");
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");

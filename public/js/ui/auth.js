@@ -28,25 +28,23 @@ export async function toggleSpotifyAuth() {
 }
 
 export function showLoggedIn() {
-    const authBtn = document.getElementById("spotifyAuthBtn");
-    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const subtitleMessage = document.getElementById("subtitle");
-    authBtn.textContent = "Log out";
-    spotifySwitchBtn.style.display = "inline-block"; //display switch button
-    subtitleMessage.textContent = "You're logged in! Try changing the time range and play some of your songs!";
+    document.getElementById("requestAccessBtn").classList.add("is-hidden"); // hide request access button
+    document.getElementById("spotifySwitchBtn").classList.remove("is-hidden"); //display switch button;
+
+    document.getElementById("spotifyAuthBtn").textContent = "Log out";
+    document.getElementById("subtitle").textContent = "You're logged in! Try changing the time range and play some of your songs!";;
+
 }
 
 export function showLoggedOut() {
+    document.getElementById("requestAccessBtn").classList.remove("is-hidden"); // display request access button
+    document.getElementById("spotifySwitchBtn").classList.add("is-hidden");; // hide switch button;
+
     const authBtn = document.getElementById("spotifyAuthBtn");
-    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const subtitleMessage = document.getElementById("subtitle");
-
     authBtn.textContent = "Log in with Spotify";
-    authBtn.style.display = "inline-block";
+    authBtn.classList.remove("is-hidden");
 
-    spotifySwitchBtn.style.display = "none"; // hide switch button
-
+    const subtitleMessage = document.getElementById("subtitle");
     subtitleMessage.textContent = "Spotify accounts require manual approval during development.\n\nYou can still explore everything in demo mode.";
-//    subtitleMessage.textContent = "This app uses the Spotify Web API in development mode, so users must be manually approved.\n\nClick 'Request Access' to submit your email. After approval, you’ll be able to log in with Spotify to see your listening data and receive recommendations from the AI assistant.\n\nYou can also try the app right away using demo mode.";
     clearUI();
 }
