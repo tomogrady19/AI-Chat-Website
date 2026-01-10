@@ -42,6 +42,10 @@ app.get(["/", "/demo"], (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
+app.get("/health", (req, res) => {
+    res.status(200).send("OK");
+});
+
 app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/spotify", spotifyRoutes);
