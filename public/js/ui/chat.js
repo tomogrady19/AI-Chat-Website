@@ -25,7 +25,7 @@ export async function recommendMusic() {
 }
 
 export function updateChat() {
-    const chat = document.getElementById("chat");
+    const chat = document.querySelector(".assistant-chat");;
     chat.innerHTML = "";
 
     getMessages().forEach(msg => {

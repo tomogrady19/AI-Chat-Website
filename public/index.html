@@ -46,9 +46,9 @@
             </div>
         </div>
         <div id="spotify-content">
-            <section id="artists-section"></section>
-            <section id="tracks-section"></section>
-            <section id="recent-section"></section>
+            <section id="artists-section" class="spotify-section"></section>
+            <section id="tracks-section" class="spotify-section"></section>
+            <section id="recent-section" class="spotify-section"></section>
         </div>
     </main>
 
@@ -65,7 +65,7 @@
             </header>
 
             <!-- Chat window -->
-            <div id="chat" class="assistant-chat"></div>
+            <div class="assistant-chat"></div>
             <!-- loading message -->
             <p id="status" class="assistant-status"></p>
 
@@ -107,8 +107,8 @@
                     autocomplete="email"
                 />
                 <div class="modal-actions">
-                    <button type="button" id="requestAccessCancelBtn">Cancel</button>
-                    <button type="submit" id="requestAccessSubmitBtn">Send request</button>
+                    <button type="button" id="requestAccessCancelBtn" class="secondary-cta">Cancel</button>
+                    <button type="submit" id="requestAccessSubmitBtn" class="primary-cta">Send request</button>
                 </div>
             </form>
 

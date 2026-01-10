@@ -5,7 +5,7 @@
     margin-top: 24px;
 }
 
-#spotify-content section {
+.spotify-section {
     background: #f7f7f7;
     padding: 16px;
     border-radius: 8px;

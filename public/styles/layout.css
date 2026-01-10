@@ -16,7 +16,7 @@
     opacity: 0.85;
 }
 
-#chat {
+.assistant-chat {
     display: flex;
     flex-direction: column;
     border: 1px solid #ccc;
