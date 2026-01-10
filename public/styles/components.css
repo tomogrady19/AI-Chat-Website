@@ -208,7 +208,7 @@ button {
 
 #assistant-toggle {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
+  right: 80px;
+  bottom: 50px;
   z-index: 1100;
 }
