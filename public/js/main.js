@@ -41,7 +41,7 @@ async function initDemo() {
     if (requestAccessBtn) requestAccessBtn.classList.add("is-hidden");
     if (spotifyAuthBtn) spotifyAuthBtn.classList.add("is-hidden");
     if (spotifySwitchBtn) spotifySwitchBtn.classList.add("is-hidden");
-    if (timeRange) timeRange.style.classList.add("is-hidden");
+    if (timeRange) timeRange.classList.add("is-hidden");
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
