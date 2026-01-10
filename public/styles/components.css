@@ -83,6 +83,20 @@
     color: #333;
 }
 
+.primary-cta {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    border: none;
+    background: #1db954;
+    color: white;
+    cursor: pointer;
+}
+
+.primary-cta:hover {
+    background: #17a44a;
+}
+
 /* Modal Base */
 
 .modal.hidden {
