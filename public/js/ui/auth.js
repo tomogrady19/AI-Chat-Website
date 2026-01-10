@@ -28,6 +28,7 @@ export async function toggleSpotifyAuth() {
 }
 
 export function showLoggedIn() {
+    document.getElementById("demoBtn").classList.add("is-hidden"); // hide try demo button
     document.getElementById("requestAccessBtn").classList.add("is-hidden"); // hide request access button
     document.getElementById("spotifySwitchBtn").classList.remove("is-hidden"); //display switch button;
 
@@ -37,6 +38,7 @@ export function showLoggedIn() {
 }
 
 export function showLoggedOut() {
+    document.getElementById("demoBtn").classList.remove("is-hidden"); // display try demo button
     document.getElementById("requestAccessBtn").classList.remove("is-hidden"); // display request access button
     document.getElementById("spotifySwitchBtn").classList.add("is-hidden");; // hide switch button;
 
