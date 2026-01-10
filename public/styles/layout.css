@@ -5,6 +5,17 @@
   text-align: center; /* keeps heading & buttons centered */
 }
 
+.hero {
+    margin: 40px auto 24px;
+    max-width: 720px;
+}
+
+.hero-tagline {
+    margin: 8px 0 16px;
+    font-size: 1.05rem;
+    opacity: 0.85;
+}
+
 #chat {
     display: flex;
     flex-direction: column;

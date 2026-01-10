@@ -12,11 +12,19 @@
 <body>
     <!-- Main page content -->
     <main id="app">
-        <h1>Spotify Insights</h1>
-        <a href="/demo">
-            <button>Try Demo Mode</button>
-        </a>
-        <h2 id="subtitle" class="subtitle"></h2>
+        <div class="hero">
+            <h1>Spotify Insights</h1>
+            <p class="hero-tagline">
+                Understand your music taste. Get AI-powered recommendations.
+            </p>
+
+            <a href="/demo">
+                <button class="primary-cta">Try Demo Mode</button>
+            </a>
+
+            <h2 id="subtitle" class="subtitle"></h2>
+        </div>
+
         <!-- Spotify auth controls -->
         <div id="spotify-auth">
             <button id="requestAccessBtn" type="button">Request Access</button>
