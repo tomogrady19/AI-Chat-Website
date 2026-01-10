@@ -45,6 +45,6 @@ async function initDemo() {
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
-    subtitleMessage.textContent = "Welcome to demo mode!\nThe listening data shown below is sample data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
+    subtitleMessage.textContent = "Welcome to demo mode!\nShown below is sample listening data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
     try { await showProfile(); } catch { return; }
 }
