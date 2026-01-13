@@ -7,6 +7,11 @@ export function toggleAssistant() {
 
     drawer.classList.toggle("open", shouldOpen);
     drawer.setAttribute("aria-hidden", String(!shouldOpen));
+    if (shouldOpen) {
+        document.getElementById("assistant-toggle").textContent = "✕ Close";
+    } else {
+        document.getElementById("assistant-toggle").textContent = "AI Assistant";
+    }
 }
 
 export async function recommendMusic() {
