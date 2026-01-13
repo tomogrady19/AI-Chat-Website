@@ -23,7 +23,7 @@ export function showFailedCallback() {
     showLoggedOut();
     showMessageModal({
         titleText: "Spotify access not enabled",
-        messageText: "Your Spotify account hasn’t been approved yet.\nYou can request access or explore the app in demo mode."
+        messageText: "Your Spotify account isn't on the API allowlist.\nYou can request access or explore the app in demo mode."
     });
 }
 
