@@ -25,9 +25,9 @@ export async function setupEventListeners() {
     input.addEventListener("input", growTextArea);
 
     // Request Access modal open/close events
-    document.getElementById("requestAccessBtn").addEventListener("click", openRequestAccessModal);
-    document.getElementById("requestAccessBackdrop").addEventListener("click", closeRequestAccessModal);
-    document.getElementById("requestAccessCancelBtn").addEventListener("click", closeRequestAccessModal);
+    document.getElementById("requestAccessBtn").addEventListener("click", openModal);
+    document.getElementById("requestAccessBackdrop").addEventListener("click", closeModal);
+    document.getElementById("modalCancelBtn").addEventListener("click", closeModal);
     document.getElementById("accessRequestForm").addEventListener("submit", sendRequestAccessEmail);
 }
 
@@ -61,21 +61,21 @@ function growTextArea(e) {
 }
 
 // close modal overlay
-function closeRequestAccessModal() {
-    document.getElementById("requestAccessBtn").focus();
-    const requestAccessModal = document.getElementById("requestAccessModal");
-    requestAccessModal.classList.add("hidden");
-    requestAccessModal.setAttribute("inert", "");
-    requestAccessModal.setAttribute("aria-hidden", "true");
+function closeModal() {
+    document.getElementById("demoBtn").focus();
+    const modal = document.getElementById("modal");
+    modal.classList.add("hidden");
+    modal.setAttribute("inert", "");
+    modal.setAttribute("aria-hidden", "true");
 }
 
 // open modal overlay
-function openRequestAccessModal() {
-    const requestAccessModal = document.getElementById("requestAccessModal");
-    requestAccessModal.classList.remove("hidden");
-    requestAccessModal.removeAttribute("inert");
-    requestAccessModal.removeAttribute("aria-hidden");
-    document.getElementById("requestAccessCancelBtn").focus();
+export function openModal() {
+    const modal = document.getElementById("modal");
+    modal.classList.remove("hidden");
+    modal.removeAttribute("inert");
+    modal.removeAttribute("aria-hidden");
+    document.getElementById("modalCancelBtn").focus();
 }
 
 async function sendRequestAccessEmail(e) {
@@ -83,9 +83,9 @@ async function sendRequestAccessEmail(e) {
 
     const accessRequestEmail = document.getElementById("accessRequestEmail");
     const accessRequestStatus = document.getElementById("accessRequestStatus");
-    const accessRequestSubmitBtn = document.getElementById("requestAccessSubmitBtn");
+    const accessRequestSubmitBtn = document.getElementById("modalSubmitBtn");
 
-    accessRequestStatus.textContent = "Sending request…";
+    accessRequestStatus.textContent = "Sending request...";
     accessRequestSubmitBtn.disabled = true;
 
     try {
