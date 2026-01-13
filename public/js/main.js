@@ -1,6 +1,6 @@
 console.log("Loaded: main.js");
 import { loadMessages } from "./state.js";
-import { updateChat, showProfile, initAuth, showFailedCallback, showNotPremium } from "./ui/ui.js";
+import { updateChat, showProfile, initAuth, showFailedCallback } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
 
@@ -24,8 +24,6 @@ async function init() {
         await showProfile();
         if (authState.premium) {
             await initPlayback();
-        } else {
-            showNotPremium();
         }
     }
 }

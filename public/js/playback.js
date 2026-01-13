@@ -1,5 +1,6 @@
 console.log("Loaded: playback.js");
-import { fetchPlaybackToken, fetchPlayer } from "./api.js";
+import { fetchPlaybackToken, fetchPlayer, checkAuthStatus } from "./api.js";
+import { showNotPremium } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
 
@@ -120,8 +121,13 @@ async function playTrackById(trackId) {
 
 export async function playTrack(trackId) {
     try {
-        await playTrackById(trackId);
-        document.getElementById("toggle-play").textContent = "⏸";
+        status = checkAuthStatus();
+        if (status.premium){
+            await playTrackById(trackId);
+            document.getElementById("toggle-play").textContent = "⏸";
+        } else {
+            showNotPremium();
+        }
     } catch (err) {
         console.error(err);
         alert(err.message || "Playback failed (Premium required for in-app playback).");

@@ -29,7 +29,7 @@ export function showFailedCallback() {
 
 export function showNotPremium() {
     showMessageModal({
-        titleText: "Spotify Premium required",
+        titleText: "Playback Requires Spotify Premium",
         messageText: "You’re signed in successfully, but some features require a Spotify Premium account.\nYou can still explore your listening data and use demo features."
     });
 }
