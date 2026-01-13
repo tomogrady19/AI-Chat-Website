@@ -118,10 +118,12 @@ export async function checkAuthStatus() {
 
 export async function logout() {
     if (isDemo) return;
-    await fetch(`${API_BASE_URL}/api/spotify/logout`, {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/logout`, {
         method: "GET",
         credentials: "include"
     });
+    if (!res.ok) { throw new Error("Logout failed"); }
+    window.location.href = "/"; // redirect
 }
 
 export async function login() {

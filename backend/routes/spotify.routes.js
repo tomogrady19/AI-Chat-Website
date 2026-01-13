@@ -98,7 +98,7 @@ router.get("/logout", (req, res) => {
             path: "/",
             secure: isProd
         });
-        res.redirect(frontendUrl);
+        res.status(200).json({ success: true });
     });
 });
 
