@@ -1,5 +1,6 @@
 import { fetchProfile, logout } from "../api.js";
-import { showLoggedOut } from "./auth.js"
+import { showLoggedOut } from "./auth.js";
+import { showMessageModal } from "./modal.js";
 
 export async function showProfile() {
     try {
@@ -20,7 +21,12 @@ export async function showProfile() {
 export function showFailedCallback() {
     logout();
     showLoggedOut();
-    // TODO update modal to say no access to api (request access or try demo mode)
+    showMessageModal({
+        titleText: "Spotify access not enabled",
+        messageText: "Your Spotify account hasn’t been approved yet. You can request access or explore the app in demo mode.",
+        primaryActionText: "Try Demo Mode",
+        onPrimaryAction: () => { window.location.href = "/demo"; }
+    });
 }
 
 function renderTopArtists(artists) {

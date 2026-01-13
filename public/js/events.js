@@ -1,7 +1,7 @@
 console.log("Loaded: events.js");
 import { togglePlayPause, playTrack, playPreview } from "./playback.js"
 import { askAI, switchAccount, sendEmail } from "./api.js";
-import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, openModal, closeModal } from "./ui/ui.js";
+import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, showRequestAccessModal, closeModal } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
 
@@ -25,9 +25,10 @@ export async function setupEventListeners() {
     input.addEventListener("input", growTextArea);
 
     // Request Access modal open/close events
-    document.getElementById("requestAccessBtn").addEventListener("click", openModal);
-    document.getElementById("requestAccessBackdrop").addEventListener("click", closeModal);
+    document.getElementById("requestAccessBtn").addEventListener("click", showRequestAccessModal);
+    document.getElementById("modalBackdrop").addEventListener("click", closeModal);
     document.getElementById("modalCancelBtn").addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {if (e.key === "Escape") { closeModal(); } });
     document.getElementById("accessRequestForm").addEventListener("submit", sendRequestAccessEmail);
 }
 

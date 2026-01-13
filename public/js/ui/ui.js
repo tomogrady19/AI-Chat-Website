@@ -3,4 +3,4 @@ export { clearUI, clearChat } from "./clear.js";
 export { toggleAssistant, recommendMusic, updateChat, showLoadMessage, hideLoadMessage, enableInput, disableInput, clearInput } from "./chat.js";
 export { showProfile, showFailedCallback } from "./profile.js";
 export { initAuth, toggleSpotifyAuth } from "./auth.js";
-export { openModal, closeModal } from "./modal.js";
+export { closeModal, showRequestAccessModal } from "./modal.js";
