@@ -10,13 +10,6 @@ const API_BASE_URL =
     ? "" //"http://localhost:3000"
     : "https://api.spotify-insights.com";
 
-const SYSTEM_PROMPT = {
-    role: "system",
-    content:`You are a human music DJ, not an AI.
-             Answer clearly, concisely and avoid unnecessary verbosity.
-             Keep it to single line breaks.`,
-}
-
 // call API via backend
 export async function askAI() {
     const prompt = document.getElementById("userInput").value.trim();
@@ -64,24 +57,43 @@ export async function fetchProfile() {
 }
 
 export async function streamFromAI(onChunk) {
-    const res = await fetch(`${API_BASE_URL}/api/ai/ask`, {
+    const demoParam = isDemo ? "?mode=demo" : "";
+    const timeRange = document.getElementById("timeRange")?.value;
+
+    const res = await fetch(`${API_BASE_URL}/api/ai/ask${demoParam}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ conversation: [SYSTEM_PROMPT, ...getMessages()] }) // conversation array is flattened
+        body: JSON.stringify({ conversation: getMessages(), timeRange })
     });
 
     await streamRes(res, onChunk);
 }
 
 export async function streamMusicRecommendations(onChunk) {
-    const timeRange = document.getElementById("timeRange").value;
     const demoParam = isDemo ? "?mode=demo" : "";
-    const res = await fetch(`${API_BASE_URL}/api/ai/music-recommendations${demoParam}`, {
+    const timeRange = document.getElementById("timeRange").value;
+    const conversation = [ { role: "user", content: "Recommend artists and tracks based on my listening history." } ];
+//    const conversation = `Based on the users music taste, respond with the following format:
+//        "Based on your music taste, here are some recommendations!"/n
+//        **Artists you might like**:/n
+//        {list 5 artists here (zero line breaks)}/n
+//        **Tracks you might like**:/n
+//        {list 5 tracks here (zero line breaks)}/n
+//
+//        {Give a brief one sentence explanation of what these recommendations have in common with their taste}/n
+//        {Offer to answer any follow up questions they have}/n
+//
+//        Please format your response with:
+//        - Clear section headings
+//        - One artist or song per line
+//        - Blank lines between sections`
+
+    const res = await fetch(`${API_BASE_URL}/api/ai/ask${demoParam}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ timeRange })
+        body: JSON.stringify({ conversation: conversation, timeRange })
     });
 
     await streamRes(res, onChunk);

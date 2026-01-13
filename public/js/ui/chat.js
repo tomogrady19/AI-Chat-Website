@@ -1,5 +1,5 @@
 import { getMessages, addMessage, updateLastMessage, appendChunk } from "../state.js";
-import {streamMusicRecommendations} from "../api.js"
+import { streamFromAI } from "../api.js"
 
 export function toggleAssistant() {
     const drawer = document.getElementById("assistant-drawer");
@@ -14,19 +14,24 @@ export function toggleAssistant() {
     }
 }
 
-export async function recommendMusic() {
-    addMessage("assistant", "");
+export async function recommendMusic() { //TODO this is quite similar to askAI in api.js. Should refactor so in the same place and reduce duplicate code
+    addMessage("user", "Recommend artists and tracks based on my listening history.");
+
     updateChat();
     showLoadMessage();
+    disableInput(); // disable user input while response is being fetched by API
+
+    addMessage("assistant", ""); // start with empty message to stream response to
 
     try {
-        await streamMusicRecommendations(appendChunk);
+        await streamFromAI(appendChunk); // await streamMusicRecommendations(appendChunk);
     } catch (err) {
         updateLastMessage(err.message || "Failed to load music recommendations");
     }
 
     updateChat();
     hideLoadMessage();
+    enableInput();
 }
 
 export function updateChat() {
