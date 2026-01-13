@@ -1,7 +1,7 @@
 console.log("Loaded: events.js");
 import { togglePlayPause, playTrack, playPreview } from "./playback.js"
 import { askAI, switchAccount, sendEmail } from "./api.js";
-import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth } from "./ui/ui.js";
+import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, openModal, closeModal } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
 
@@ -58,24 +58,6 @@ function growTextArea(e) {
     const input = e.target;
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
-}
-
-// close modal overlay
-function closeModal() {
-    document.getElementById("demoBtn").focus();
-    const modal = document.getElementById("modal");
-    modal.classList.add("hidden");
-    modal.setAttribute("inert", "");
-    modal.setAttribute("aria-hidden", "true");
-}
-
-// open modal overlay
-export function openModal() {
-    const modal = document.getElementById("modal");
-    modal.classList.remove("hidden");
-    modal.removeAttribute("inert");
-    modal.removeAttribute("aria-hidden");
-    document.getElementById("modalCancelBtn").focus();
 }
 
 async function sendRequestAccessEmail(e) {
