@@ -1,16 +1,16 @@
 console.log("Loaded: main.js");
 import { loadMessages } from "./state.js";
-import { updateChat, showProfile, initAuth } from "./ui/ui.js";
+import { updateChat, showProfile, initAuth, showFailedCallback } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
 
 const isDemo = window.location.pathname === "/demo";
-const callbackFailed = checkFailedCallback;
+const callbackFailed = checkFailedCallback();
 
 loadMessages();
 updateChat();
 if (callbackFailed){
-    // TODO logout, show logged out then update modal to say no access to api (request access or try demo mode)
+    showFailedCallback();
 } else if (!isDemo){
     await init();
 } else{

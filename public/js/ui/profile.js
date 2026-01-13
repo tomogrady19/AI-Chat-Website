@@ -1,4 +1,5 @@
-import { fetchProfile } from "../api.js";
+import { fetchProfile, logout } from "../api.js";
+import { showLoggedOut } from "./auth.js"
 
 export async function showProfile() {
     try {
@@ -14,6 +15,12 @@ export async function showProfile() {
         console.error(err)
         alert("Something went wrong loading your Spotify data")
     }
+}
+
+export function showFailedCallback() {
+    logout();
+    showLoggedOut();
+    // TODO update modal to say no access to api (request access or try demo mode)
 }
 
 function renderTopArtists(artists) {
