@@ -33,7 +33,7 @@ export function showLoggedIn() {
     document.getElementById("spotifySwitchBtn").classList.remove("is-hidden"); //display switch button;
 
     document.getElementById("spotifyAuthBtn").textContent = "Log out";
-    document.getElementById("subtitle").textContent = "You're logged in! Try changing the time range and play some of your songs!";;
+    document.getElementById("subtitle").textContent = "You're logged in! Try changing the time range and playing some of your songs!";;
 
 }
 
