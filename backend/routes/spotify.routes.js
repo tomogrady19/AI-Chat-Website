@@ -106,13 +106,13 @@ router.get("/switch", (req, res) => {
     redirectToSpotifyAuth(req, res, { forceDialog: true });
 });
 
-router.get("/status", requireAuth, async (req, res) => {
+router.get("/status", async (req, res) => {
     try {
         await getSpotifyAccessToken(req);
         const user = await getSpotifyUser(req.session.spotify.accessToken);
-        res.json({ authenticated: true, premium: user.product === "premium" });
+        return res.json({ authenticated: true, premium: user.product === "premium" });
     } catch (err) {
-        res.status(401).json({ authenticated: false });
+        return res.json({ authenticated: false });
     }
 });
 

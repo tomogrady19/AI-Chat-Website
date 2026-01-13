@@ -107,12 +107,11 @@ async function streamRes(res, onChunk) {
 }
 
 export async function checkAuthStatus() {
-    if (isDemo) return true;
+    if (isDemo) return { authenticated: false };
     const res = await fetch(`${API_BASE_URL}/api/spotify/status`, {
         method: "GET",
         credentials: "include"
     });
-    if (!res.ok) return { authenticated: false };
     return await res.json();
 }
 
