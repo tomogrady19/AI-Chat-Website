@@ -3,13 +3,16 @@ import { clearUI } from "./clear.js"
 
 export async function initAuth() {
     try {
-        const isLoggedIn = await checkAuthStatus();
-        if (isLoggedIn) {
+        const status = await checkAuthStatus();
+        if (status.authenticated) {
             showLoggedIn();
+            if (!status.premium) {
+                //showNonPremiumNotice(); // TODO disable features, show message
+            }
         } else {
             showLoggedOut();
         }
-        return isLoggedIn;
+        return status;
     } catch (err) {
         console.error("Auth check failed:", err);
         showLoggedOut();
@@ -18,8 +21,8 @@ export async function initAuth() {
 }
 
 export async function toggleSpotifyAuth() {
-    const isLoggedIn = await checkAuthStatus();
-    if (isLoggedIn) {
+    const status = await checkAuthStatus();
+    if (status.authenticated) {
         await logout();
         showLoggedOut();
     } else {

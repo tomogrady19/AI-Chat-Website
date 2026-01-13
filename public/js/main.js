@@ -17,11 +17,12 @@ await setupEventListeners()
 
 async function init() {
     const authState = await initAuth();
-    if (!authState) {
-        return; // necessary to prevent showProfile from running if user isn't logged in
+    if (authState.authenticated) {
+        await showProfile();
+        if (authState.premium) {
+            await initPlayback();
+        }
     }
-    try { await showProfile(); } catch { return; }
-    await initPlayback();
 }
 
 async function initDemo() {

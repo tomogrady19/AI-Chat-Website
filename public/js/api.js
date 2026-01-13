@@ -112,7 +112,8 @@ export async function checkAuthStatus() {
         method: "GET",
         credentials: "include"
     });
-    return res.ok;
+    if (!res.ok) return { authenticated: false };
+    return await res.json();
 }
 
 export async function logout() {

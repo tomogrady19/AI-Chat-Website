@@ -18,7 +18,7 @@ router.get("/callback", async (req, res) => {
     const { code, state } = req.query;
 
     if (!state || state !== req.session.spotifyState) {
-        return res.status(400).send("State mismatch");
+        return res.status(400).send("State mismatch"); //TODO handle this error better
     }
     delete req.session.spotifyState; // Wipe state once it's been verified
 
@@ -72,8 +72,8 @@ router.get("/callback", async (req, res) => {
 
         res.redirect(frontendUrl);
     } catch (err) {
-        console.error("Spotify callback error:", err);
-        res.status(500).send("Spotify callback failed");
+        console.warn(`[${req.id}] Spotify callback error:`, err);
+        return res.redirect(`${frontendUrl}?callback=failed`);
     }
 });
 
@@ -109,7 +109,8 @@ router.get("/switch", (req, res) => {
 router.get("/status", requireAuth, async (req, res) => {
     try {
         await getSpotifyAccessToken(req);
-        res.json({ authenticated: true });
+        const user = await getSpotifyUser(req.session.spotify.accessToken);
+        res.json({ authenticated: true, premium: user.product === "premium" });
     } catch (err) {
         res.status(401).json({ authenticated: false });
     }

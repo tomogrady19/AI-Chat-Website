@@ -7,7 +7,7 @@ export async function showProfile() {
         renderTopTracks(data.tracks);
         renderRecent(data.recent);
     } catch (err) {
-        if (err.code === 401) {
+        if (err.code === 401) { //TODO is this clause necessary?
             console.log("Spotify not authenticated yet");
             return;
         }
