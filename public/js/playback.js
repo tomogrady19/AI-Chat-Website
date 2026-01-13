@@ -171,6 +171,12 @@ export async function togglePlayPause() {
             isPaused = true;
         }
     } else {
+        status = checkAuthStatus();
+        if (!status.premium){
+            showNotPremium();
+            return;
+        }
+
         await initPlayback();
         if (!player) throw new Error("Player not ready");
 
