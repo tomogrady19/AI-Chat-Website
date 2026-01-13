@@ -5,12 +5,15 @@ import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
 
 const isDemo = window.location.pathname === "/demo";
+const callbackFailed = checkFailedCallback;
 
 loadMessages();
 updateChat();
-if (!isDemo){
+if (callbackFailed){
+    // TODO logout, show logged out then update modal to say no access to api (request access or try demo mode)
+} else if (!isDemo){
     await init();
-} else {
+} else{
     initDemo();
 }
 await setupEventListeners()
@@ -48,4 +51,13 @@ async function initDemo() {
     const subtitleMessage = document.getElementById("subtitle");
     subtitleMessage.textContent = "Welcome to demo mode!\nShown below is sample listening data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
     try { await showProfile(); } catch { return; }
+}
+
+function checkFailedCallback() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("callback") === "failed") {
+        window.history.replaceState({}, "", "/"); // Clean the URL
+        return true;
+    }
+    return false;
 }
