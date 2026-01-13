@@ -6,9 +6,9 @@ export async function initAuth() {
         const status = await checkAuthStatus();
         if (status.authenticated) {
             showLoggedIn();
-//            if (!status.premium) {
-//                //showNonPremiumNotice(); // TODO what needs to happen if not premium?
-//            }
+            if (!status.premium) {
+                //showNonPremiumNotice(); // TODO what needs to happen if not premium?
+            }
         } else {
             showLoggedOut();
         }

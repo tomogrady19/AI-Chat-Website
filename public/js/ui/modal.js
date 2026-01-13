@@ -22,12 +22,7 @@ export function openModal() {
     modal.focus();
 }
 
-export function showMessageModal({
-        titleText,
-        messageText,
-        primaryActionText = "Close",
-        onPrimaryAction
-        }) {
+export function showMessageModal({ titleText, messageText }) {
     // Set content
     title.textContent = titleText;
     help.textContent = messageText;

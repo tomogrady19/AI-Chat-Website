@@ -146,6 +146,11 @@ button {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.modal-content h2,
+.modal-content .subtitle {
+    text-align: center;
+}
+
 /* Form elements */
 .modal-content input[type="email"] {
     width: 100%;

@@ -1,6 +1,6 @@
 console.log("Loaded: ui.js");
 export { clearUI, clearChat } from "./clear.js";
 export { toggleAssistant, recommendMusic, updateChat, showLoadMessage, hideLoadMessage, enableInput, disableInput, clearInput } from "./chat.js";
-export { showProfile, showFailedCallback } from "./profile.js";
+export { showProfile, showFailedCallback, showNotPremium } from "./profile.js";
 export { initAuth, toggleSpotifyAuth } from "./auth.js";
 export { closeModal, showRequestAccessModal } from "./modal.js";

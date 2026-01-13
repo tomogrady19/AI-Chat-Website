@@ -23,9 +23,14 @@ export function showFailedCallback() {
     showLoggedOut();
     showMessageModal({
         titleText: "Spotify access not enabled",
-        messageText: "Your Spotify account hasn’t been approved yet. You can request access or explore the app in demo mode.",
-        primaryActionText: "Try Demo Mode",
-        onPrimaryAction: () => { window.location.href = "/demo"; }
+        messageText: "Your Spotify account hasn’t been approved yet.\nYou can request access or explore the app in demo mode."
+    });
+}
+
+export function showNotPremium() {
+    showMessageModal({
+        titleText: "Spotify Premium required",
+        messageText: "You’re signed in successfully, but some features require a Spotify Premium account.\nYou can still explore your listening data and use demo features."
     });
 }
 
