@@ -12,11 +12,11 @@ export default session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-//    proxy: true,
+//    proxy: true, //TODO should I remove this>
     cookie: {
         httpOnly: true,
         sameSite: isProd ? "none" : "lax",
-        secure: isProd, //TODO maybe hardcode this as true?
+        secure: isProd,
         maxAge: 1000 * 60 * 60, // 1 hour
     }
 });
