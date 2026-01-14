@@ -27,6 +27,7 @@ export async function spotifyCallback(req, res, next) {
 
 export async function spotifyStatus(req, res, next) {
     try {
+        //TODO figure out which function throws an error when not logged in and try to avoid in so that asyncHandler can be used
         await getSpotifyAccessToken(req);
         const user = await getSpotifyUser(req.session.spotify.accessToken);
         return res.json({ authenticated: true, premium: user.product === "premium" });
