@@ -1,7 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
 import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth, getTimeRange, exchangeCodeForSpotifyTokens, validateSpotifyState, buildSpotifySession, setAuthCookie} from "../services/spotify.service.js";
-import { regenerateSession } from "../services/session.service.js";
+import { regenerateSession, clearCookies } from "../services/session.service.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";
 
@@ -41,20 +41,7 @@ router.get("/logout", (req, res) => {
             return res.status(500).send("Logout failed");
         }
 
-        res.clearCookie("sid", {
-            sameSite: isProd ? "none" : "lax",
-            ...(isProd && { domain: ".spotify-insights.com" }),
-            path: "/",
-            secure: isProd
-        });
-
-        res.clearCookie("auth_token", {
-            httpOnly: true,
-            sameSite: isProd ? "none" : "lax",
-            ...(isProd && { domain: ".spotify-insights.com" }),
-            path: "/",
-            secure: isProd
-        });
+        clearCookies(res);
         res.status(200).json({ success: true });
     });
 });
