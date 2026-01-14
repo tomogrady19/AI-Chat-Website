@@ -1,8 +1,7 @@
-import { getTimeRange } from '../utils/timeRange.js'
-import { getSpotifyAccessToken } from '../services/session.service.js'
-import { getSpotifyProfile } from '../services/spotify.service.js'
+import { getSpotifyAccessToken } from '../services/spotify.service.js' //TODO should this be in spotify.service.js ?
+import { getSpotifyProfile, getTimeRange } from '../services/spotify.service.js'
 import { buildMusicProfilePrompt } from '../utils/prompts.js'
-import { SYSTEM_PROMPT } from '../config/constants.js'
+import { SYSTEM_PROMPT } from '../utils/prompts.js' //TODO should this be in config/constants.js ?
 import { streamAIResponse } from '../services/openai.service.js'
 
 export async function askAI(req, res, next) {
