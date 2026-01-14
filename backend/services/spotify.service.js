@@ -137,3 +137,69 @@ async function refreshSpotifyAccessToken(req) {
     spotifySession.expiresIn = tokenData.expires_in;
     spotifySession.obtainedAt = Date.now();
 }
+
+export async function exchangeCodeForSpotifyTokens(code) {
+    const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization":
+                "Basic " +
+                Buffer.from(
+                process.env.SPOTIFY_CLIENT_ID +
+                ":" +
+                process.env.SPOTIFY_CLIENT_SECRET
+                ).toString("base64"),
+        },
+        body: new URLSearchParams({
+            grant_type: "authorization_code",
+            code,
+            redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+        }),
+    });
+
+    const tokenData = await tokenResponse.json();
+
+    if (!tokenResponse.ok) {
+        const err = new Error("Spotify token exchange failed");
+        err.status = 502;
+        err.details = tokenData;
+        throw err;
+    }
+
+    return tokenData;
+}
+
+export function validateSpotifyState(req) {
+    const { state } = req.query;
+
+    if (!state || state !== req.session.spotifyState) {
+        const err = new Error("Spotify state mismatch");
+        err.status = 400;
+        throw err;
+    }
+
+    delete req.session.spotifyState;
+}
+
+export function buildSpotifySession(tokenData) {
+    return {
+        accessToken: tokenData.access_token,
+        refreshToken: tokenData.refresh_token,
+        expiresIn: tokenData.expires_in,
+        obtainedAt: Date.now(),
+    };
+}
+
+export function setAuthCookie(res, jwtToken) {
+    const isProd = process.env.NODE_ENV === "production";
+
+    res.cookie("auth_token", jwtToken, {
+        httpOnly: true,
+        sameSite: isProd ? "none" : "lax",
+        ...(isProd && { domain: ".spotify-insights.com" }),
+        path: "/",
+        secure: isProd,
+        maxAge: 60 * 60 * 1000,
+    });
+}

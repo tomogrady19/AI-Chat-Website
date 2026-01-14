@@ -1,6 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
-import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth, getTimeRange} from "../services/spotify.service.js";
+import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth, getTimeRange, exchangeCodeForSpotifyTokens, validateSpotifyState, buildSpotifySession, setAuthCookie} from "../services/spotify.service.js";
+import { regenerateSession } from "../services/session.service.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";
 
@@ -15,65 +16,21 @@ router.get("/login", (req, res) => {
 const frontendUrl = process.env.FRONTEND_URL;
 
 router.get("/callback", async (req, res) => {
-    const { code, state } = req.query;
-
-    if (!state || state !== req.session.spotifyState) {
-        return res.status(400).send("State mismatch"); //TODO handle this error better
-    }
-    delete req.session.spotifyState; // Wipe state once it's been verified
-
     try {
-        const tokenResponse = await fetch(
-            "https://accounts.spotify.com/api/token",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Authorization": "Basic " + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET).toString("base64"),},
-                body: new URLSearchParams({grant_type: "authorization_code", code, redirect_uri: process.env.SPOTIFY_REDIRECT_URI,}),
-            }
-        );
+        validateSpotifyState(req);
 
-        const tokenData = await tokenResponse.json();
+        const tokens = await exchangeCodeForSpotifyTokens(req.query.code);
+        await regenerateSession(req);
+        req.session.spotify = buildSpotifySession(tokens);
 
-        if (!tokenResponse.ok) {
-            console.error("Spotify token error:", tokenData);
-            return res.status(500).send("Token exchange failed");
-        }
-
-        await new Promise((resolve, reject) => {
-            req.session.regenerate(err => {
-              if (err) reject(err);
-              else resolve();
-            });
-          });
-
-        // Store tokens in session (in-memory)
-        req.session.spotify = {
-            accessToken: tokenData.access_token,
-            refreshToken: tokenData.refresh_token,
-            expiresIn: tokenData.expires_in,
-            obtainedAt: Date.now()
-        };
-        console.info(`[${req.id}] Spotify access token received`);
-
-        const user = await getSpotifyUser(req.session.spotify.accessToken);
+        const user = await getSpotifyUser(tokens.access_token);
         const jwtToken = issueJwt({ spotifyId: user.id });
-
-        // Store JWT in an HttpOnly cookie so it can't be stolen via XSS
-        res.cookie("auth_token", jwtToken, {
-            httpOnly: true,
-            sameSite: isProd ? "none" : "lax",
-            ...(isProd && { domain: ".spotify-insights.com" }),
-            path: "/",
-            secure: isProd,
-            maxAge: 60 * 60 * 1000 // 1 hour
-        });
+        setAuthCookie(res, jwtToken);
 
         res.redirect(frontendUrl);
     } catch (err) {
-        console.warn(`[${req.id}] Spotify callback error:`, err);
-        return res.redirect(`${frontendUrl}?callback=failed`);
+        console.warn("Spotify callback error:", err);
+        res.redirect(`${frontendUrl}?callback=failed`);
     }
 });
 
