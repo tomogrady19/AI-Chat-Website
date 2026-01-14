@@ -7,10 +7,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import sessionMiddleware from "./config/session.js";
+
 import aiRoutes from "./routes/ai.routes.js";
 import spotifyRoutes from "./routes/spotify.routes.js";
 import resendRoutes from "./routes/resend.routes.js";
+
 import { generalLimiter, aiLimiter } from "./middleware/rateLimiters.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -50,5 +53,7 @@ app.use("/api", generalLimiter);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/spotify", spotifyRoutes);
 app.use("/api/resend", resendRoutes);
+
+app.use(errorHandler);
 
 export default app;

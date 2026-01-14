@@ -5,7 +5,7 @@ const router = express.Router();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-router.post("/request-access", async (req, res) => {
+router.post("/request-access", async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
@@ -22,8 +22,7 @@ router.post("/request-access", async (req, res) => {
 
         res.json({ success: true });
     } catch (err) {
-        console.error("Resend error:", err);
-        res.status(500).json({ message: "Failed to send request email" });
+        next(err);
     }
 });
 

@@ -116,7 +116,7 @@ router.get("/status", async (req, res) => {
     }
 });
 
-router.get("/profile", async (req, res) => {
+router.get("/profile", async (req, res, next) => {
     const timeRange = getTimeRange(req);
     const mode = req.query.mode;
 
@@ -126,8 +126,7 @@ router.get("/profile", async (req, res) => {
             const profile = await getSpotifyProfile(null, timeRange, "demo");
             return res.json(profile);
         } catch (err) {
-            console.error("Demo profile error:", err);
-            return res.status(500).json({ error: "Demo profile failed to load" });
+            next(err);
         }
     }
 
@@ -138,25 +137,17 @@ router.get("/profile", async (req, res) => {
             const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, "live");
             res.json(profile);
         } catch (err) {
-            if (err?.status === 401) {
-                return res.status(401).json({ error: err.message });
-            }
-            console.error("Spotify profile error:", err);
-            res.status(500).json({ error: "Spotify profile failed to load" });
+            next(err);
         }
     });
 });
 
-router.get("/playback-token", requireAuth, async (req, res) => {
+router.get("/playback-token", requireAuth, async (req, res, next) => {
     try {
         const accessToken = await getSpotifyAccessToken(req);
         res.json({ accessToken });
     } catch (err) {
-        if (err?.status === 401) {
-            return res.status(401).json({ message: "Spotify token unavailable" });
-        }
-        console.error("Playback token error:", err);
-        res.status(500).json({ message: "Failed to fetch playback token" });
+        next(err);
     }
 });
 

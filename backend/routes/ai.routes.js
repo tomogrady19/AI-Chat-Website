@@ -8,7 +8,7 @@ import { askSchema } from "../validators/askSchema.js";
 
 const router = express.Router();
 
-router.post("/ask", validate(askSchema), async (req, res) => {
+router.post("/ask", validate(askSchema), async (req, res, next) => {
     const timeRange = getTimeRange(req);
     const mode = req.query.mode === "demo" ? "demo" : "live";
     let spotifyAccessToken = null;
@@ -22,8 +22,7 @@ router.post("/ask", validate(askSchema), async (req, res) => {
         const input = [SYSTEM_PROMPT, musicContext, ...conversation];
         await streamAIResponse({ input: input, req, res });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "AI ask failed" });
+        next(err);
     }
 });
 

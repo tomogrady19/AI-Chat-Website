@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { handleOpenAIError } from "../utils/openaiError.js";
 
 const client = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
@@ -26,8 +25,8 @@ export async function streamAIResponse({ input, req, res }) {
             console.info(`[${req.id}] OpenAI request aborted`);
             return;
         }
-        handleOpenAIError(err, req, res);
-        return;
+        if (res.headersSent) return; //incase headers were already sent, we don't want to re-throw
+        throw err;
     }
 
     try {
