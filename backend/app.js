@@ -3,8 +3,6 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import crypto from "crypto";
-import path from "path";
-import { fileURLToPath } from "url";
 
 import sessionMiddleware from "./config/session.js";
 
@@ -20,7 +18,7 @@ const app = express();
 
 app.set("trust proxy", 1);
 
-// Middleware order:
+// Express middleware execution order:
 // 1. Security & parsing
 // 2. Request identification & logging
 // 3. Session handling (must come before routes that use req.session)
@@ -34,10 +32,6 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(cookieParser());
-app.use(express.json({ limit: "20kb" })); // enforce json file size limit globally
-app.use(express.static("public"));
-
 // Attach a unique request ID for logging and traceability
 app.use((req, res, next) => {
     req.id = crypto.randomUUID();
@@ -46,7 +40,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(cookieParser());
+app.use(express.json({ limit: "20kb" })); // enforce json file size limit globally
 app.use("/", metaRoutes);
+app.use(express.static("public"));
 
 // Session middleware must be registered before any route that reads or writes req.session
 app.use(sessionMiddleware);
