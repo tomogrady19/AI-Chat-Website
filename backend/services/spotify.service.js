@@ -26,8 +26,6 @@ export async function getSpotifyAccessToken(req) {
     if (!obtainedAt || Date.now() >= refreshAt) {
         await refreshSpotifyAccessToken(req);
     }
-//    console.log("token:")
-//    console.log(spotifySession.accessToken);
     return spotifySession.accessToken;
 }
 

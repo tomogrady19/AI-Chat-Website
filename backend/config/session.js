@@ -1,4 +1,8 @@
 // could later be used for production cookies or a Redis/Mongo DB session store
+
+// - Sessions: used for server-side state (e.g. Spotify auth state, demo mode, transient user context)
+// - JWTs: used for stateless authentication / identity where required
+
 import session from "express-session";
 
 const isProd = process.env.NODE_ENV === "production";
