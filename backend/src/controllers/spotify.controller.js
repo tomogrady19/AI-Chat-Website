@@ -1,5 +1,5 @@
 import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, redirectToSpotifyAuth, getTimeRange, exchangeCodeForSpotifyTokens, validateSpotifyState, buildSpotifySession, setAuthCookie} from "../services/spotify.service.js";
-import { regenerateSession, clearCookies } from "../services/session.service.js";
+import { regenerateSession, clearCookies, destroySession } from "../services/session.service.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";
 
@@ -71,4 +71,10 @@ export async function getPlaybackToken(req, res, next){
     } catch (err) {
         next(err);
     }
+}
+
+export async function logout(req, res) {
+    await destroySession(req);
+    clearCookies(res);
+    return res.json({ success: true });
 }
