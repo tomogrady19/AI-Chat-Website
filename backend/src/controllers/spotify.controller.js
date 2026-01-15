@@ -13,6 +13,10 @@ export async function spotifyCallback(req, res, next) {
         }
 
         const tokens = await exchangeCodeForSpotifyTokens(req.query.code);
+        if (!tokens) {
+            return res.redirect(`${frontendUrl}?callback=failed`);
+        }
+
         await regenerateSession(req);
         req.session.spotify = buildSpotifySession(tokens);
 
@@ -22,8 +26,7 @@ export async function spotifyCallback(req, res, next) {
 
         res.redirect(frontendUrl);
     } catch (err) {
-        console.warn("Spotify callback error:", err);
-        res.redirect(`${frontendUrl}?callback=failed`);
+        next(err);
     }
 }
 

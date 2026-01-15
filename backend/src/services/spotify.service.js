@@ -157,10 +157,10 @@ export async function exchangeCodeForSpotifyTokens(code) {
     const tokenData = await tokenResponse.json();
 
     if (!tokenResponse.ok) {
-        const err = new Error("Spotify token exchange failed");
-        err.status = 502;
-        err.details = tokenData;
-        throw err;
+        if (tokenResponse.status >= 500) {
+            throw new Error('Spotify token service unavailable'); //TODO should this error be formatted differently?
+        }
+        return null;
     }
 
     return tokenData;
