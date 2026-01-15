@@ -8,7 +8,9 @@ const frontendUrl = process.env.FRONTEND_URL;
 
 export async function spotifyCallback(req, res, next) {
     try {
-        validateSpotifyState(req);
+        if (!validateSpotifyState(req)) {
+            return res.redirect(`${frontendUrl}?callback=failed`);
+        }
 
         const tokens = await exchangeCodeForSpotifyTokens(req.query.code);
         await regenerateSession(req);

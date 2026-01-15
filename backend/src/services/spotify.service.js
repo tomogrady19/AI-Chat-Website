@@ -170,12 +170,11 @@ export function validateSpotifyState(req) {
     const { state } = req.query;
 
     if (!state || state !== req.session.spotifyState) {
-        const err = new Error("Spotify state mismatch");
-        err.status = 400;
-        throw err;
+        return false;
     }
 
     delete req.session.spotifyState;
+    return true;
 }
 
 export function buildSpotifySession(tokenData) {
