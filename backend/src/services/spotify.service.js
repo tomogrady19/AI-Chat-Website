@@ -14,9 +14,7 @@ const demoRecentlyPlayed = JSON.parse(fs.readFileSync(path.join(__dirname, "../d
 export async function getSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;
     if (!spotifySession?.accessToken) {
-        const err = new Error("Spotify not authenticated");
-        err.status = 401;
-        throw err;
+        return null;
     }
 
     const obtainedAt = spotifySession.obtainedAt || 0;
