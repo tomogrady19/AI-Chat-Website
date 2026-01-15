@@ -16,18 +16,10 @@ router.get("/callback", spotifyCallback);
 
 router.get('/login', redirectToSpotifyAuth); //this is synchronous so no asyncHandler here
 
-router.get("/logout", (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error("Session destroy error:", err);
-            return res.status(500).send("Logout failed");
-        }
+router.get("/logout", logout);
 
-        clearCookies(res);
-        res.status(200).json({ success: true });
-    });
+router.get('/switch', (req, res) => {
+  redirectToSpotifyAuth(req, res, { forceDialog: true });
 });
-
-router.get("/switch", logout);
 
 export default router;
