@@ -27,8 +27,8 @@ export async function spotifyCallback(req, res, next) {
 }
 
 export async function spotifyStatus(req, res, next) {
-    await getSpotifyAccessToken(req);
-    if (!req.session.spotify.accessToken){
+    const token = await getSpotifyAccessToken(req);
+    if (!token){
         return res.json({ authenticated: false });
     }
     const user = await getSpotifyUser(req.session.spotify.accessToken);
