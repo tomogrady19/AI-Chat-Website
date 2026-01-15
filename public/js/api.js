@@ -74,20 +74,6 @@ export async function streamMusicRecommendations(onChunk) {
     const demoParam = isDemo ? "?mode=demo" : "";
     const timeRange = document.getElementById("timeRange").value;
     const conversation = [ { role: "user", content: "Recommend artists and tracks based on my listening history." } ];
-//    const conversation = `Based on the users music taste, respond with the following format:
-//        "Based on your music taste, here are some recommendations!"/n
-//        **Artists you might like**:/n
-//        {list 5 artists here (zero line breaks)}/n
-//        **Tracks you might like**:/n
-//        {list 5 tracks here (zero line breaks)}/n
-//
-//        {Give a brief one sentence explanation of what these recommendations have in common with their taste}/n
-//        {Offer to answer any follow up questions they have}/n
-//
-//        Please format your response with:
-//        - Clear section headings
-//        - One artist or song per line
-//        - Blank lines between sections`
 
     const res = await fetch(`${API_BASE_URL}/api/ai/ask${demoParam}`, {
         method: "POST",
