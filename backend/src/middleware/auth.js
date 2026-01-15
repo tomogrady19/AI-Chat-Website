@@ -1,16 +1,20 @@
 import jwt from "jsonwebtoken";
 
-export function requireAuth(req, res, next) {
+export function requireAuth(req) {
     const token = req.cookies?.auth_token;
 
     if (!token) {
-        return res.status(401).json({ message: "Log into Spotify to continue" });
+        const err = new Error('Log into Spotify to continue');
+        err.status = 401;
+        throw err;
     }
 
     try {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
-        next();
+        return req.user;
     } catch {
-        res.status(401).json({ message: "Session Expired. Please log into Spotify to continue" });
+        const err = new Error('Session expired. Please log into Spotify to continue');
+        err.status = 401;
+        throw err;
     }
 }

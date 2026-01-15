@@ -44,29 +44,24 @@ export async function spotifyStatus(req, res, next) {
 }
 
 export async function getProfile(req, res, next) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)
-    const timeRange = getTimeRange(req);
-    const mode = req.query.mode;
+    try {
+        const timeRange = getTimeRange(req);
+        const mode = req.query.mode;
 
-    // demo mode: no auth, no token
-    if (mode === "demo") {
-        try {
+        // demo mode: no auth, no token
+        if (mode === "demo") {
             const profile = await getSpotifyProfile(null, timeRange, "demo");
             return res.json(profile);
-        } catch (err) {
-            next(err);
         }
-    }
 
-    // live mode: auth required
-    return requireAuth(req, res, async () => {
-        try {
-            const spotifyAccessToken = await getSpotifyAccessToken(req);
-            const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, "live");
-            res.json(profile);
-        } catch (err) {
-            next(err);
-        }
-    });
+        // live mode: auth required
+        const user = await requireAuth(req);
+        const spotifyAccessToken = await getSpotifyAccessToken(req);
+        const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, "live");
+        return res.json(profile);
+    } catch (err) {
+        next(err);
+    }
 }
 
 export async function getPlaybackToken(req, res, next){
