@@ -5,7 +5,7 @@ import { spotifyCallback, spotifyStatus, getProfile, getPlaybackToken, logout, g
 
 const router = express.Router();
 
-router.get("/status", asyncHandler(spotifyStatus));
+router.get("/status", asyncHandler(spotifyStatus)); //TODO renmanem to user or me
 
 router.get("/profile", asyncHandler(getProfile));
 

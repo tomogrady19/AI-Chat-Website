@@ -36,7 +36,7 @@ export async function spotifyStatus(req, res) {
         return res.json({ authenticated: false });
     }
     const user = await getSpotifyUser(req.session.spotify.accessToken);
-    return res.json({ authenticated: true, premium: user.product === "premium" });
+    return res.json({ authenticated: true, premium: user.product === "premium" }); //TODO add name and image to this
 }
 
 export async function getProfile(req, res) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)
