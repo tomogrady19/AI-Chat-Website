@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { redirectToSpotifyAuth } from "../services/spotify.service.js";
+import { redirectToSpotifyAuth } from "../services/spotify/spotifySession.service.js";
 import { spotifyCallback, spotifyStatus, getProfile, getPlaybackToken, logout } from '../controllers/spotify.controller.js'
 
 const router = express.Router();

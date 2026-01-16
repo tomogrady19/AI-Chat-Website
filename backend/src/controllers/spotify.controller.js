@@ -1,4 +1,8 @@
-import {getSpotifyAccessToken, getSpotifyProfile, getSpotifyUser, getTimeRange, exchangeCodeForSpotifyTokens, validateSpotifyState, buildSpotifySession, setAuthCookie} from "../services/spotify.service.js";
+import { getSpotifyAccessToken, validateSpotifyState, buildSpotifySession } from "../services/spotify/spotifyAuth.service.js";
+import { getSpotifyProfile } from "../services/spotify/spotifyProfile.service.js";
+import { getSpotifyUser, exchangeCodeForSpotifyTokens } from "../services/spotify/spotifyClient.service.js";
+import { setAuthCookie } from "../services/spotify/spotifySession.service.js";
+import { getTimeRange } from "../services/spotify/spotifyUtils.js";
 import { regenerateSession, clearCookies, destroySession } from "../services/session.service.js";
 import { requireAuth } from "../middleware/auth.js";
 import { issueJwt } from "../utils/jwt.js";

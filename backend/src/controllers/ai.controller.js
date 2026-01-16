@@ -1,4 +1,6 @@
-import { getSpotifyAccessToken, getSpotifyProfile, getTimeRange } from '../services/spotify.service.js'
+import { getSpotifyAccessToken } from "../services/spotify/spotifyAuth.service.js";
+import { getSpotifyProfile } from "../services/spotify/spotifyProfile.service.js";
+import { getTimeRange } from "../services/spotify/spotifyUtils.js";
 import { buildMusicProfilePrompt } from '../utils/prompts.js'
 import { SYSTEM_PROMPT } from '../utils/prompts.js' //TODO move to config/constants.js ?
 import { streamAIResponse } from '../services/openai.service.js'
