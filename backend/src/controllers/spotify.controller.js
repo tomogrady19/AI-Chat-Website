@@ -70,7 +70,7 @@ export async function logout(req, res) {
 
 export async function getMe(req, res) {
       if (req.query.mode === "demo") {
-        return res.json({ display_name: "Demo User", images: [], id: "demo_user" });
+        return res.json({ display_name: "Demo User", images: []});
       }
 
       await requireAuth(req);
