@@ -20,3 +20,15 @@ export async function getSpotifyProfile(accessToken, timeRange, mode="live") {
         recent: (await recentRes.json()).items ?? [],
     };
 }
+
+export async function getSpotifyUser(accessToken) {
+    const res = await fetch("https://api.spotify.com/v1/me", {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    if (!res.ok) {
+        return { display_name: "User", images: [], id: "user" };
+    }
+
+    return res.json();
+}

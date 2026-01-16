@@ -10,7 +10,7 @@ import { issueJwt } from "../utils/jwt.js";
 const isProd = process.env.NODE_ENV === "production";
 const frontendUrl = process.env.FRONTEND_URL;
 
-export async function spotifyCallback(req, res, next) {
+export async function spotifyCallback(req, res) {
     if (!validateSpotifyState(req)) {
         return res.redirect(`${frontendUrl}?callback=failed`);
     }
@@ -30,7 +30,7 @@ export async function spotifyCallback(req, res, next) {
     res.redirect(frontendUrl);
 }
 
-export async function spotifyStatus(req, res, next) {
+export async function spotifyStatus(req, res) {
     const token = await getSpotifyAccessToken(req);
     if (!token){
         return res.json({ authenticated: false });
@@ -39,24 +39,24 @@ export async function spotifyStatus(req, res, next) {
     return res.json({ authenticated: true, premium: user.product === "premium" });
 }
 
-export async function getProfile(req, res, next) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)
+export async function getProfile(req, res) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)
     const timeRange = getTimeRange(req);
     const mode = req.query.mode;
 
     // demo mode: no auth, no token
     if (mode === "demo") {
-        const profile = await getSpotifyProfile(null, timeRange, "demo");
+        const profile = await getSpotifyProfile(null, timeRange, "demo"); //TODO I'm testing for mode her and in getSpotifyProfile -> redundant
         return res.json(profile);
     }
 
     // live mode: auth required
-    const user = await requireAuth(req);
+    await requireAuth(req);
     const spotifyAccessToken = await getSpotifyAccessToken(req);
     const profile = await getSpotifyProfile(spotifyAccessToken, timeRange, "live");
     return res.json(profile);
 }
 
-export async function getPlaybackToken(req, res, next){
+export async function getPlaybackToken(req, res){
     await requireAuth(req);
     const accessToken = await getSpotifyAccessToken(req);
     res.json({ accessToken });
@@ -66,4 +66,17 @@ export async function logout(req, res) {
     await destroySession(req);
     clearCookies(res);
     return res.json({ success: true });
+}
+
+export async function getMe(req, res) {
+      if (req.query.mode === "demo") {
+        return res.json({ display_name: "Demo User", images: [], id: "demo_user" });
+      }
+
+      await requireAuth(req);
+
+      const accessToken = await getSpotifyAccessToken(req);
+      const user = await getSpotifyUser(accessToken);
+
+      return res.json(user);
 }
