@@ -1,8 +1,9 @@
 console.log("Loaded: main.js");
 import { loadMessages } from "./state.js";
-import { updateChat, showProfile, initAuth, showFailedCallback } from "./ui/ui.js";
+import { updateChat, showProfile, showFailedCallback, showLoggedIn, showLoggedOut } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
+import { getUser } from "./api.js";
 
 const isDemo = window.location.pathname === "/demo";
 const callbackFailed = checkFailedCallback();
@@ -19,12 +20,22 @@ if (callbackFailed){
 await setupEventListeners()
 
 async function init() {
-    const authState = await initAuth();
-    if (authState.authenticated) {
-        await showProfile();
-        if (authState.premium) {
-            await initPlayback();
+    try {
+        const user = await getUser();
+        if (user) {
+            showLoggedIn();
+            await showProfile();
+            if (user.premium) {
+                await initPlayback();
+            }
+        } else {
+            showLoggedOut();
         }
+        return user;
+    } catch (err) {
+        console.error("init failed:", err);
+        showLoggedOut();
+        return false;
     }
 }
 

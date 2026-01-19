@@ -26,9 +26,5 @@ export async function getSpotifyUser(accessToken) {
         headers: { Authorization: `Bearer ${accessToken}` }
     });
 
-    if (!res.ok) {
-        return { display_name: "User", images: [], id: "user" };
-    }
-
     return res.json();
 }

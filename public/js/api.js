@@ -45,6 +45,7 @@ export async function fetchProfile() {
         credentials: "include"
     });
 
+    //TODO maybe change to just show logged out
     if (res.status === 401) {
         const err = new Error("Spotify not authenticated");
         err.code = 401;

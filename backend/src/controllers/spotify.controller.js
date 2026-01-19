@@ -30,19 +30,18 @@ export async function spotifyCallback(req, res) {
     res.redirect(frontendUrl);
 }
 
-//TODO think of changing this function (return res.json(user) or res.json(null))
 export async function spotifyUser(req, res) {
     if (req.query.mode === "demo") {
-        return res.json({ authenticated: false, premium: false, display_name: "Demo User", images: []});
+        return res.json(null);
     }
 
     const accessToken = await getSpotifyAccessToken(req);
     if (!accessToken){
-        return res.json({ authenticated: false, premium: false, display_name: null, images: [] });
+        return res.json(null);
     }
 
     const user = await getSpotifyUser(accessToken);
-    return res.json({ authenticated: true, premium: user.product === "premium", display_name: user.display_name, images: user.images  });
+    return res.json(user);
 }
 
 export async function getProfile(req, res) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)

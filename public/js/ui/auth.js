@@ -1,25 +1,9 @@
 import { getUser, login, logout } from "../api.js"
 import { clearUI } from "./clear.js"
 
-export async function initAuth() {
-    try {
-        const user = await getUser();
-        if (user.authenticated) { //TODO /me route doesn't actually return .authenticated. Could check something else
-            showLoggedIn();
-        } else {
-            showLoggedOut();
-        }
-        return user;
-    } catch (err) {
-        console.error("Auth check failed:", err);
-        showLoggedOut();
-        return false;
-    }
-}
-
 export async function toggleSpotifyAuth() {
     const user = await getUser();
-    if (user.authenticated) {
+    if (user) {
         await logout();
         showLoggedOut();
     } else {
