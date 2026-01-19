@@ -9,7 +9,7 @@ export async function initAuth() {
         } else {
             showLoggedOut();
         }
-        return status;
+        return user;
     } catch (err) {
         console.error("Auth check failed:", err);
         showLoggedOut();

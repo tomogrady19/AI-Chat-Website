@@ -21,6 +21,7 @@ await setupEventListeners()
 async function init() {
     const authState = await initAuth();
     if (authState.authenticated) {
+        console.log("Hello");
         await showProfile();
         if (authState.premium) {
             await initPlayback();
