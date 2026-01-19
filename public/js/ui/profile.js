@@ -163,8 +163,7 @@ function renderUserProfile(user) {
     wrapper.className = "spotify-user";
 
     const img = document.createElement("img");
-    img.src = user.images?.[0]?.url || ""; //TODO come up with better alternative if no image url exists
-    img.alt = user.display_name || "";
+    img.src = user.images?.[0]?.url || `https://api.dicebear.com/7.x/initials/svg?seed=${user.display_name}`;
 
     const name = document.createElement("span");
     name.textContent = user.display_name || "";
