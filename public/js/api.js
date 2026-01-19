@@ -1,3 +1,4 @@
+// TODO refactor this file into smaller files (mirror how it's done in backend)?
 console.log("Loaded: api.js");
 import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
@@ -104,7 +105,7 @@ async function streamRes(res, onChunk) {
     }
 }
 
-export async function getUser() { //TODO rename everywhere to user or me
+export async function getUser() {
     if (isDemo) return { authenticated: false };
     const res = await fetch(`${API_BASE_URL}/api/spotify/user`, {
         method: "GET",

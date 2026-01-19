@@ -5,7 +5,6 @@ import { showMessageModal } from "./modal.js";
 export async function showProfile() {
     try {
         const data = await fetchProfile();
-        console.log(data);
         renderTopArtists(data.artists);
         renderTopTracks(data.tracks);
         renderRecent(data.recent);

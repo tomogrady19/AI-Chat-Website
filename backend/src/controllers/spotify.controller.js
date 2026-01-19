@@ -30,7 +30,7 @@ export async function spotifyCallback(req, res) {
     res.redirect(frontendUrl);
 }
 
-//TODO think of changing this function (return user json instead?)
+//TODO think of changing this function (return res.json(user) or res.json(null))
 export async function spotifyUser(req, res) {
     if (req.query.mode === "demo") {
         return res.json({ authenticated: false, premium: false, display_name: "Demo User", images: []});
