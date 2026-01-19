@@ -4,8 +4,8 @@ import { showMessageModal } from "./modal.js";
 
 export async function showProfile() {
     try {
-        const user = getUser();
-        renderUserProfile(user)
+        const user = await getUser();
+        renderUserProfile(user);
 
         const profile = await fetchProfile();
         renderTopArtists(profile.artists);
@@ -153,5 +153,29 @@ function createPlayButton(track) {
 }
 
 function renderUserProfile(user) {
-    // TODO finish function
+    const authContainer = document.getElementById("spotify-auth");
+
+    // Remove existing profile block if re-rendering
+    const existing = authContainer.querySelector(".spotify-user");
+    if (existing) existing.remove();
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "spotify-user";
+
+    const img = document.createElement("img");
+    img.src = user.images?.[0]?.url || ""; //TODO come up with better alternative if no image url exists
+    img.alt = user.display_name || "";
+    console.log("hello");
+    console.log(user.images);
+    console.log(user.display_name);
+    console.log("bye");
+
+    const name = document.createElement("span");
+    name.textContent = user.display_name || "";
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(name);
+
+    // Insert above the buttons
+    authContainer.prepend(wrapper);
 }

@@ -70,3 +70,21 @@
     width: auto;
     max-width: 160px;
 }
+
+.spotify-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.spotify-user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.spotify-user span {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
