@@ -106,7 +106,7 @@ async function streamRes(res, onChunk) {
 
 export async function checkAuthStatus() { //TODO rename everywhere to user or me
     if (isDemo) return { authenticated: false };
-    const res = await fetch(`${API_BASE_URL}/api/spotify/status`, {
+    const res = await fetch(`${API_BASE_URL}/api/spotify/user`, {
         method: "GET",
         credentials: "include"
     });

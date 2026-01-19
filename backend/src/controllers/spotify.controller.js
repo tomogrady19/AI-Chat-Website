@@ -30,13 +30,19 @@ export async function spotifyCallback(req, res) {
     res.redirect(frontendUrl);
 }
 
-export async function spotifyStatus(req, res) {
-    const token = await getSpotifyAccessToken(req);
-    if (!token){
-        return res.json({ authenticated: false });
+//TODO think of changing this function (return user json instead?)
+export async function spotifyUser(req, res) {
+    if (req.query.mode === "demo") {
+        return res.json({ authenticated: false, premium: false, display_name: "Demo User", images: []});
     }
-    const user = await getSpotifyUser(req.session.spotify.accessToken);
-    return res.json({ authenticated: true, premium: user.product === "premium" }); //TODO add name and image to this
+
+    const accessToken = await getSpotifyAccessToken(req);
+    if (!accessToken){
+        return res.json({ authenticated: false, premium: false, display_name: null, images: [] });
+    }
+
+    const user = await getSpotifyUser(accessToken);
+    return res.json({ authenticated: true, premium: user.product === "premium", display_name: user.display_name, images: user.images  });
 }
 
 export async function getProfile(req, res) { //TODO think about naming (getProfile and getSpotifyProfile are very similar)
@@ -66,17 +72,4 @@ export async function logout(req, res) {
     await destroySession(req);
     clearCookies(res);
     return res.json({ success: true });
-}
-
-export async function getMe(req, res) {
-      if (req.query.mode === "demo") {
-        return res.json({ display_name: "Demo User", images: []});
-      }
-
-      await requireAuth(req);
-
-      const accessToken = await getSpotifyAccessToken(req);
-      const user = await getSpotifyUser(accessToken);
-
-      return res.json(user);
 }
