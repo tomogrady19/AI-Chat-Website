@@ -8,8 +8,6 @@ import { getUser } from "./api.js";
 const isDemo = window.location.pathname === "/demo";
 const callbackFailed = checkFailedCallback();
 
-loadMessages();
-updateChat();
 if (callbackFailed){
     showFailedCallback();
 } else if (!isDemo){
@@ -18,6 +16,8 @@ if (callbackFailed){
     initDemo();
 }
 await setupEventListeners()
+loadMessages();
+updateChat();
 
 async function init() {
     try {
