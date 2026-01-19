@@ -165,10 +165,6 @@ function renderUserProfile(user) {
     const img = document.createElement("img");
     img.src = user.images?.[0]?.url || ""; //TODO come up with better alternative if no image url exists
     img.alt = user.display_name || "";
-    console.log("hello");
-    console.log(user.images);
-    console.log(user.display_name);
-    console.log("bye");
 
     const name = document.createElement("span");
     name.textContent = user.display_name || "";
