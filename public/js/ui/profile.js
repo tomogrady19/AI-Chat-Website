@@ -1,9 +1,12 @@
-import { fetchProfile, logout } from "../api.js";
+import { getUser, fetchProfile, logout } from "../api.js";
 import { showLoggedOut } from "./auth.js";
 import { showMessageModal } from "./modal.js";
 
 export async function showProfile() {
     try {
+        const user = getUser();
+        renderUserProfile(user)
+
         const profile = await fetchProfile();
         renderTopArtists(profile.artists);
         renderTopTracks(profile.tracks);
@@ -147,4 +150,8 @@ function createPlayButton(track) {
     playBtn.dataset.artists = track.artists.map(a => a.name).join(", ");
     playBtn.dataset.name = track.name;
     return playBtn
+}
+
+function renderUserProfile(user) {
+    // TODO finish function
 }

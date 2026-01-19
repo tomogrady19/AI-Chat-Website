@@ -1,4 +1,5 @@
 // TODO refactor this file into smaller files (mirror how it's done in backend)?
+// TODO change fetch to get or visa versa in function names
 console.log("Loaded: api.js");
 import {getMessages} from "./state.js";
 import {addMessage, appendChunk, updateLastMessage} from "./state.js";
