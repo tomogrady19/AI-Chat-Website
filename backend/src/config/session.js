@@ -12,7 +12,6 @@ export default session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-//    proxy: true, //TODO should I remove this>
     cookie: {
         httpOnly: true,
         sameSite: isProd ? "none" : "lax",
