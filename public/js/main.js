@@ -48,15 +48,9 @@ async function initDemo() {
         demoButton.textContent = "Back to Live";
     }
 
-    //hide spotifyAuthBtn and spotifySwitchBtn
-    const requestAccessBtn = document.getElementById("requestAccessBtn");
-    const spotifyAuthBtn = document.getElementById("spotifyAuthBtn");
-    const spotifySwitchBtn = document.getElementById("spotifySwitchBtn");
-    const timeRange = document.querySelector(".control-box");
-    if (requestAccessBtn) requestAccessBtn.classList.add("is-hidden");
-    if (spotifyAuthBtn) spotifyAuthBtn.classList.add("is-hidden");
-    if (spotifySwitchBtn) spotifySwitchBtn.classList.add("is-hidden");
-    if (timeRange) timeRange.classList.add("is-hidden");
+    // hide auth section and time range section
+    document.getElementById("spotify-auth")?.classList.add("is-hidden");
+    document.querySelector(".control-box").classList.add("is-hidden");
 
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
