@@ -16,6 +16,7 @@ export function showLoggedIn() {
     document.getElementById("requestAccessBtn").classList.add("is-hidden"); // hide request access button
     document.getElementById("spotifySwitchBtn").classList.remove("is-hidden"); //display switch button;
 
+    document.getElementById("spotify-auth").classList.add("is-logged-in");
     document.getElementById("spotifyAuthBtn").textContent = "Log out";
     document.getElementById("subtitle").textContent = "You're logged in! Try changing the time range and playing some of your songs!";;
 
@@ -26,6 +27,7 @@ export function showLoggedOut() {
     document.getElementById("requestAccessBtn").classList.remove("is-hidden"); // display request access button
     document.getElementById("spotifySwitchBtn").classList.add("is-hidden");; // hide switch button;
 
+    document.getElementById("spotify-auth").classList.remove("is-logged-in");
     const authBtn = document.getElementById("spotifyAuthBtn");
     authBtn.textContent = "Log in with Spotify";
     authBtn.classList.remove("is-hidden");
