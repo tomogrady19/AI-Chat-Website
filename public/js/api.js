@@ -113,6 +113,7 @@ export async function getUser() {
         method: "GET",
         credentials: "include"
     });
+    if (!res.ok) { throw new Error("Failed to fetch user"); }
     return await res.json();
 }
 

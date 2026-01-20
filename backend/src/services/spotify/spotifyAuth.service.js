@@ -20,6 +20,7 @@ export function buildSpotifySession(tokenData) {
     };
 }
 
+// This function shouldn't raise an error as this just means user is logged out
 export async function getSpotifyAccessToken(req) {
     const spotifySession = req.session.spotify;
     if (!spotifySession?.accessToken) {
