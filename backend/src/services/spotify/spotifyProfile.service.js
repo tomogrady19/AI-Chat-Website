@@ -26,5 +26,10 @@ export async function getSpotifyUser(accessToken) {
         headers: { Authorization: `Bearer ${accessToken}` }
     });
 
+    if (!res.ok) {
+        const errorBody = await res.text();
+        throw new Error(`Spotify /v1/me failed (${res.status}): ${errorBody || res.statusText}`);
+    }
+
     return res.json();
 }
