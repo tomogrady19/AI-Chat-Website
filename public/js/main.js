@@ -24,7 +24,7 @@ async function init() {
     if (user) {
         showLoggedIn();
         await showProfile();
-        if (user.premium) {
+        if (user.product === "premium") {
             await initPlayback();
         }
     } else {

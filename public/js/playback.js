@@ -5,6 +5,7 @@ import { showNotPremium } from "./ui/ui.js";
 const isDemo = window.location.pathname === "/demo";
 
 // define globally here so they can be updated by separate functions without returning them explicitly
+let user = null; //TODO maybe cache user so fetchUser isn't called as much
 let player = null;
 let previewAudio = null;
 let deviceId = null;
@@ -13,20 +14,37 @@ let initPromise = null;
 let currentTrack = null;
 let isPaused = true;
 let spotifySDKReadyResolve;
+let deviceIdResolve;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
     if (spotifySDKReadyResolve) spotifySDKReadyResolve();
 };
 
-function waitForSpotifySDK() {
+function waitForSpotifySDK() { //TODO maybe add timeout to match devideID waiter helper function
     return new Promise((resolve) => {
         if (window.Spotify?.Player) return resolve();
         spotifySDKReadyResolve = resolve;
     });
 }
 
+function waitForDeviceId(timeoutMs = 3000) {
+    return new Promise((resolve) => {
+        if (deviceId) return resolve(deviceId);
+
+        const timeout = setTimeout(() => {
+            deviceIdResolve = null;
+            resolve(null);
+        }, timeoutMs);
+
+        deviceIdResolve = (id) => {
+            clearTimeout(timeout);
+            resolve(id);
+        };
+    });
+}
+
 async function transferPlaybackHere() {
-    await fetch("https://api.spotify.com/v1/me/player", {
+    const res = await fetch("https://api.spotify.com/v1/me/player", {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${accessToken}`,
@@ -37,6 +55,12 @@ async function transferPlaybackHere() {
             play: false
         })
     });
+    if (!res.ok){
+        console.error("playback transfer error");
+        alert("Playback Not Available");
+        return false
+    }
+    return true;
 }
 
 export async function initPlayback() {
@@ -45,8 +69,7 @@ export async function initPlayback() {
     initPromise = (async () => {
         const tokenData = await fetchPlaybackToken();
         if (!tokenData) {
-            alert("Playback Not Available");
-            return;
+            return false;
         }
         accessToken = tokenData.accessToken;
 
@@ -60,7 +83,16 @@ export async function initPlayback() {
 
         player.addListener("ready", async ({ device_id }) => {
             deviceId = device_id;
-            await transferPlaybackHere();
+
+            if (deviceIdResolve) {
+                deviceIdResolve(deviceId);
+                deviceIdResolve = null;
+            }
+
+            const transferred = await transferPlaybackHere();
+            if (!transferred) {
+                player.disconnect();
+            }
         });
 
         player.addListener("initialization_error", ({ message }) => console.error(message));
@@ -84,7 +116,8 @@ export async function initPlayback() {
         const connected = await player.connect();
         if (!connected) {
             alert("Playback Not Available");
-            return;
+            initPromise = null;
+            return false;
         }
 
         return true;
@@ -94,12 +127,9 @@ export async function initPlayback() {
 }
 
 async function playTrackById(trackId) {
-    // Ensure player exists
     await initPlayback();
-    // If deviceId is still null, wait a bit for it to be set
-    for (let i = 0; i < 5 && !deviceId; i++) {
-        await new Promise((r) => setTimeout(r, 200));
-    }
+
+    await waitForDeviceId();
     if (!deviceId) {
         alert("Playback Not Available");
         return;
@@ -112,7 +142,6 @@ async function playTrackById(trackId) {
     if (res.status === 401) {
         const tokenData = await fetchPlaybackToken();
         if (!tokenData) {
-            alert("Playback Not Available");
             return;
         }
         accessToken = tokenData.accessToken;
@@ -127,12 +156,13 @@ async function playTrackById(trackId) {
 
 export async function playTrack(trackId) {
     user = await fetchUser();
-    if (user.premium){
-        await playTrackById(trackId);
-        document.getElementById("toggle-play").textContent = "⏸";
-    } else {
+    if (!user) return;
+    if (user.product !== "premium") {
         showNotPremium();
+        return;
     }
+    await playTrackById(trackId);
+    document.getElementById("toggle-play").textContent = "⏸";
 }
 
 function playPreviewByUrl(previewUrl) {
@@ -162,6 +192,7 @@ export function playPreview(previewUrl, btn) {
 export async function togglePlayPause() {
     const button = document.getElementById("toggle-play");
     if (isDemo) {
+        if (!previewAudio) return;
         if (isPaused) {
             previewAudio.play();
             button.textContent = "⏸";
@@ -173,16 +204,14 @@ export async function togglePlayPause() {
         }
     } else {
         user = await fetchUser();
-        if (!user.premium){
+        if (!user) return;
+        if (user.product !== "premium"){
             showNotPremium();
             return;
         }
 
         await initPlayback();
-        if (!player) {
-            alert("Playback Not Available");
-            return;
-        }
+        if (!player) return;
 
         if (isPaused) {
             await player.resume();
