@@ -1,6 +1,6 @@
 // This file only knows Spotify URLs and headers and speaks directly to Spotify endpoints
 import fetch from "node-fetch";
-import { spotifyFetch } from "./spotifyUtils.js";
+import { spotifyFetch, spotifyTokenRequest } from "./spotifyUtils.js";
 
 // User call so we can tie each JWT to a Spotify account
 export async function getSpotifyUser(accessToken) {
@@ -18,19 +18,11 @@ export async function refreshSpotifyAccessToken(req) {
         throw err;
     }
 
-    const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic " + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET).toString("base64")
-        },
-        body: new URLSearchParams({
-            grant_type: "refresh_token",
-            refresh_token: spotifySession.refreshToken
-        })
+    const { res, data } = await spotifyTokenRequest({
+        grant_type: "refresh_token",
+        refresh_token: spotifySession.refreshToken
     });
 
-    const tokenData = await tokenRes.json();
     if (!tokenRes.ok) {
         const err = new Error("Spotify token refresh failed");
         err.status = tokenRes.status === 401 ? 401 : 502;
@@ -39,34 +31,19 @@ export async function refreshSpotifyAccessToken(req) {
     }
 
 
-    spotifySession.accessToken = tokenData.access_token;
-    spotifySession.expiresIn = tokenData.expires_in;
+    spotifySession.accessToken = data.access_token;
+    spotifySession.expiresIn = data.expires_in;
     spotifySession.obtainedAt = Date.now();
 }
 
 export async function exchangeCodeForSpotifyTokens(code) {
-    const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization":
-                "Basic " +
-                Buffer.from(
-                process.env.SPOTIFY_CLIENT_ID +
-                ":" +
-                process.env.SPOTIFY_CLIENT_SECRET
-                ).toString("base64"),
-        },
-        body: new URLSearchParams({
-            grant_type: "authorization_code",
-            code,
-            redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
-        }),
+    const { res, data } = await spotifyTokenRequest({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: process.env.SPOTIFY_REDIRECT_URI
     });
 
-    const tokenData = await tokenResponse.json();
-
-    if (!tokenResponse.ok) {
+    if (!res.ok) {
         // Spotify OAuth failures that are part of normal control flow
         if (tokenResponse.status === 400 || tokenResponse.status === 401) {
             return null;
@@ -79,5 +56,5 @@ export async function exchangeCodeForSpotifyTokens(code) {
         throw err;
     }
 
-    return tokenData;
+    return data;
 }
