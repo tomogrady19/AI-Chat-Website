@@ -56,6 +56,11 @@ app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/spotify", spotifyRoutes);
 app.use("/api/resend", resendRoutes);
 
+// 404 error for missing API routes
+app.use("/api", (req, res) => {
+    res.status(404).json({ error: "Not found", requestId: req.id });
+});
+
 // Centralised error handler — must be the last middleware
 app.use(errorHandler);
 
