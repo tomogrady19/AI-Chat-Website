@@ -1,18 +1,12 @@
 // This file only knows Spotify URLs and headers and speaks directly to Spotify endpoints
 import fetch from "node-fetch";
+import { spotifyFetch } from "./spotifyUtils.js";
 
 // User call so we can tie each JWT to a Spotify account
 export async function getSpotifyUser(accessToken) {
-    const spotifyRes = await fetch("https://api.spotify.com/v1/me", {
+    return spotifyFetch("https://api.spotify.com/v1/me", {
         headers: { Authorization: `Bearer ${accessToken}` }
     });
-
-    if (!spotifyRes.ok) {
-        const body = await spotifyRes.text();
-        throw new Error(`Spotify ID call failed: ${spotifyRes.status} ${body}`);
-    }
-
-    return spotifyRes.json();
 }
 
 export async function refreshSpotifyAccessToken(req) {
@@ -20,6 +14,7 @@ export async function refreshSpotifyAccessToken(req) {
     if (!spotifySession?.refreshToken) {
         const err = new Error("Spotify refresh token missing");
         err.status = 401;
+        err.expose = true;
         throw err;
     }
 
@@ -37,8 +32,12 @@ export async function refreshSpotifyAccessToken(req) {
 
     const tokenData = await tokenRes.json();
     if (!tokenRes.ok) {
-        throw new Error(`Spotify refresh failed: ${tokenRes.status} ${JSON.stringify(tokenData)}`);
+        const err = new Error("Spotify token refresh failed");
+        err.status = tokenRes.status === 401 ? 401 : 502;
+        err.expose = tokenRes.status === 401;
+        throw err;
     }
+
 
     spotifySession.accessToken = tokenData.access_token;
     spotifySession.expiresIn = tokenData.expires_in;
@@ -68,10 +67,16 @@ export async function exchangeCodeForSpotifyTokens(code) {
     const tokenData = await tokenResponse.json();
 
     if (!tokenResponse.ok) {
-        if (tokenResponse.status >= 500) {
-            throw new Error('Spotify token service unavailable'); //TODO should this error be formatted differently?
+        // Spotify OAuth failures that are part of normal control flow
+        if (tokenResponse.status === 400 || tokenResponse.status === 401) {
+            return null;
         }
-        return null;
+
+        // Spotify auth service failure
+        const err = new Error("Spotify token exchange failed");
+        err.status = 502;
+        err.expose = false;
+        throw err;
     }
 
     return tokenData;
