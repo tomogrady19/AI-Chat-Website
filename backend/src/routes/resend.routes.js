@@ -1,15 +1,16 @@
 import express from "express";
 import { Resend } from "resend";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = express.Router();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-router.post("/request-access", async (req, res, next) => {
+router.post("/request-access", asyncHandler(async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.status(400).json({ message: "Email is required" });
+        return res.status(400).json({ error: "Email is required" });
     }
 
     try {
@@ -22,8 +23,10 @@ router.post("/request-access", async (req, res, next) => {
 
         res.json({ success: true });
     } catch (err) {
-        next(err);
+        err.status(502);
+        err.expose = false;
+        throw err;
     }
-});
+}));
 
 export default router;
