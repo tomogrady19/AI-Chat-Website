@@ -29,7 +29,8 @@ export async function askAI() {
     try {
         await streamFromAI(appendChunk);
     } catch (err) {
-        updateLastMessage(`${err.message}` || "Unexpected error");
+        //TODO is this the best way to display the error?
+        updateLastMessage(err.message || "Unexpected error");
     }
 
     updateChat();
@@ -47,9 +48,7 @@ export async function fetchProfile() {
 
     //TODO maybe change to just show logged out
     if (res.status === 401) {
-        const err = new Error("Spotify not authenticated");
-        err.code = 401;
-        throw err;
+        throw new Error("Spotify authentication required");
     }
 
     if (!res.ok) {
@@ -91,7 +90,7 @@ export async function streamMusicRecommendations(onChunk) {
 async function streamRes(res, onChunk) {
     if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message || `Request failed (${res.status})`);
+        throw new Error(data.error || `Request failed (${res.status})`);
     }
     if (!res.body) throw new Error("No response body");
 
@@ -113,7 +112,9 @@ export async function getUser() {
         method: "GET",
         credentials: "include"
     });
-    if (!res.ok) { throw new Error("Failed to fetch user"); }
+    if (!res.ok) {
+        throw new Error("User fetch failed");
+    }
     return await res.json();
 }
 
