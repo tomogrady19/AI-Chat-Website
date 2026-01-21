@@ -6,6 +6,7 @@ export function requireAuth(req) {
     if (!token) {
         const err = new Error('Log into Spotify to continue');
         err.status = 401;
+        err.expose = true;
         throw err;
     }
 
@@ -15,6 +16,7 @@ export function requireAuth(req) {
     } catch {
         const err = new Error('Session expired. Please log into Spotify to continue');
         err.status = 401;
+        err.expose = true;
         throw err;
     }
 }
