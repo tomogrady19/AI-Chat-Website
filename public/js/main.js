@@ -3,7 +3,7 @@ import { loadMessages } from "./state.js";
 import { updateChat, showProfile, showFailedCallback, showLoggedIn, showLoggedOut } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
-import { getUser } from "./api.js";
+import { fetchUser } from "./api.js";
 
 const isDemo = window.location.pathname === "/demo";
 const callbackFailed = checkFailedCallback();
@@ -21,7 +21,7 @@ updateChat();
 
 async function init() {
     try {
-        const user = await getUser();
+        const user = await fetchUser();
         if (user) {
             showLoggedIn();
             await showProfile();
