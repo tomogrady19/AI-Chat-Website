@@ -20,22 +20,15 @@ loadMessages();
 updateChat();
 
 async function init() {
-    try {
-        const user = await fetchUser();
-        if (user) {
-            showLoggedIn();
-            await showProfile();
-            if (user.premium) {
-                await initPlayback();
-            }
-        } else {
-            showLoggedOut();
+    const user = await fetchUser();
+    if (user) {
+        showLoggedIn();
+        await showProfile();
+        if (user.premium) {
+            await initPlayback();
         }
-        return user;
-    } catch (err) {
-        console.error("init failed:", err);
+    } else {
         showLoggedOut();
-        return false;
     }
 }
 
@@ -55,7 +48,7 @@ async function initDemo() {
     //change subtitle message for demo mode
     const subtitleMessage = document.getElementById("subtitle");
     subtitleMessage.textContent = "Welcome to demo mode!\nShown below is sample listening data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
-    try { await showProfile(); } catch { return; }
+    await showProfile();
 }
 
 function checkFailedCallback() {

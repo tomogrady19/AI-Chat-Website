@@ -42,6 +42,7 @@ export async function fetchProfile() {
 
     if (!res.ok) {
         console.error("Profile fetch failed", res.status);
+        alert("Unexpected error")
         return null;
     }
 
@@ -115,6 +116,7 @@ export async function fetchUser() {
 
     if (!res.ok) {
         console.error("User fetch failed", res.status);
+        alert("Unexpected error")
         return null;
     }
 
@@ -147,6 +149,7 @@ export async function fetchPlaybackToken() {
     });
     if (!res.ok) {
         console.error("Token fetch failed", res.status);
+        alert("Unexpected error")
         return null;
     }
     return await res.json();
@@ -169,5 +172,7 @@ export async function sendEmail(emailContent) {
     if (!res.ok) {
         console.error("Email request failed", res.status);
         alert("Request failed");
+        return;
     }
+    return true;
 }

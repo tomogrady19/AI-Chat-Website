@@ -1,24 +1,17 @@
-import { getUser, fetchProfile, logout } from "../api.js";
+import { fetchUser, fetchProfile, logout } from "../api.js";
 import { showLoggedOut } from "./auth.js";
 import { showMessageModal } from "./modal.js";
 
 export async function showProfile() {
-    try {
-        const user = await getUser();
-        renderUserProfile(user);
+    const user = await fetchUser();
+    if (!user) return;
+    renderUserProfile(user);
 
-        const profile = await fetchProfile();
-        renderTopArtists(profile.artists);
-        renderTopTracks(profile.tracks);
-        renderRecent(profile.recent);
-    } catch (err) {
-        if (err.code === 401) { //TODO is this clause necessary?
-            console.log("Spotify not authenticated yet");
-            return;
-        }
-        console.error(err)
-        alert("Something went wrong loading your Spotify data")
-    }
+    const profile = await fetchProfile();
+    if (!profile) return;
+    renderTopArtists(profile.artists);
+    renderTopTracks(profile.tracks);
+    renderRecent(profile.recent);
 }
 
 export function showFailedCallback() {

@@ -71,13 +71,12 @@ async function sendRequestAccessEmail(e) {
     accessRequestStatus.textContent = "Sending request...";
     accessRequestSubmitBtn.disabled = true;
 
-    try {
-        await sendEmail(accessRequestEmail.value);
+    const emailSent = await sendEmail(accessRequestEmail.value);
+    if (emailSent){
         accessRequestStatus.textContent = "Thanks! Your request has been sent. You’ll be added shortly.";
-        accessRequestEmail.value = "";
-    } catch (err) {
+    } else {
         accessRequestStatus.textContent = "Something went wrong. Please try again later.";
-    } finally {
-        accessRequestSubmitBtn.disabled = false;
     }
+    accessRequestEmail.value = "";
+    accessRequestSubmitBtn.disabled = false;
 }

@@ -14,7 +14,7 @@ export function toggleAssistant() {
     }
 }
 
-export async function recommendMusic() { //TODO this is quite similar to askAI in api.js. Should refactor so in the same place and reduce duplicate code
+export async function recommendMusic() {
     addMessage("user", "Recommend artists and tracks based on my listening history.");
 
     updateChat();
@@ -23,11 +23,7 @@ export async function recommendMusic() { //TODO this is quite similar to askAI i
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
-    try {
-        await streamFromAI(appendChunk); // await streamMusicRecommendations(appendChunk);
-    } catch (err) {
-        updateLastMessage(err.message || "Failed to load music recommendations");
-    }
+    await streamFromAI(appendChunk);
 
     updateChat();
     hideLoadMessage();

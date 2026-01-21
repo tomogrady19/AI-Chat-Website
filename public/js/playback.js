@@ -1,5 +1,5 @@
 console.log("Loaded: playback.js");
-import { fetchPlaybackToken, fetchPlayer, getUser } from "./api.js";
+import { fetchPlaybackToken, fetchPlayer, fetchUser } from "./api.js";
 import { showNotPremium } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
@@ -126,7 +126,7 @@ async function playTrackById(trackId) {
 }
 
 export async function playTrack(trackId) {
-    user = await getUser();
+    user = await fetchUser();
     if (user.premium){
         await playTrackById(trackId);
         document.getElementById("toggle-play").textContent = "⏸";
@@ -172,7 +172,7 @@ export async function togglePlayPause() {
             isPaused = true;
         }
     } else {
-        user = await getUser();
+        user = await fetchUser();
         if (!user.premium){
             showNotPremium();
             return;
@@ -208,5 +208,4 @@ function updateNowPlaying(btn=null) {
 
         el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
     }
-
 }
