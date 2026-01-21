@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { getDemoSpotifyProfile } from "./demo/spotifyDemoData.js";
+import { spotifyFetch } from "./spotifyUtils.js";
 
 export async function getSpotifyProfile(accessToken, timeRange, mode="live") {
     if (mode === "demo") {
@@ -8,28 +9,21 @@ export async function getSpotifyProfile(accessToken, timeRange, mode="live") {
 
     const headers = { Authorization: `Bearer ${accessToken}` };
 
-    const [artistsRes, tracksRes, recentRes] = await Promise.all([
-        fetch(`https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=10`, { headers }),
-        fetch(`https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=10`, { headers }),
-        fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=10`, { headers })
+    const [artists, tracks, recent] = await Promise.all([
+        spotifyFetch(`https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=10`, { headers }),
+        spotifyFetch(`https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=10`, { headers }),
+        spotifyFetch(`https://api.spotify.com/v1/me/player/recently-played?limit=10`, { headers })
     ]);
 
     return {
-        artists: (await artistsRes.json()).items ?? [],
-        tracks: (await tracksRes.json()).items ?? [],
-        recent: (await recentRes.json()).items ?? [],
+        artists: artists.items ?? [],
+        tracks: tracks.items ?? [],
+        recent: recent.items ?? [],
     };
 }
 
 export async function getSpotifyUser(accessToken) {
-    const res = await fetch("https://api.spotify.com/v1/me", {
+    return spotifyFetch("https://api.spotify.com/v1/me", {
         headers: { Authorization: `Bearer ${accessToken}` }
     });
-
-    if (!res.ok) {
-        const errorBody = await res.text();
-        throw new Error(`Spotify /v1/me failed (${res.status}): ${errorBody || res.statusText}`);
-    }
-
-    return res.json();
 }
