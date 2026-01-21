@@ -26,12 +26,7 @@ export async function askAI() {
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
-    try {
-        await streamFromAI(appendChunk);
-    } catch (err) {
-        //TODO is this the best way to display the error?
-        updateLastMessage(err.message || "Unexpected error");
-    }
+    await streamFromAI(appendChunk);
 
     updateChat();
     hideLoadMessage();
@@ -46,16 +41,12 @@ export async function fetchProfile() {
         credentials: "include"
     });
 
-    //TODO maybe change to just show logged out
-    if (res.status === 401) {
-        throw new Error("Spotify authentication required");
-    }
-
     if (!res.ok) {
-        throw new Error(`Profile fetch failed: ${res.status}`);
+        console.error("Profile fetch failed", res.status);
+        return null;
     }
 
-    return res.json();
+    return await res.json();
 }
 
 export async function streamFromAI(onChunk) {
@@ -68,7 +59,12 @@ export async function streamFromAI(onChunk) {
         credentials: "include",
         body: JSON.stringify({ conversation: getMessages(), timeRange })
     });
-
+    if (!res.ok){
+        const data = await res.json();
+        console.error("AI Request failed", res.status, data?.error);
+        alert("AI Not Available");
+        return;
+    }
     await streamRes(res, onChunk);
 }
 
@@ -88,11 +84,16 @@ export async function streamMusicRecommendations(onChunk) {
 }
 
 async function streamRes(res, onChunk) {
-    if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || `Request failed (${res.status})`);
+    if (!res.ok || !res.body) {
+        try {
+            const data = await res.json();
+            console.error(data?.error);
+        } catch {
+            console.error("Request failed", res.status);
+        }
+        alert("Request failed");
+        return;
     }
-    if (!res.body) throw new Error("No response body");
 
     const reader = res.body.getReader();
     const decoder = new TextDecoder("utf-8");
@@ -112,9 +113,12 @@ export async function getUser() {
         method: "GET",
         credentials: "include"
     });
+
     if (!res.ok) {
-        throw new Error("User fetch failed");
+        console.error("User fetch failed", res.status);
+        return null;
     }
+
     return await res.json();
 }
 
@@ -124,7 +128,6 @@ export async function logout() {
         method: "GET",
         credentials: "include"
     });
-    if (!res.ok) { throw new Error("Logout failed"); }
     window.location.href = "/"; // redirect
 }
 
@@ -139,21 +142,18 @@ export async function switchAccount() {
 }
 
 export async function fetchPlaybackToken() {
-    if (isDemo) {
-        throw new Error("Playback unavailable in demo mode");
-    }
     const res = await fetch(`${API_BASE_URL}/api/spotify/playback-token`, {
         method: "GET",
         credentials: "include"
     });
-    if (!res.ok) throw new Error("Could not fetch playback token");
-    return res.json();
+    if (!res.ok) {
+        console.error("Token fetch failed", res.status);
+        return null;
+    }
+    return await res.json();
 }
 
 export async function fetchPlayer(deviceId, trackId, accessToken) {
-    if (isDemo) {
-        throw new Error("Playback unavailable in demo mode");
-    }
     return await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(deviceId)}`, {
         method: "PUT",
         headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json"},
@@ -163,12 +163,12 @@ export async function fetchPlayer(deviceId, trackId, accessToken) {
 
 export async function sendEmail(emailContent) {
     const res = await fetch(`${API_BASE_URL}/api/resend/request-access`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: emailContent })
-        });
-
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailContent })
+    });
     if (!res.ok) {
-        throw new Error("Request failed");
+        console.error("Email request failed", res.status);
+        alert("Request failed");
     }
 }

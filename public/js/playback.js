@@ -44,6 +44,10 @@ export async function initPlayback() {
 
     initPromise = (async () => {
         const tokenData = await fetchPlaybackToken();
+        if (!tokenData) {
+            alert("Playback Not Available");
+            return;
+        }
         accessToken = tokenData.accessToken;
 
         await waitForSpotifySDK();
@@ -56,12 +60,7 @@ export async function initPlayback() {
 
         player.addListener("ready", async ({ device_id }) => {
             deviceId = device_id;
-            try {
-                await transferPlaybackHere();
-                console.log("Web Playback SDK ready. Device:", deviceId);
-            } catch (e) {
-                console.warn("Could not transfer playback:", e);
-            }
+            await transferPlaybackHere();
         });
 
         player.addListener("initialization_error", ({ message }) => console.error(message));
@@ -83,7 +82,10 @@ export async function initPlayback() {
         });
 
         const connected = await player.connect();
-        if (!connected) throw new Error("Spotify player could not connect");
+        if (!connected) {
+            alert("Playback Not Available");
+            return;
+        }
 
         return true;
     })();
@@ -98,7 +100,10 @@ async function playTrackById(trackId) {
     for (let i = 0; i < 5 && !deviceId; i++) {
         await new Promise((r) => setTimeout(r, 200));
     }
-    if (!deviceId) throw new Error("Spotify player not ready yet");
+    if (!deviceId) {
+        alert("Playback Not Available");
+        return;
+    }
 
     // Try play
     let res = await fetchPlayer(deviceId, trackId, accessToken)
@@ -106,31 +111,27 @@ async function playTrackById(trackId) {
     // If token expired, refresh once and retry
     if (res.status === 401) {
         const tokenData = await fetchPlaybackToken();
+        if (!tokenData) {
+            alert("Playback Not Available");
+            return;
+        }
         accessToken = tokenData.accessToken;
         res = await fetchPlayer(deviceId, trackId, accessToken)
     }
 
-    if (res.status === 204) return; // success
-
     if (!res.ok) {
-        let text = "";
-        try { text = await res.text(); } catch {}
-        throw new Error(`Play failed: ${res.status} ${text}`);
+        alert("Playback Not Available");
+        return;
     }
 }
 
 export async function playTrack(trackId) {
-    try {
-        status = getUser();
-        if (status.premium){
-            await playTrackById(trackId);
-            document.getElementById("toggle-play").textContent = "⏸";
-        } else {
-            showNotPremium();
-        }
-    } catch (err) {
-        console.error(err);
-        alert(err.message || "Playback failed (Premium required for in-app playback).");
+    user = await getUser();
+    if (user.premium){
+        await playTrackById(trackId);
+        document.getElementById("toggle-play").textContent = "⏸";
+    } else {
+        showNotPremium();
     }
 }
 
@@ -171,14 +172,17 @@ export async function togglePlayPause() {
             isPaused = true;
         }
     } else {
-        user = getUser();
+        user = await getUser();
         if (!user.premium){
             showNotPremium();
             return;
         }
 
         await initPlayback();
-        if (!player) throw new Error("Player not ready");
+        if (!player) {
+            alert("Playback Not Available");
+            return;
+        }
 
         if (isPaused) {
             await player.resume();
