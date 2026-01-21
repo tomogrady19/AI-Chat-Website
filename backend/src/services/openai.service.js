@@ -26,7 +26,11 @@ export async function streamAIResponse({ input, req, res }) {
             return;
         }
         if (res.headersSent) return; //incase headers were already sent, we don't want to re-throw
-        throw err;
+
+        const error = new Error("AI Service Unavailable");
+        error.status = 502;
+        error.expose = false;
+        throw error;
     }
 
     try {
