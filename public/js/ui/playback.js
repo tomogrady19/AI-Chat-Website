@@ -23,6 +23,7 @@ export async function playTrack(trackId) {
         alert("Playback Not Available");
         return;
     }
+    updateNowPlaying();
 
     document.getElementById("toggle-play").textContent = "⏸";
     isPaused = false;
@@ -62,7 +63,7 @@ async function toggleLivePlayback() {
     return await togglePlayback();
 }
 
-export function playPreview(previewUrl) {
+export function playPreview(previewUrl, btn) {
     if (!previewUrl) {
         alert("No preview available for this track");
         return;
@@ -74,6 +75,8 @@ export function playPreview(previewUrl) {
 
     previewAudio = new Audio(previewUrl);
     previewAudio.volume = 0.8;
+    updateNowPlaying(btn);
+
     previewAudio.onended = () => {
         isPaused = true;
         document.getElementById("toggle-play").textContent = "▶";
@@ -92,4 +95,20 @@ async function fetchUserCached() {
             .finally(() => (pending = null));
     }
     return pending;
+}
+
+function updateNowPlaying(btn=null) {
+    const el = document.getElementById("now-playing");
+    if (!el) return;
+
+    if (isDemo) {
+        el.textContent = `${btn.dataset.name} — ${btn.dataset.artists}`;
+    } else {
+        if (!currentTrack) {
+            el.textContent = "";
+            return;
+        }
+
+        el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
+    }
 }
