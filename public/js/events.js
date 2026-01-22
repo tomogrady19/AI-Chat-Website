@@ -1,6 +1,5 @@
 console.log("Loaded: events.js");
-import { togglePlayPause, playPreview } from "./ui/playback.js"
-import { playTrack } from "./state/playback.state.js"
+import { togglePlayPause, playTrack, playPreview } from "./ui/playback.js"
 import { switchAccount, sendEmail } from "./api/api.js";
 import { clearChat, toggleAssistant, showProfile, askAI, recommendMusic, toggleSpotifyAuth, showRequestAccessModal, closeModal } from "./ui/ui.js";
 

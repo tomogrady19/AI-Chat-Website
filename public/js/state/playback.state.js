@@ -1,4 +1,4 @@
-import { fetchPlaybackToken, fetchPlayer } from "./api/api.js";
+import { fetchPlaybackToken, fetchPlayer } from "../api/api.js";
 
 const isDemo = window.location.pathname === "/demo";
 
