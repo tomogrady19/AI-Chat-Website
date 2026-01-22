@@ -29,34 +29,35 @@ export async function playTrack(trackId) {
 export async function togglePlayPause() {
     const button = document.getElementById("toggle-play");
 
-    if (isDemo) { //TODO toggle play/pause logic for demo mode should mirror live mode
-        if (!previewAudio) return;
+    const success = isDemo
+        ? toggleDemoPlayback()
+        : await toggleLivePlayback();
 
-        if (isPaused) {
-            previewAudio.play();
-            button.textContent = "⏸";
-        } else {
-            previewAudio.pause();
-            button.textContent = "▶";
-        }
-
-        isPaused = !isPaused;
-        return;
-    }
-
-    const user = await fetchUser();
-    if (!user) return;
-
-    if (user.product !== "premium") {
-        showNotPremium();
-        return;
-    }
-
-    const success = await togglePlayback();
     if (!success) return;
 
     isPaused = !isPaused;
     button.textContent = isPaused ? "▶" : "⏸";
+}
+
+function toggleDemoPlayback() {
+    if (!previewAudio) return false;
+
+    if (isPaused) previewAudio.play();
+    else previewAudio.pause();
+
+    return true;
+}
+
+async function toggleLivePlayback() {
+    const user = await fetchUser();
+    if (!user) return false;
+
+    if (user.product !== "premium") {
+        showNotPremium();
+        return false;
+    }
+
+    return await togglePlayback();
 }
 
 export function playPreview(previewUrl) {
