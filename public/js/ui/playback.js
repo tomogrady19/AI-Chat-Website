@@ -6,9 +6,11 @@ const isDemo = window.location.pathname === "/demo";
 
 let previewAudio = null;
 let isPaused = true;
+let user;
+let pending;
 
 export async function playTrack(trackId) {
-    const user = await fetchUser();
+    user = await fetchUserCached();
     if (!user) return;
 
     if (user.product !== "premium") {
@@ -49,7 +51,7 @@ function toggleDemoPlayback() {
 }
 
 async function toggleLivePlayback() {
-    const user = await fetchUser();
+    user = await fetchUserCached();
     if (!user) return false;
 
     if (user.product !== "premium") {
@@ -66,12 +68,28 @@ export function playPreview(previewUrl) {
         return;
     }
 
-    if (previewAudio) previewAudio.pause();
+    if (previewAudio) {
+        previewAudio.pause();
+    }
 
     previewAudio = new Audio(previewUrl);
     previewAudio.volume = 0.8;
+    previewAudio.onended = () => {
+        isPaused = true;
+        document.getElementById("toggle-play").textContent = "▶";
+    };
     previewAudio.play();
 
     document.getElementById("toggle-play").textContent = "⏸";
     isPaused = false;
+}
+
+async function fetchUserCached() {
+    if (user) return user;
+    if (!pending) {
+        pending = fetchUser()
+            .then(u => (user = u))
+            .finally(() => (pending = null));
+    }
+    return pending;
 }

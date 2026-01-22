@@ -2,7 +2,7 @@ import { fetchPlaybackToken, fetchPlayer } from "../api/api.js";
 
 const isDemo = window.location.pathname === "/demo";
 
-let player = null; //TODO maybe cache user so fetchUser isn't called as much
+let player;
 let deviceId = null;
 let accessToken = null;
 let initPromise = null;
