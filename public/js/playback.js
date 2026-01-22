@@ -1,5 +1,5 @@
 console.log("Loaded: playback.js");
-import { fetchPlaybackToken, fetchPlayer, fetchUser } from "./api.js";
+import { fetchPlaybackToken, fetchPlayer, fetchUser } from "./api/api.js";
 import { showNotPremium } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";

@@ -3,7 +3,7 @@ import { loadMessages } from "./state.js";
 import { updateChat, showProfile, showFailedCallback, showLoggedIn, showLoggedOut } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
 import { initPlayback } from "./playback.js";
-import { fetchUser } from "./api.js";
+import { fetchUser } from "./api/api.js";
 
 const isDemo = window.location.pathname === "/demo";
 const callbackFailed = checkFailedCallback();

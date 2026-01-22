@@ -1,4 +1,4 @@
-import { fetchUser, fetchProfile, logout } from "../api.js";
+import { fetchUser, fetchProfile, logout } from "../api/api.js";
 import { showLoggedOut } from "./auth.js";
 import { showMessageModal } from "./modal.js";
 

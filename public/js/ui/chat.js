@@ -1,5 +1,5 @@
 import { getMessages, addMessage, updateLastMessage, appendChunk } from "../state.js";
-import { streamFromAI } from "../api.js"
+import { streamFromAI } from "../api/api.js"
 
 export function toggleAssistant() {
     const drawer = document.getElementById("assistant-drawer");

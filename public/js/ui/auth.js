@@ -1,4 +1,4 @@
-import { fetchUser, login, logout } from "../api.js"
+import { fetchUser, login, logout } from "../api/api.js"
 import { clearUI } from "./clear.js"
 
 export async function toggleSpotifyAuth() {

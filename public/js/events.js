@@ -1,6 +1,6 @@
 console.log("Loaded: events.js");
 import { togglePlayPause, playTrack, playPreview } from "./playback.js"
-import { askAI, switchAccount, sendEmail } from "./api.js";
+import { askAI, switchAccount, sendEmail } from "./api/api.js";
 import { clearChat, toggleAssistant, showProfile, recommendMusic, toggleSpotifyAuth, showRequestAccessModal, closeModal } from "./ui/ui.js";
 
 const isDemo = window.location.pathname === "/demo";
