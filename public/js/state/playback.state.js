@@ -3,11 +3,12 @@ import { fetchPlaybackToken, fetchPlayer } from "../api/api.js";
 const isDemo = window.location.pathname === "/demo";
 
 let player;
-let deviceId = null;
-let accessToken = null;
-let initPromise = null;
+let deviceId;
+let accessToken;
+let initPromise;
 let spotifySDKReadyResolve;
 let deviceIdResolve;
+let onSongChange; //function to be set in UI folder
 
 window.onSpotifyWebPlaybackSDKReady = () => {
     if (spotifySDKReadyResolve) spotifySDKReadyResolve();
@@ -81,6 +82,11 @@ export async function initPlayback() {
             if (!transferred) player.disconnect();
         });
 
+        player.addListener("player_state_changed", (state) => {
+            if (!state) return;
+            if (onSongChange) onSongChange(state);
+        });
+
         const connected = await player.connect();
         if (!connected) {
             initPromise = null;
@@ -122,4 +128,9 @@ export async function togglePlayback() {
     else await player.pause();
 
     return true;
+}
+
+// Fancy way of importing from UI basically
+export function setOnSongChange(func) {
+     onSongChange = func;
 }

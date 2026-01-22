@@ -1,13 +1,16 @@
 import { fetchUser } from "../api/api.js";
 import { showNotPremium } from "./ui.js";
-import { initPlayback, playTrackById, togglePlayback } from "../state/playback.state.js";
+import { initPlayback, playTrackById, togglePlayback, setOnSongChange } from "../state/playback.state.js";
 
 const isDemo = window.location.pathname === "/demo";
 
-let previewAudio = null;
 let isPaused = true;
+let currentTrack;
+let previewAudio;
 let user;
 let pending;
+
+setOnSongChange(onSongChange);
 
 export async function playTrack(trackId) {
     user = await fetchUserCached();
@@ -102,6 +105,7 @@ function updateNowPlaying(btn=null) {
     if (!el) return;
 
     if (isDemo) {
+        if (!btn) return;
         el.textContent = `${btn.dataset.name} — ${btn.dataset.artists}`;
     } else {
         if (!currentTrack) {
@@ -110,5 +114,18 @@ function updateNowPlaying(btn=null) {
         }
 
         el.textContent = `${currentTrack.name} — ${currentTrack.artists}`;
+    }
+}
+
+function onSongChange(state) {
+    isPaused = state.paused;
+
+    const track = state.track_window.current_track;
+    if (track) {
+        currentTrack = {
+            name: track.name,
+            artists: track.artists.map(a => a.name).join(", ")
+        };
+        updateNowPlaying();
     }
 }
