@@ -20,6 +20,7 @@ export async function spotifyCallback(req, res) {
         return res.redirect(`${frontendUrl}?callback=failed`);
     }
 
+    // Regenerate session and build new Spotify session
     await regenerateSession(req);
     req.session.spotify = buildSpotifySession(tokens);
 

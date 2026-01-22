@@ -31,6 +31,7 @@ export async function getSpotifyAccessToken(req) {
     const expiresInMs = (spotifySession.expiresIn || 3600) * 1000;
     const refreshAt = obtainedAt + expiresInMs - 60_000; // Refresh 1 minute early to ensure refresh happens in time
 
+    // Spotify token refresh/regeneration
     if (!obtainedAt || Date.now() >= refreshAt) {
         await refreshSpotifyAccessToken(req);
     }
