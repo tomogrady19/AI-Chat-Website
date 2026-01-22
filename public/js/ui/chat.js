@@ -14,6 +14,26 @@ export function toggleAssistant() {
     }
 }
 
+export async function askAI() {
+    const prompt = document.getElementById("userInput").value.trim();
+    if (!prompt) return;
+
+    addMessage("user", prompt); //add message to messages
+    clearInput(); // clear input box once the message is added to chat
+
+    updateChat();
+    showLoadMessage();
+    disableInput(); // disable user input while response is being fetched by API
+
+    addMessage("assistant", ""); // start with empty message to stream response to
+
+    await streamFromAI(appendChunk);
+
+    updateChat();
+    hideLoadMessage();
+    enableInput();
+}
+
 export async function recommendMusic() {
     addMessage("user", "Recommend artists and tracks based on my listening history.");
 

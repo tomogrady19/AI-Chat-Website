@@ -9,26 +9,6 @@ const API_BASE_URL =
     ? "" //"http://localhost:3000"
     : "https://api.spotify-insights.com";
 
-export async function askAI() {
-    const prompt = document.getElementById("userInput").value.trim();
-    if (!prompt) return;
-
-    addMessage("user", prompt); //add message to messages
-    clearInput(); // clear input box once the message is added to chat
-
-    updateChat();
-    showLoadMessage();
-    disableInput(); // disable user input while response is being fetched by API
-
-    addMessage("assistant", ""); // start with empty message to stream response to
-
-    await streamFromAI(appendChunk);
-
-    updateChat();
-    hideLoadMessage();
-    enableInput();
-}
-
 export async function streamFromAI(onChunk) {
     const demoParam = isDemo ? "?mode=demo" : "";
     const timeRange = document.getElementById("timeRange")?.value;
