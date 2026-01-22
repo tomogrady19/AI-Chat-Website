@@ -1,4 +1,4 @@
-import { getMessages, addMessage, updateLastMessage, appendChunk } from "../state.js";
+import { getMessages, addMessage, appendChunk } from "../state.js";
 import { streamFromAI } from "../api/api.js"
 
 export function toggleAssistant() {
@@ -29,7 +29,7 @@ export async function askAI() {
 
     const conversation = getMessages();
     const timeRange = document.getElementById("timeRange")?.value;
-    const success = await streamFromAI(conversation, timeRange, appendChunk);
+    const success = await streamFromAI(conversation, timeRange, streamChunk);
 
     updateChat();
     hideLoadMessage();
@@ -49,7 +49,7 @@ export async function recommendMusic() {
 
     const conversation = getMessages();
     const timeRange = document.getElementById("timeRange")?.value;
-    const success = await streamFromAI(conversation, timeRange, appendChunk);
+    const success = await streamFromAI(conversation, timeRange, streamChunk);
 
     updateChat();
     hideLoadMessage();
@@ -98,4 +98,9 @@ export function enableInput() {
 
 export function clearInput(){
     document.getElementById("userInput").value = "";
+}
+
+function streamChunk(chunk) {
+  appendChunk(chunk);
+  updateChat();
 }
