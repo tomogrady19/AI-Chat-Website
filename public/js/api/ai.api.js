@@ -1,7 +1,3 @@
-import {getMessages} from "../state.js";
-import {addMessage, appendChunk, updateLastMessage} from "../state.js";
-import {clearInput, updateChat, showLoadMessage, disableInput, hideLoadMessage, enableInput} from "../ui/ui.js";
-
 const isDemo = window.location.pathname === "/demo";
 
 const API_BASE_URL =
@@ -9,23 +5,22 @@ const API_BASE_URL =
     ? "" //"http://localhost:3000"
     : "https://api.spotify-insights.com";
 
-export async function streamFromAI(onChunk) {
+export async function streamFromAI(conversation, timeRange, onChunk) {
     const demoParam = isDemo ? "?mode=demo" : "";
-    const timeRange = document.getElementById("timeRange")?.value;
-
     const res = await fetch(`${API_BASE_URL}/api/ai/ask${demoParam}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ conversation: getMessages(), timeRange })
+        body: JSON.stringify({ conversation, timeRange })
     });
     if (!res.ok){
         const data = await res.json();
         console.error("AI Request failed", res.status, data?.error);
         alert("AI Not Available");
-        return;
+        return false;
     }
     await streamRes(res, onChunk);
+    return true;
 }
 
 async function streamRes(res, onChunk) {

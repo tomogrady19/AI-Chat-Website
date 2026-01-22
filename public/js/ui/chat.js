@@ -27,11 +27,15 @@ export async function askAI() {
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
-    await streamFromAI(appendChunk);
+    const conversation = getMessages();
+    const timeRange = document.getElementById("timeRange")?.value;
+    const success = await streamFromAI(conversation, timeRange, appendChunk);
 
     updateChat();
     hideLoadMessage();
     enableInput();
+
+    if (!success) alert("AI Not Available");
 }
 
 export async function recommendMusic() {
@@ -43,11 +47,15 @@ export async function recommendMusic() {
 
     addMessage("assistant", ""); // start with empty message to stream response to
 
-    await streamFromAI(appendChunk);
+    const conversation = getMessages();
+    const timeRange = document.getElementById("timeRange")?.value;
+    const success = await streamFromAI(conversation, timeRange, appendChunk);
 
     updateChat();
     hideLoadMessage();
     enableInput();
+
+    if (!success) alert("AI Not Available");
 }
 
 export function updateChat() {
