@@ -1,4 +1,4 @@
-import { getMessages, addMessage, appendChunk } from "../state.js";
+import { getMessages, addMessage, appendChunk } from "../state/chat.state.js";
 import { streamFromAI } from "../api/api.js"
 
 export function toggleAssistant() {

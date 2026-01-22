@@ -1,4 +1,4 @@
-import { clearMessages } from "../state.js";
+import { clearMessages } from "../state/chat.state.js";
 import { updateChat } from "./chat.js";
 
 export function clearChat() {

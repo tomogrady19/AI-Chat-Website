@@ -1,8 +1,8 @@
 console.log("Loaded: main.js");
-import { loadMessages } from "./state.js";
+import { loadMessages } from "./state/chat.state.js";
 import { updateChat, showProfile, showFailedCallback, showLoggedIn, showLoggedOut } from "./ui/ui.js";
 import { setupEventListeners } from "./events.js"
-import { initPlayback } from "./playback.js";
+import { initPlayback } from "./state/playback.state.js";
 import { fetchUser } from "./api/api.js";
 
 const isDemo = window.location.pathname === "/demo";

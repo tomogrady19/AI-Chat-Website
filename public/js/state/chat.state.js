@@ -1,5 +1,3 @@
-console.log("Loaded: state.js");
-
 let messages = [];
 
 export function loadMessages() {
