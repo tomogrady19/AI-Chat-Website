@@ -33,6 +33,6 @@ export function showLoggedOut() {
     authBtn.classList.remove("is-hidden");
 
     const subtitleMessage = document.getElementById("subtitle");
-    subtitleMessage.textContent = "Spotify accounts require manual approval during development.\n\nYou can still explore everything in demo mode.";
+    subtitleMessage.textContent = "Spotify accounts require manual approval during development.\n(You must request access before logging in)\n\nYou can still explore everything in demo mode.";
     clearUI();
 }
