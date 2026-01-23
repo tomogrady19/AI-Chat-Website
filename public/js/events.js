@@ -29,7 +29,7 @@ export async function setupEventListeners() {
     document.getElementById("modalBackdrop").addEventListener("click", closeModal);
     document.getElementById("modalCancelBtn").addEventListener("click", closeModal);
     document.addEventListener("keydown", (e) => {if (e.key === "Escape") { closeModal(); } });
-    document.getElementById("accessRequestForm").addEventListener("submit", sendRequestAccessEmail);
+    document.getElementById("accessRequestForm").addEventListener("submit", onSendEmail);
 }
 
 // play the track  associated this the clicked play button
@@ -61,7 +61,7 @@ function growTextArea(e) {
     input.style.height = input.scrollHeight + "px";
 }
 
-async function sendRequestAccessEmail(e) {
+async function onSendEmail(e) {
     e.preventDefault();
 
     const accessRequestEmail = document.getElementById("accessRequestEmail");
