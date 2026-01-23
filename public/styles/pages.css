@@ -6,7 +6,7 @@
 }
 
 .spotify-section {
-    background: #f7f7f7;
+    background: var(--color-light);;
     padding: 16px;
     border-radius: 8px;
 }

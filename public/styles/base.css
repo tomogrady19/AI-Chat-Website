@@ -1,20 +1,31 @@
 :root {
-  --chat-width: 475px;
+    --chat-width: 475px;
 
-  --color-bg: #b3d9ff;
-  --color-primary: #1db954;
-  --color-primary-hover: #17a44a;
-  --color-light: #f5f5f5;
-  --color-border: #ccc;
+    /* Background */
+    --color-bg: #b3d9ff;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
 
-  --color-primary-text: #166534;
-  --color-muted-text: #444;
+    /* Element colours */
+    --color-primary: #1db954;
+    --color-primary-hover: #17a44a;
+    --color-light: #f5f5f5;
+    --color-border: #ccc;
+    --color-surface-soft: #eee;
 
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+    /* text colours */
+    --color-primary-text: #166534;
+    --color-muted-text: #444;
+
+    /* radii (small/medium/large) */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* shadows (small/medium/large) */
+    --shadow-sm: 0 2px 6px rgba(0,0,0,0.15);
+    --shadow-md: 0 6px 20px rgba(0,0,0,0.12);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
 }
-
 
 body {
     margin: 0;
