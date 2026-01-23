@@ -1,0 +1,13 @@
+.hero {
+    margin: 40px auto 24px;
+    max-width: 720px;
+    background: rgba(255,255,255,0.70);
+    padding: 32px;
+    border-radius: 16px;
+}
+
+.hero-tagline {
+    margin: 8px 0 16px;
+    font-size: 1.05rem;
+    opacity: 0.85;
+}
