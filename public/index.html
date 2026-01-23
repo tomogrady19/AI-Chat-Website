@@ -1,6 +1,6 @@
 <!-- UI Structure and loads styles and JS frontend-->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <!--browser tab details-->
 <head>
@@ -11,8 +11,8 @@
 
 <body>
     <!-- Main page content -->
-    <main id="app">
-        <div class="hero">
+    <main class="app-shell">
+        <section class="hero">
             <h1>Spotify Insights</h1>
             <p class="hero-tagline">
                 Understand your music taste. Get AI recommendations.
@@ -22,11 +22,11 @@
                 <button id="demoBtn" class="primary-cta">Try Demo Mode</button>
             </a>
 
-            <h2 id="subtitle" class="subtitle"></h2>
-        </div>
+            <h2 class="hero-subtitle"></h2>
+        </section>
 
         <!-- Spotify auth controls -->
-        <div id="spotify-auth">
+        <aside class="spotify-auth" id="spotify-auth">
             <div class="spotify-user">
                 <img class="spotify-avatar" alt="User avatar" />
                 <span class="spotify-name"></span>
@@ -34,11 +34,11 @@
             <button id="requestAccessBtn" type="button" class="secondary-cta">Request Access</button>
             <button id="spotifyAuthBtn" class="secondary-cta">Loading...</button>
             <button id="spotifySwitchBtn" class="secondary-cta">Switch account</button>
-        </div>
-        <div id="mainButtons">
+        </aside>
+        <div class="spotify-controls">
             <div class="control-box">
                 <label for="timeRange">Time range:</label>
-                <select id="timeRange" class="secondary-cta">
+                <select id="timeRange" class="secondary-cta time-range">
                     <option value="short_term">Last 4 weeks</option>
                     <option value="medium_term" selected>Last 6 months</option>
                     <option value="long_term">All time</option>
@@ -60,7 +60,7 @@
     <button id="assistant-toggle" aria-label="Open AI assistant" class="secondary-cta">AI Assistant</button>
 
     <!-- Drawer -->
-    <aside id="assistant-drawer" aria-hidden="true">
+    <aside class="assistant-drawer" id="assistant-drawer" aria-hidden="true">
         <div class="assistant-container">
 
             <!-- Drawer header -->

@@ -1,12 +1,12 @@
-#spotify-auth .spotify-user {
+.spotify-auth .spotify-user {
     display: none; /* Logged-out default */
 }
 
-#spotify-auth.is-logged-in .spotify-user {
+.spotify-auth.is-logged-in .spotify-user {
     display: flex;
 }
 
-#spotify-auth {
+.spotify-auth {
     position: fixed;
     top: 16px;
     left: 16px;
@@ -15,20 +15,20 @@
     gap: 8px;
     z-index: 1000;
     padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--surface-glass);
     backdrop-filter: blur(8px);
     border-radius: 14px;
     box-shadow: var(--shadow-md);
     min-width: 170px;
 }
 
-#spotify-auth button {
+.spotify-auth button {
     width: 100%;
     padding: 7px 10px;
     font-size: 0.8rem;
 }
 
-#mainButtons {
+.spotify-controls {
     margin-top: 12px;
 
     display: flex;
@@ -37,13 +37,13 @@
     gap: 6px;
 }
 
-#mainButtons label {
+.spotify-controls label {
     font-size: 0.8rem;
     opacity: 0.8;
     text-align: center;
 }
 
-#timeRange {
+.time-range {
     font-size: 0.85rem;
     padding: 4px 6px;
 

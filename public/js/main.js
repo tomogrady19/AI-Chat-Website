@@ -46,7 +46,7 @@ async function initDemo() {
     document.querySelector(".control-box").classList.add("is-hidden");
 
     //change subtitle message for demo mode
-    const subtitleMessage = document.getElementById("subtitle");
+    const subtitleMessage = document.querySelector(".hero-subtitle");
     subtitleMessage.textContent = "Welcome to demo mode!\nShown below is sample listening data to demonstrate how the app works.\nTry playing track previews or chatting with the AI assistant."
     await showProfile();
 }

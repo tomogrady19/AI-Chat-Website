@@ -18,7 +18,7 @@ export function showLoggedIn() {
 
     document.getElementById("spotify-auth").classList.add("is-logged-in");
     document.getElementById("spotifyAuthBtn").textContent = "Log out";
-    document.getElementById("subtitle").textContent = "You're logged in! Try changing the time range and playing some of your songs!";;
+    document.querySelector(".hero-subtitle").textContent = "You're logged in! Try changing the time range and playing some of your songs!";;
 
 }
 
@@ -32,7 +32,7 @@ export function showLoggedOut() {
     authBtn.textContent = "Log in with Spotify";
     authBtn.classList.remove("is-hidden");
 
-    const subtitleMessage = document.getElementById("subtitle");
+    const subtitleMessage = document.querySelector(".hero-subtitle");
     subtitleMessage.textContent = "Spotify accounts require manual approval during development.\n(You must request access before logging in)\n\nYou can still explore everything in demo mode.";
     clearUI();
 }
