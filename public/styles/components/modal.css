@@ -1,0 +1,55 @@
+.modal.hidden {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+/* Backdrop */
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-bg);;
+}
+
+/* Modal box */
+.modal-content {
+    position: relative;
+    max-width: 420px;
+    width: calc(100% - 2rem);
+    margin: 10vh auto;
+    background: white;
+    padding: 1.25rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg)
+}
+
+.modal-content h2,
+.modal-content .subtitle {
+    text-align: center;
+}
+
+/* Form elements */
+.modal-content input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 0.7rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* Actions */
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.modal-actions button {
+    font-size: 0.8rem;
+}

@@ -1,0 +1,51 @@
+.spotify-link {
+    color: black;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.spotify-link:hover {
+    text-decoration: underline;
+}
+
+.play-btn {
+    margin-right: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+.play-btn:hover {
+    background: rgba(0,0,0,0.06);
+    color: green;
+}
+
+.play-btn:focus {
+    outline: 2px solid #1db954;
+    outline-offset: 2px;
+}
+
+.control-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.now-playing-box {
+    flex-direction: column;
+    justify-content: center;
+}
+
+#now-playing {
+  min-height: 1.2em;
+  text-align: center;
+}
