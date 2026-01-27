@@ -1,9 +1,4 @@
-const isDemo = window.location.pathname === "/demo";
-
-const API_BASE_URL =
-    window.location.hostname === "127.0.0.1"
-    ? "" //"http://localhost:3000"
-    : "https://api.spotify-insights.com";
+import { API_BASE_URL, isDemo } from "./config.js";
 
 export async function streamFromAI(conversation, timeRange, onChunk) {
     const demoParam = isDemo ? "?mode=demo" : "";

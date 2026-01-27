@@ -1,7 +1,4 @@
-const API_BASE_URL =
-    window.location.hostname === "127.0.0.1"
-    ? "" //"http://localhost:3000"
-    : "https://api.spotify-insights.com";
+import { API_BASE_URL } from "./config.js";
 
 export async function sendEmail(emailContent) {
     const res = await fetch(`${API_BASE_URL}/api/resend/request-access`, {

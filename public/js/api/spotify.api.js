@@ -1,9 +1,4 @@
-const isDemo = window.location.pathname === "/demo";
-
-const API_BASE_URL =
-    window.location.hostname === "127.0.0.1"
-    ? "" //"http://localhost:3000"
-    : "https://api.spotify-insights.com";
+import { API_BASE_URL, isDemo } from "./config.js";
 
 export async function fetchProfile() {
     const timeRange = document.getElementById("timeRange").value;
